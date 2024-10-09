@@ -1,53 +1,75 @@
-import React, { useEffect } from 'react';
-import Logo from './Logo';
-import InputField from './InputField';
+import React, { useEffect, useState } from "react";
+import Logo from "./Logo";
+import InputField from "./InputField";
+import ValidateLogin from "./ValidateLogin";
 
 function LoginForm() {
+  const [email,setEmail] = useState("");
+  const [senha,setSenha] = useState("");
+  const [error, setError] = useState(false);
+  
   useEffect(() => {
-    document.body.style.overflow = 'hidden';
-    
+    document.body.style.overflow = "hidden";
+
     return () => {
-      document.body.style.overflow = 'auto';
+      document.body.style.overflow = "auto";
     };
   }, []);
 
-  return (
-    <section className="flex flex-col w-[50%] max-md:ml-0">
-      <div className="flex flex-col mt-20 text-base leading-tight text-center text-black max-md:mt-10">
-        <Logo />
-        <div className="flex flex-col items-start pl-2 mt-5 w-full text-xl max-md:mt-10">
-          <h1 className="text-3xl font-bold">Seja bem-vindo!</h1>
+  const handleSubmit = (e) => {
+    e.preventDefault();
+    if (ValidateLogin(email, senha) === false) {
+      setError(true);
+      console.log(error);
+    };
+    setError(false)
+  };
 
-          <p className="mt-3 text-lg font-medium">
-            Ao Machado Genomics
+  return (
+    <section className="flex flex-col w-[35%] max-md:ml-0 max-md:w-[90%] max-md:mx-auto">
+      <div className="flex flex-col mt-1 text-base leading-tight text-center text-black max-md:mt-10 max-md:space-y-6">
+        <Logo />
+        <div className="flex flex-col items-start pl-1 w-full text-xl max-md:mt-10 max-md:space-y-4">
+          <h1 className="text-3xl font-bold max-md:text-2xl">Bem-vindo</h1>
+
+          <p className="mt-3 text-sm font-medium max-md:mt-2 max-md:text-base">
+            Bem-vindo ao Machado Genomics
           </p>
-          <form className="w-full pl-2 mt-12"> 
+          <form className="w-full mt-5 text-base font-medium max-md:space-y-4" onSubmit={handleSubmit}>
             <InputField
-              label="Email"
+              label="E-mail"
               type="email"
               id="email"
-              placeholder="fabio@mail.com"
+              placeholder="Insira o seu e-mail"
+              value={email}
+              setField = {setEmail}
+              error = {error}
             />
             <InputField
               label="Senha"
               type="password"
               id="password"
-              placeholder="●●●●●●●●"
+              placeholder="Insira a sua senha"
               showPasswordToggle
+              value={senha}
+              setField = {setSenha}
+              error = {error}
             />
-            <a href="#" className="self-end mt-1.5 font-medium ">
-              Esqueceu a senha?
-            </a>
+            <div className="flex flex-col">
+              <a href="#" className="mt-1.5 font-light text-base underline text-right max-md:mt-3">
+                Esqueceu a senha?
+              </a>
+            </div>
             <br />
             <button
               type="submit"
-              className="px-16 py-6 mt-10 text-3xl font-bold text-white whitespace-nowrap bg-green-900 rounded-xl max-md:px-5 max-md:mt-10 max-md:ml-1.5 hover:bg-green-700 hover:shadow-lg hover:-translate-y-1 transition duration-200"
+              className="w-full px-16 py-4 text-1xl font-bold text-white whitespace-nowrap bg-[#154735] rounded-xl max-md:px-5 max-md:mt-10 max-md:ml-1.5 hover:bg-[#0B6C47] hover:shadow-lg hover:-translate-y-1 transition duration-200"
             >
               Entrar
             </button>
           </form>
         </div>
-        <p className="self-center mt-8 font-medium max-md:mt-1 hover:-translate-y-1 transition duration-200">
+        <p className="self-center mt-3 font-medium hover:-translate-y-1 transition duration-200 underline max-md:mt-4">
           Não tem cadastro? Contate o administrador
         </p>
       </div>
