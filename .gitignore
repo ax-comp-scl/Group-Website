@@ -1,0 +1,64 @@
+# Python/Django
+*.pyc
+__pycache__/
+*.pyo
+*.pyd
+*.db
+*.sqlite3
+.DS_Store
+
+# Environment
+.env
+venv/
+env/
+
+# Logs
+*.log
+
+# Node/React
+node_modules/
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+
+# Build
+build/
+dist/
+
+# Byte-compiled / optimized / DLL files
+*.py[cod]
+*$py.class
+
+# Caches
+*.swp
+*.swo
+*.sublime-workspace
+*.sublime-project
+
+# VS Code
+.vscode/
+
+# macOS
+.DS_Store
+.AppleDouble
+.LSOverride
+
+# Windows
+Thumbs.db
+desktop.ini
+
+# IDEs/Editors
+.idea/
+*.iml
+*.suo
+*.ntvs*
+*.njsproj
+*.sln
+*.sw?
+
+# Docker
+*.env
+*.docker
+**/Dockerfile
+**/docker-compose.yml
+
