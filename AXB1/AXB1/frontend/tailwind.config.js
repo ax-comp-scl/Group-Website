@@ -1,11 +1,19 @@
+const { nextui } = require("@nextui-org/react");
+
 /** @type {import('tailwindcss').Config} */
-export const content = [
-  "./src/index.css",
-  "./src/App.jsx",
-  "./index.html",
-  "./src/**/*.{js,jsx,html}",
-];
-export const theme = {
-  extend: {},
-};
-export const plugins = [];
+export default {
+  content: [
+    "./index.html",
+    "./src/**/*.{js,ts,jsx,tsx}",
+    "./node_modules/@nextui-org/theme/dist/**/*.{js,ts,jsx,tsx}"
+  ],
+  theme: {
+    extend: {},
+  },
+  darkMode: "class",
+  plugins: [
+    require('daisyui'),
+    nextui()
+  ],
+}
+
