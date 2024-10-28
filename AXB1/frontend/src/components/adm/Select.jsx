@@ -1,25 +1,30 @@
-import {Select, SelectItem} from "@nextui-org/react";
+import {Select, SelectItem, Tooltip} from "@nextui-org/react";
 
 export default function SelectComponent(props) {
+  const selectComponent = (<Select
+              label={props.label}
+              className="max-w-xs font-normal"  
+              isRequired={props.isRequired}
+              variant="bordered"
+              onSelectionChange={props.setValue}
+              defaultSelectedKeys={[props.defaultSelectedKeys]}
+              isInvalid={props.isInvalid}>
+              {props.options.map((o) => (
+                <SelectItem key={o}>{o}</SelectItem>
+              ))}
+            </Select>)
   return (
-      <Select 
-        label="Selecione uma opção" 
-        className="max-w-xs" 
-        isRequired={props.isRequired}
-        variant={props.variant}
-        onChange={(value) => {
-          const selectedValue = value.target.value
-          props.onChange(selectedValue);
-        }}
-        defaultSelectedKeys={new Set([props.defaultSelectedKeys])}
-      >
-        {props.options.map((o, i) => (
-          <SelectItem 
-            value={o}
-            key={o}> 
-            {o}
-          </SelectItem>
-        ))}
-      </Select>
+    <>
+      {
+        props.textOnHover ? 
+        (
+          <Tooltip content={props.textOnHover} placement="top-start" offset={15} crossOffset={-250} delay={800}>
+            {selectComponent}
+          </Tooltip>
+        ) : (
+          selectComponent
+        )
+      }
+    </>
   );
 }

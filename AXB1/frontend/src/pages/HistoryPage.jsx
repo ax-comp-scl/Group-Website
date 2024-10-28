@@ -1,23 +1,51 @@
+import React, { useState } from "react";
 import Header from "../components/adm/Header"
 import { Divider } from "@nextui-org/react"
+import ButtonComponent from "../components/adm/Button"
+import CalendarComponent from "../components/adm/Calendar";
+import DropdownHistoryComponent from "../components/adm/DropdownHistory";
+import HistoryCard from "../components/adm/HistoryCard";
+import Timeline from "../components/adm/Timeline";
 
-export default function HistoryPage(){
-    return(
+export default function HistoryPage() {
+    const [showCalendar, setShowCalendar] = useState(false)
+
+    const timelineData1 = [
+        { data: "Athaliana_transcript.fasta", username: "Adm1", time: "11h30", date: "08/03/2023", isInsert: false },
+        { data: "Daucus_carota.fasta", username: "Adm2", time: "11h00", date: "08/03/2023", isInsert: false },
+        { data: "Athaliana_transcript.fasta", username: "Adm3", time: "10h00", date: "08/03/2023", isInsert: true }
+    ];
+
+    const timelineData2 = [
+        { data: "Daucus_carota.fasta", username: "Adm4", time: "16:24", date: "04/03/2023", isInsert: true }
+    ];
+
+    return (
         <>
             <div className="flex flex-col h-screen">
                 <Header defaultSelectedKeys="Histórico" />
-                <div className="flex-1 flex-col gap-10">
-                    <div className="flex justify-end gap-44 px-32">
-                        <p>filter</p>
-                        <p>filter</p>
-                        <p>filter</p>
+                <div className="flex-1 flex-col">
+                    <div className="flex justify-end px-12 my-5 gap-x-10">
+                        <DropdownHistoryComponent name={"Status"} items={["Inserção", "Deleção"]} />
+                        <DropdownHistoryComponent name={"Data"} items={<CalendarComponent />} />
                     </div>
-                    <Divider></Divider>
-                <div className="px-10 flex-1 flex flex-wrap gap-5">
-                    
+                    <Divider/>
+                    <div className="mt-10 mb-12 flex flex-col gap-10">
+                        <Timeline
+                            weekday="Sexta-Feira"
+                            month="Março"
+                            year="2024"
+                            data={timelineData1}
+                        />
+                        <Timeline
+                            weekday="Segunda-Feira"
+                            month="Março"
+                            year="2024"
+                            data={timelineData2}
+                        />
+                    </div>
                 </div>
             </div>
-            </div>
-        </>   
+        </>
     )
 }

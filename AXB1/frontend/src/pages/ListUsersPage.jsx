@@ -129,15 +129,15 @@ export default function ListUsersPage(){
 
     return(
         <div className="flex flex-col h-screen">
-            <Header defaultSelectedKeys="Listar usuários"></Header> 
+            <Header defaultSelectedKeys="Listar usuários"/> 
             <div className="flex-1 flex flex-col gap-10">
                 <SearchBar
                     onValueChange={setSearchValue}
                     onPress={handleSearch}
-                ></SearchBar>
-                <div className="px-10 grid grid-cols-4 justify-items-center gap-5">
+                />
+                <div className="px-10 grid grid-cols-4 justify-items-center gap-5 mb-12">
                     {
-                        resultList.map((e, i) =>  <UserCard role={e.role} data={e.data} />)
+                        resultList.map((e, i) =>  <UserCard role={e.role} data={e.data} key={i}/>)
                     }
                 </div>
             </div>

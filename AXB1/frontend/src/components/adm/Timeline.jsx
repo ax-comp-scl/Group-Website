@@ -14,12 +14,12 @@ export default function Timeline(props) {
                 <hr />
             </li>
             {
-                props.data.map((d, i) => <li key={i}> <TimelineCard fasta={d.fasta} username={d.username} time={d.time} date={d.date} isInsert={d.isInsert} /></li>)
+                props.data.map((d, i) => <li key={i}> <TimelineCard data={d.data} username={d.username} time={d.time} date={d.date} isInsert={d.isInsert} /></li>)
             }
             <li>
                 <hr />
                 <div className="timeline-middle ">
-                    <TimelineEndIcon></TimelineEndIcon>
+                    <TimelineEndIcon/>
                 </div>
                 <hr />
             </li>

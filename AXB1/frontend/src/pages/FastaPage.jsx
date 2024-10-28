@@ -1,11 +1,45 @@
-import MDropzone from "../components/adm/Dropzone"
+import Dropzone from "../components/adm/Dropzone"
 import InputComponent from "../components/adm/Input"
 import CheckboxComponent from "../components/adm/Checkbox"
-import DropdownComponent from "../components/adm/Dropdown"
+import SelectComponent from "../components/adm/Select"
 import ButtonComponent from "../components/adm/Button"
 import AccordionComponent from "../components/adm/Accordion"
+import { useState, useContext } from "react"
+import { FormsContext } from "../FormsContext"
 
 export default function FastaPage(){
+    const {handleFormChange, formData} = useContext(FormsContext)
+
+    const [organism, setOrganism] = useState(formData.fasta.organism)
+    const [soterm, setSoterm] = useState(formData.fasta.soterm)
+    const [description, setDescription] = useState(formData.fasta.description)
+    const [url, setUrl] = useState(formData.fasta.url)
+    const [doi, setDoi] = useState(formData.fasta.doi)
+    const [nosequence, setNosequence] = useState(formData.fasta.nosequence)
+    const [cpu, setCpu] = useState(formData.fasta.cpu)
+
+    const validateFastaFile = (file) => {
+        const regex = /\.(fasta|fa|fna|faa)$/i
+        return regex.test(file.name) ? null : {
+            code: "file-invalid-type",
+            message: "Tipo de arquivo inválido. Somente arquivos .fasta, .fa, .fna ou .faa são permitidos."
+        }
+    }
+
+    const handleSubmit = () => {
+        const fastaData = {
+            organism,
+            soterm,
+            description,
+            url,
+            doi,
+            nosequence,
+            cpu
+        }
+        formData["fasta"] = fastaData
+        handleFormChange(formData)
+    }
+    
     const organismsOptions = [
         "Organismo 1",
         "Organismo 2",
@@ -29,29 +63,30 @@ export default function FastaPage(){
 
     return(
         <>
-            <div className="flex flex-col h-screen">
-                <MDropzone label="Arquivo FASTA"/>
-                <AccordionComponent 
-                className="w-7/12"
+            <div className="flex flex-col gap-10 items-center">
+                <Dropzone  
+                    accept={{'*/*': ['.fasta', '.fa', '.fna', '.faa']}} 
+                    validator={validateFastaFile} label="Arquivo FASTA"/>
+                <AccordionComponent
                 itens ={[
                     {
                         isRequired: true,
                         fields: [
-                            <DropdownComponent options={organismsOptions}/>,
-                            <DropdownComponent options={sotermOptions}/>,
-                        ]
+                                <SelectComponent isRequired={true} options={organismsOptions} defaultSelectedKeys={organism} label="organism" setValue={setOrganism} textOnHover="Species name (eg. Homo sapiens, Mus musculus)"/>,
+                                <SelectComponent isRequired={true} options={sotermOptions} defaultSelectedKeys={soterm} label="soterm" setValue={setSoterm} textOnHover="SO Sequence Ontology Term (eg. chromosome, assembly)"/>,
+                            ]
                     },
                     {
                         fields: [
-                            <InputComponent label="Descrição" type="text"/>,
-                            <InputComponent label="URL" type="text"/>,
-                            <DropdownComponent options={doiOptions}/>,
-                            <InputComponent type="number" label="CPU" placeholder="0"/>,
-                            <CheckboxComponent name="Nosequence"/>
+                            <InputComponent label="description" type="text" value={description} onValueChange={setDescription} textOnHover="Description"/>,
+                            <InputComponent label="url" type="text" value={url} onValueChange={setUrl} textOnHover="URL"/>,
+                            <SelectComponent options={doiOptions} label="doi" setValue={setDoi} textOnHover="DOI of the article reference to this sequence. E.g.: 10.1111/s12122-012-1313-4"/>,
+                            <InputComponent type="number" label="cpu" placeholder="0" value={cpu} onValueChange={setCpu} textOnHover="Number of threads"/>,
+                            <CheckboxComponent name="nosequence" isSelected={nosequence} onValueChange={setNosequence} textOnHover="Don't load the sequence"/>,
                         ]
                     },
                 ]}/>
-                <ButtonComponent text="Confirmar"/>
+                <ButtonComponent text="Confirmar" onPress={handleSubmit}/>
             </div>
         </>
     )

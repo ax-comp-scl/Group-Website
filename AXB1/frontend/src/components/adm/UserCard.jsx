@@ -11,11 +11,13 @@ import InputComponent from "./Input"
 import {Kbd} from "@nextui-org/kbd";
 import { ViewIconOpened } from "./ViewIconOpened"
 import { ViewIconClosed } from "./ViewIconClosed"
+import CheckboxComponent from "./Checkbox"
 
 export default function UserCard(props){
-    let isPes = false, isUsr = false
-    if (props.role === 'pes') isPes = true
-    else if (props.role === 'usr') isUsr = true
+    const [admin, setAdmin] = useState(false)
+
+    let isAdm = false
+    if (props.data.role === 'Administrador') isAdm = true
 
     const [name, setName] = useState(props.data.name)
     const [password, setPassword] = useState("")
@@ -56,10 +58,7 @@ export default function UserCard(props){
                         )}
                     </button>)
                     }/>
-                    <SelectComponent
-                        isRequired={true}
-                        options={["Administrador", "Usuário", "Pesquisador"]}
-                    />            
+                    <CheckboxComponent name="Administrador" isSelected={admin} onValueChange={setAdmin}/>
                 </>
         )
     
@@ -89,11 +88,10 @@ export default function UserCard(props){
                             <span className="font-bold text-lg">{props.data.name}</span>
                         </p>
                     </div>
-                    <div>
-                        {!(isPes || isUsr) && <Kbd className="text-[#FF3232]">ADM</Kbd>}
-                        {isPes && <Kbd className="text-[#008605]">PES</Kbd>}
-                        {isUsr && <Kbd className="text-[#8C24BC]">USR</Kbd>}
-                    </div>
+                    {isAdm && 
+                        <div>
+                            <Kbd className="text-[#FF3232]">ADM</Kbd>
+                        </div>}
                 </div>
                 <div className="border-t-2"></div>
                 <div className="flex-1 flex flex-col items-center gap-5 p-3">
@@ -113,7 +111,7 @@ export default function UserCard(props){
                         header="Visualizando usuário"
                     />
 
-                    {(isPes || isUsr) && <div className="flex gap-5 justify-center">
+                    {!isAdm && <div className="flex gap-5 justify-center">
                         <ButtonComponent
                         icon={<EditIcon/>}
                         variant="ghost"

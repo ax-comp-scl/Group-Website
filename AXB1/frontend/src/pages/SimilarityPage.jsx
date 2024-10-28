@@ -1,10 +1,44 @@
-import MDropzone from "../components/adm/Dropzone"
+import Dropzone from "../components/adm/Dropzone"
 import InputComponent from "../components/adm/Input"
-import DropdownComponent from "../components/adm/Dropdown"
+import SelectComponent from "../components/adm/Select"
 import ButtonComponent from "../components/adm/Button"
 import AccordionComponent from "../components/adm/Accordion"
+import { useState, useContext } from "react"
+import { FormsContext } from "../FormsContext"
 
 export default function SimilarityPage(){
+    const { handleFormChange, formData} = useContext(FormsContext)
+
+    const [format, setFormat] = useState(formData.similarity.format)
+    const [soquery, setSoquery] = useState(formData.similarity.soquery)
+    const [sosubject, setSosubject] = useState(formData.similarity.sosubject)
+    const [organismquery, setOrganismquery] = useState(formData.similarity.organismquery)
+    const [organismsubject, setOrganismsubject] = useState(formData.similarity.organismsubject)
+    const [program, setProgram] = useState(formData.similarity.program)
+    const [programversion, setProgramversion] = useState(formData.similarity.programversion)
+    const [name, setName] = useState(formData.similarity.name)
+    const [algorithm, setAlgorithm] = useState(formData.similarity.algorithm)
+    const [description, setDescription] = useState(formData.similarity.description)
+    const [cpu, setCpu] = useState(formData.similarity.cpu)
+
+    const handleSubmit = () => {
+        const similarityData = {
+            format,
+            soquery,
+            sosubject,
+            organismquery,
+            organismsubject,
+            program,
+            programversion,
+            name,
+            algorithm,
+            description,
+            cpu
+        }
+        formData["similarity"] = similarityData
+        handleFormChange(formData)
+    }
+
     const fileOptions = [
         "blast-xml",
         "interproscan-xml",
@@ -40,33 +74,34 @@ export default function SimilarityPage(){
 
     return(
         <>
-            <div className="flex flex-col h-screen">
-                <MDropzone label="Arquivo de similaridade"/>
-                <DropdownComponent options={fileOptions}/>
-                <AccordionComponent 
-                className="w-7/12"
+            <div className="flex flex-col items-center gap-10">
+                <Dropzone label="Arquivo de similaridade" textOnHover="Blast or InterproScan XML file"/>
+                <div className="w-7/12">    
+                    <SelectComponent options={fileOptions} label="format" className="w-3/12" setValue={setFormat} textOnHover="blast-xml or interproscan-xml"/>
+                </div>
+                <AccordionComponent
                 itens ={[
                     {
                         isRequired: true,
                         fields: [
-                            <DropdownComponent options={soQueryOptions}/>,
-                            <DropdownComponent options={soSubjectOptions}/>,
-                            <DropdownComponent options={organismQueryOptions}/>,
-                            <DropdownComponent options={organismSubjectOptions}/>,
-                            <InputComponent label="Program" type="text"/>,
-                            <InputComponent label="Program version" type="text"/>,
+                            <SelectComponent options={soQueryOptions} defaultSelectedKeys={soquery} label="so_query" setValue={setSoquery} textOnHover="Query Sequence Ontology term. eg. assembly, mRNA, CDS, polypeptide"/>,
+                            <SelectComponent options={soSubjectOptions} defaultSelectedKeys={sosubject} label="so_subject" setValue={setSosubject} textOnHover="Subject Sequence Ontology term. eg. assembly, mRNA, CDS, polypeptide (protein_match if loading InterproScan or BLAST xml file)"/>,
+                            <SelectComponent options={organismQueryOptions} defaultSelectedKeys={organismquery} label="organism_query" setValue={setOrganismquery} textOnHover="Query's organism name. eg. 'Oryza sativa'. Cannot be multispecies'"/>,
+                            <SelectComponent options={organismSubjectOptions} defaultSelectedKeys={organismsubject} label="organism_subject" setValue={setOrganismsubject} textOnHover="Subject's organism name eg. 'Oryza sativa'. If using a multispecies database put  'multispecies multispecies'"/>,
+                            <InputComponent label="program" type="text" value={program} onValueChange={setProgram} textOnHover=""/>,
+                            <InputComponent label="programversion" type="text" value={programversion} onValueChange={setProgramversion} textOnHover=""/>,
                         ]
                     },
                     {
                         fields: [
-                            <InputComponent label="Name" type="text"/>,
-                            <InputComponent label="Algorithm" type="text"/>,
-                            <InputComponent label="Description" type="text"/>,
-                            <InputComponent type="number" label="CPU" placeholder="0"/>,
+                            <InputComponent label="name" type="text" value={name} onValueChange={setName} textOnHover=""/>,
+                            <InputComponent label="algorithm" type="text" value={algorithm} onValueChange={setAlgorithm} textOnHover=""/>,
+                            <InputComponent label="description" type="text" value={description} onValueChange={setDescription} textOnHover=""/>,
+                            <InputComponent type="number" label="cpu" placeholder="0" value={cpu} onValueChange={setCpu} textOnHover=""/>,
                         ]
                     },
                 ]}/>
-                <ButtonComponent text="Confirmar"/>
+                <ButtonComponent text="Confirmar" onPress={handleSubmit}/>
             </div>
         </>
     )

@@ -1,15 +1,13 @@
-import { StrictMode } from 'react'
 import { createRoot } from 'react-dom/client'
 import App from './App.jsx'
 import './index.css'
+import LoginPage from './pages/LoginPage.jsx'
 import {NextUIProvider} from '@nextui-org/react'
-import * as ReactDOM from 'react-dom/client'
 import CreateUserPage from './pages/CreateUserPage.jsx'
-import ListOrganismsPage from './pages/ListOrganismsPage.jsx'
+import ListDataPage from './pages/ListDataPage.jsx'
 import ListUsersPage from './pages/ListUsersPage.jsx'
 import HistoryPage from './pages/HistoryPage.jsx'
 import UploadPage from './pages/UploadPage.jsx'
-import InitialPage from './pages/InitialPage.jsx'
 import OntologiesPage from './pages/OntologiesPage.jsx'
 import OrganismPage from './pages/OrganismPage.jsx'
 import PublicationPage from './pages/PublicationPage.jsx'
@@ -17,6 +15,11 @@ import FastaPage from './pages/FastaPage.jsx'
 import GFFPage from './pages/GffPage.jsx'
 import AdditionalPage from './pages/AdditionalPage.jsx'
 import SimilarityPage from './pages/SimilarityPage.jsx'
+import AdditionalAnnotationPage from "./pages/AdditionalAnnotationPage.jsx"
+import AdditionalSequencePage from "./pages/AdditionalSequencePage.jsx"
+import AdditionalPublicationPage from "./pages/AdditionalPublicationPage.jsx"
+import AdditionalDBXREFPage from "./pages/AdditionalDBXREFPage.jsx"
+import { FormsProvider } from './FormsContext.jsx'
 
 import {
   createBrowserRouter,
@@ -25,12 +28,16 @@ import {
 
 const router = createBrowserRouter([
   {
+    path: "/",
+    element: <LoginPage/>
+  },
+  {
     path: "/teste",
     element: <App/>,
   },
   {
-    path: "/",
-    element: <InitialPage/>,
+    path: "/history",
+    element: <HistoryPage />
   },
   {
     path: "/create-user",
@@ -38,14 +45,13 @@ const router = createBrowserRouter([
   },
   {
     path: "/organisms",
-    element: <ListOrganismsPage />
+    element: <ListDataPage />
   },
   {
     path: "/upload",
-    element: <UploadPage />,
+    element: <FormsProvider><UploadPage /></FormsProvider>,
     children: [
       {
-        index: true,
         path: "/upload/ontologies",
         element: <OntologiesPage/>
       },
@@ -67,7 +73,26 @@ const router = createBrowserRouter([
       },
       {
         path: "/upload/additional",
-        element: <AdditionalPage/>
+        element: <AdditionalPage/>,
+        children: [
+          {
+            index: true,
+            path: "/upload/additional/annotation",
+            element: <AdditionalAnnotationPage />
+          },
+          {
+            path: "/upload/additional/sequence",
+            element: <AdditionalSequencePage />
+          },
+          {
+            path: "/upload/additional/publication",
+            element: <AdditionalPublicationPage />
+          },
+          {
+            path: "/upload/additional/dbxref",
+            element: <AdditionalDBXREFPage />
+          }
+        ]
       },
       {
         path: "/upload/similarity",
@@ -79,16 +104,10 @@ const router = createBrowserRouter([
     path: "/users",
     element: <ListUsersPage />
   },
-  {
-    path: "/history",
-    element: <HistoryPage />
-  }
 ]);
 
 createRoot(document.getElementById('root')).render(
-  <StrictMode>
     <NextUIProvider>
       <RouterProvider router={router} />
     </NextUIProvider>    
-  </StrictMode>,
 )

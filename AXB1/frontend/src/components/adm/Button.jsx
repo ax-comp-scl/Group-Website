@@ -4,7 +4,7 @@ export default function ButtonComponent(props) {
   return (
     <>
         <Button 
-          className={props.className} 
+          className="max-w-xs"
           startContent={props.icon} 
           size={props.size} 
           color={props.color} 

@@ -11,7 +11,7 @@ export default function TimelineCard(props) {
             </div>
             <div className="timeline-end">
                 <HistoryCard
-                    fasta={props.fasta}
+                    data={props.data}
                     username={props.username}
                     time={props.time}
                     date={props.date}

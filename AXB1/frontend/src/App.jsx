@@ -1,16 +1,12 @@
 import Header from './components/adm/Header'
 import Timeline from './components/adm/Timeline'
 import AccordionComponent from './components/adm/Accordion'
-import FileNavbar from './components/adm/FileNavbar'
-import SearchMenu from "./components/adm/SearchMenu"
-import AdditionalMenu from './components/adm/AdditionalMenu'
 import UserCard from './components/adm/UserCard'
-import OrganismCard from './components/adm/OrganismCard'
+import DataCard from './components/adm/DataCard'
 import InputComponent from './components/adm/Input'
 import CheckboxComponent from './components/adm/Checkbox'
 import ButtonComponent from './components/adm/Button'
-import SelectComponent from './components/adm/Select'
-// import ExcludeIcon from './components/adm/ExcludeIcon'
+import SelectNavigation from './components/adm/Select'
 
 function App() {
   const dados = {
@@ -55,57 +51,11 @@ function App() {
       <div className='flex flex-col gap-10'>
         
         <Header defaultSelectedKeys="Tela inicial" />
-        {/* <FileNavbar /> */}
-        <AdditionalMenu tabs={[
-            {
-              title: 'Ontologia',
-              body: [
-                <p>Anotações</p>
-              ]
-            },
-            {
-              title: 'Organismo',
-              body: [
-                <p>Sequência</p>
-              ]
-            },
-            {
-              title: 'Publicação',
-              body: [
-                <p>Publicação</p>
-              ]
-            },
-            {
-              title: 'FASTA',
-              body: [
-                <p>DBxREF</p>
-              ]
-            },
-            {
-              title: 'GFF',
-              body: [
-                <p>DBxREF</p>
-              ]
-            },
-            {
-              title: 'Adicional',
-              body: [
-                <p>DBxREF</p>
-              ]
-            },
-            {
-              title: 'Similaridade',
-              body: [
-                <p>DBxREF</p>
-              ]
-            }
-          ]}
-          />
         <SearchMenu />
         <UserCard role="usr" data={dados} />
         <UserCard role="pes" data={dados} />
         <UserCard role="adm" data={dados} />
-        <OrganismCard name={"Super organismo"} />
+        <DataCard name={"Super organismo"} />
         <div className='w-9/12'>
           <AccordionComponent itens ={[
             {
@@ -137,33 +87,6 @@ function App() {
         </div>
         <Timeline weekday={"Segunda-feira"} month={"agosto"} year={"2024"} data={timelineData} />
         <Timeline weekday={"Outra-feira"} month={"agosto"} year={"2024"} data={timelineData} />
-        <AdditionalMenu tabs={[
-          {
-            title: 'Anotações',
-            body: [
-              <p>Anotações</p>
-            ]
-          },
-          {
-            title: 'Sequência',
-            body: [
-              <p>Sequência</p>
-            ]
-          },
-          {
-            title: 'Publicação',
-            body: [
-              <p>Publicação</p>
-            ]
-          },
-          {
-            title: 'DBxREF',
-            body: [
-              <p>DBxREF</p>
-            ]
-          },
-        ]}
-        />
         <div className="flex flex-wrap gap-4 items-center">
           <ButtonComponent size="lg" color="primary" text="Botão" />
           <ButtonComponent color="primary" variant="solid" text="Solid" />
@@ -174,7 +97,7 @@ function App() {
           <ButtonComponent color="primary" variant="ghost" text="ghost" />
           <ButtonComponent color="primary" variant="shadow" text="shadow" />
         </div>
-        <SelectComponent options={
+        <SelectNavigation options={
           [
             "Tela inicial",
             "Criar usuário",
