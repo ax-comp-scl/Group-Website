@@ -4,12 +4,13 @@ export default function ButtonComponent(props) {
   return (
     <>
         <Button 
-          className="max-w-xs"
+          className={props.className}
           startContent={props.icon} 
           size={props.size} 
           color={props.color} 
           variant={props.variant} 
-          onPress={props.onPress}>
+          onPress={props.onPress}
+          radius={props.radius}>
         {props.text}
         </Button>
     </>
