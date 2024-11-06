@@ -7,7 +7,11 @@ export default function TimelineCard(props) {
     <>
       <hr />
       <div className="timeline-middle">
-        {props.isInsert ? <InsertIcon /> : <ExcludeIcon />}
+        {props.isInsert ? (
+          <InsertIcon className="size-6" />
+        ) : (
+          <ExcludeIcon className="size-6" />
+        )}
       </div>
       <div className="timeline-end">
         <HistoryCard

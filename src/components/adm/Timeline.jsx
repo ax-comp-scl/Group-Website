@@ -16,7 +16,6 @@ export default function Timeline(props) {
       </li>
       {props.data.map((d, i) => (
         <li key={i}>
-          {" "}
           <TimelineCard
             data={d.data}
             username={d.username}
