@@ -1,61 +1,127 @@
-import ButtonComponent from "../components/adm/Button";
-import InputComponent from "../components/adm/Input";
-import embrapa from "../components/adm/logo-embrapa.png";
-import { useState } from "react";
+import loginImg from "../components/adm/login-page-img.jpg";
+import logoEmbrapa from "../components/adm/logo-embrapa.png";
+import React from "react";
+import { useState, useMemo } from "react";
 import { ViewIconOpened } from "../components/adm/ViewIconOpened";
 import { ViewIconClosed } from "../components/adm/ViewIconClosed";
 import { useNavigate } from "react-router-dom";
+import { Button, Input } from "@nextui-org/react";
 
 export default function LoginPage() {
+  const [isVisible, setIsVisible] = React.useState(false);
+
+  const toggleVisibility = () => setIsVisible(!isVisible);
+
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
+
+  const validateEmail = (value) =>
+    value.match(/^[A-Z0-9._%+-]+@[A-Z0-9.-]+.[A-Z]{2,4}$/i);
+
+  const validatePassword = (value) => value.match(/^[A-Za-z\d@$!%*?&]{5,}$/);
+
+  const isInvalidEmail = useMemo(() => {
+    if (email === "") return false;
+    return validateEmail(email) ? false : true;
+  }, [email]);
+
+  const isInvalidPassword = useMemo(() => {
+    if (password === "") return false;
+    return validatePassword(password) ? false : true;
+  }, [password]);
+
   const [open, setOpen] = useState(true);
   const navigate = useNavigate();
 
   return (
-    <>
-      <div className="flex items-center justify-center h-screen">
-        <div className="flex flex-row bg-[#FFFFFF] rounded-[20px] w-[90%] h-[90%] max-w-full">
-          <div className="w-[50%] flex flex-col justify-center items-center p-8">
-            <h1 className="text-2xl font-semibold mb-2">Bem vindo</h1>
-            <p className="mb-6">Bem vindo ao Machado Genomics</p>
-            <div className="flex flex-col w-full items-center gap-5 mb-5">
-              <InputComponent
-                isRequired={true}
-                type="email"
-                label="Email"
-                variant="faded"
-              />
-              <InputComponent
-                isRequired={true}
-                type={open ? "password" : "text"}
-                label="Senha"
-                variant="faded"
-                endContent={
-                  <button onClick={() => setOpen(!open)}>
-                    {open ? <ViewIconOpened /> : <ViewIconClosed />}
-                  </button>
-                }
-              />
-              <ButtonComponent
-                text="Entrar"
-                color="success"
-                className="text-white"
-                variant="solid"
-                size="lg"
-                radius="lg"
-                onPress={() => {
-                  navigate("/history");
-                }}
-              />
-            </div>
-            <a className="text-sm text-gray-600">
-              Não tem cadastro? Contate o administrador
-            </a>
+    <div className="flex items-center justify-center min-h-screen bg-gray-100">
+      <div className="flex flex-col m-6 space-y-8 bg-white shadow-2xl rounded-2xl md:flex-row md:space-y-0 ">
+        <div className="flex flex-col justify-center p-8 md:p-14">
+          <div className="h-[100px] mb-4">
+            <img
+              src={logoEmbrapa}
+              alt="img"
+              className="h-full hidden rounded-r-2xl md:block object-cover"
+            />
           </div>
-          <div className="w-[50%] flex justify-center items-center">
-            <img src={embrapa} alt="Embrapa Logo" className="w-[95%] h-auto" />
+          <span className="mb-3 text-4xl font-bold">Bem-Vindo</span>
+          <span className="mb-8 font-light text-gray-500">
+            Acesse sua conta
+          </span>
+          <div className="py-4">
+            <span className="mb-2 text-md">E-mail</span>
+            <Input
+              type="email"
+              placeholder="Seu e-mail"
+              variant="bordered"
+              radius="sm"
+              isClearable
+              color={isInvalidEmail ? "danger" : "success"}
+              isInvalid={isInvalidEmail}
+              errorMessage="Insira um E-mail válido"
+              onValueChange={setEmail}
+              value={email}
+            />
+          </div>
+          <div className="py-4">
+            <span className="mb-2 text-md">Senha</span>
+            <Input
+              type={isVisible ? "text" : "password"}
+              placeholder="Sua senha"
+              variant="bordered"
+              radius="sm"
+              color={isInvalidPassword ? "danger" : "success"}
+              isInvalid={isInvalidPassword}
+              onValueChange={setPassword}
+              value={password}
+              endContent={
+                <button
+                  className="focus:outline-none"
+                  type="button"
+                  onClick={toggleVisibility}
+                  aria-label="toggle password visibility"
+                >
+                  {isVisible ? (
+                    <ViewIconOpened className="text-2xl text-default-400 pointer-events-none" />
+                  ) : (
+                    <ViewIconClosed className="text-2xl text-default-400 pointer-events-none" />
+                  )}
+                </button>
+              }
+            />
+          </div>
+          <div class="flex justify-end w-full py-4">
+            <span class="font-bold text-md border-b-2 border-black hover:border-green-900 hover:text-green-900 cursor-pointer">
+              Recuperar senha
+            </span>
+          </div>
+          <Button
+            color="default"
+            variant="solid"
+            radius="small"
+            className="text-lg bg-black text-white rounded-lg mb-6 p-2 w-full  hover:bg-green-900 hover:text-white hover:border hover:border-gray-300"
+            onPress={() => {
+              navigate("/history");
+            }}
+          >
+            Entrar
+          </Button>
+          <div class="text-center text-gray-500">
+            Não possui cadastro?
+            <span class="font-bold text-black border-b-2 border-black hover:border-green-900 hover:text-green-900 cursor-pointer">
+              {" "}
+              Contate um administrador
+            </span>
           </div>
         </div>
+        <div class="relative w-[350px]">
+          <img
+            src={loginImg}
+            alt="img"
+            className="h-full hidden rounded-r-2xl md:block object-cover"
+          />
+        </div>
       </div>
-    </>
+    </div>
   );
 }
