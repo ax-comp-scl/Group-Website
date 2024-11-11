@@ -53,7 +53,9 @@ export default function ModalEdit(props) {
       <ModalOption
         isOpen={isOptionOpen}
         onOpenChange={setOptionOpen}
-        handleConfirm={() => {
+        handleConfirm={async () => {
+          const response = await fetch('', {}) //props.dados
+          const date = await response.json()
           setOptionOpen(false);
         }}
       />

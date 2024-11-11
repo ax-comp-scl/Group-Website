@@ -9,8 +9,16 @@ export default function ListUsersPage(){
     const [resultList, setResultList] = useState([])
     const [debounce] = useDebounce(searchValue, 500)
 
+    // async function handleSearch() {
     function handleSearch() {
-        setResultList(example.filter(usr => usr.data.name.toLowerCase().includes(debounce.toLowerCase())))
+        if (debounce){
+            // const response = await fetch('http://127.0.0.1:8000/api/account') //usar nome
+            // const data = await response.json()
+            // if (data.ok) setResultList(data)
+            // setResultList(prev => prev.filter(usr => usr.name.toLowerCase().includes(debounce.toLowerCase())))
+            setResultList(example.filter(usr => usr.data.name.toLowerCase().includes(debounce.toLowerCase())))
+        }
+        else setResultList([])
     }
 
     useEffect(() => {
@@ -135,11 +143,23 @@ export default function ListUsersPage(){
                     onValueChange={setSearchValue}
                     onPress={handleSearch}
                 />
-                <div className="px-10 grid grid-cols-4 justify-items-center gap-5 mb-12">
-                    {
-                        resultList.map((e, i) =>  <UserCard role={e.role} data={e.data} key={i}/>)
-                    }
-                </div>
+                {
+                    searchValue === "" ?
+                    (<div className="flex items-center justify-center text-zinc-400 font-semibold">
+                        <p>Digite para buscar...</p>
+                    </div>)
+                    : resultList.length === 0 ?
+                        (<div className="flex items-center justify-center break-all text-zinc-400 font-semibold">
+                            <p>{`Nenhum resultado foi encontrado para "${searchValue}"`}</p>
+                        </div>)
+                    : (
+                        // <div className="grid grid-cols-5 justify-items-center gap-5">
+                        <div className="px-10 grid grid-cols-4 justify-items-center gap-5 mb-12">
+                            {/* {resultList.map((e, i) => <DataCard type={dataType} name={e} key={i} />)} */}
+                            {resultList.map((e, i) =>  <UserCard role={e.role} data={e.data} key={i}/>)}
+                        </div>
+                    )
+                }
             </div>
         </div>
     )

@@ -14,7 +14,7 @@ export default function OrganismPage(){
     const [comment, setComment] = useState(formData.organism.comment)
     const [commonName, setCommonName] = useState(formData.organism.commonName)
 
-    const handleSubmit = () => {
+    const handleSubmit = async () => {
         const organismData = {
             genus,
             specie,
@@ -23,6 +23,28 @@ export default function OrganismPage(){
             comment,
             commonName,
         }
+        
+        // try {
+        //     const response = await fetch(url, {
+            //     method: "POST",
+            //     headers: {
+            //         "Content-Type": "application/json",
+            //     },
+            //     body: JSON.stringify({ username, password }),
+            // });
+
+        //     if (response.ok) {
+        //         const data = await response.json();
+        
+        //     } else {
+        //         const errorData = await response.json();
+        //         throw new Error(errorData || "Erro de autenticação");
+        //     }
+        // } catch (error) {
+        //     console.error("Erro na requisição:", error);
+        //     throw error;
+        // }
+        
         formData["organism"] = organismData
         handleFormChange(formData)
     }

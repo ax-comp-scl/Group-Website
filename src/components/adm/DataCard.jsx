@@ -43,7 +43,7 @@ export default function DataCard(props) {
           )
         }
         <ButtonComponent
-          icon={<ExcludeIcon />}
+          icon={<ExcludeIcon className='size-6'/>}
           variant="ghost"
           size={props.size}
           color="default"

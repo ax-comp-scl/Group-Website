@@ -5,8 +5,11 @@ import { useState } from "react";
 import { ViewIconOpened } from "../components/adm/ViewIconOpened";
 import { ViewIconClosed } from "../components/adm/ViewIconClosed";
 import { useNavigate } from "react-router-dom";
+import { loginUser } from "../services/authService";
 
 export default function LoginPage() {
+  const [username, setUsername] = useState('')
+  const [password, setPassword] = useState('')
   const [open, setOpen] = useState(true);
   const navigate = useNavigate();
 
@@ -23,8 +26,12 @@ export default function LoginPage() {
                 type="email"
                 label="Email"
                 variant="faded"
+                value={username}
+                onValueChange={setUsername}
               />
               <InputComponent
+                onValueChange={setPassword}
+                value={password}
                 isRequired={true}
                 type={open ? "password" : "text"}
                 label="Senha"
@@ -43,6 +50,8 @@ export default function LoginPage() {
                 size="lg"
                 radius="lg"
                 onPress={() => {
+                  // const toki = loginUser(username, password)
+                  // console.log(toki)
                   navigate("/history");
                 }}
               />

@@ -20,8 +20,10 @@ import AdditionalPublicationPage from "./pages/AdditionalPublicationPage.jsx";
 import AdditionalDBXREFPage from "./pages/AdditionalDBXREFPage.jsx";
 import LoginPage from "./pages/LoginPage.jsx";
 import { FormsProvider } from "./FormsContext.jsx";
+import ProtectedRoute from "./ProtectedRoute.jsx";
 
 import { createBrowserRouter, RouterProvider } from "react-router-dom";
+import { AuthProvider } from "./AuthContext.jsx";
 
 const router = createBrowserRouter([
   {
@@ -29,82 +31,90 @@ const router = createBrowserRouter([
     element: <LoginPage />,
   },
   {
-    path: "/history",
-    element: <HistoryPage />,
-  },
-  {
-    path: "/create-user",
-    element: <CreateUserPage />,
-  },
-  {
-    path: "/organisms",
-    element: <ListDataPage />,
-  },
-  {
-    path: "/upload",
-    element: (
-      <FormsProvider>
-        <UploadPage />
-      </FormsProvider>
-    ),
+    path: "/",
+    element: <ProtectedRoute />,
     children: [
       {
-        path: "/upload/ontologies",
-        element: <OntologiesPage />,
+        path: "/history",
+        element: <HistoryPage />,
       },
       {
-        path: "/upload/organism",
-        element: <OrganismPage />,
+        path: "/create-user",
+        element: <CreateUserPage />,
       },
       {
-        path: "/upload/publication",
-        element: <PublicationPage />,
+        path: "/organisms",
+        element: <ListDataPage />,
       },
       {
-        path: "/upload/fasta",
-        element: <FastaPage />,
-      },
-      {
-        path: "/upload/gff",
-        element: <GFFPage />,
-      },
-      {
-        path: "/upload/additional",
-        element: <AdditionalPage />,
+        path: "/upload",
+        element: (
+          <FormsProvider>
+            <UploadPage />
+          </FormsProvider>
+        ),
         children: [
           {
-            index: true,
-            path: "/upload/additional/annotation",
-            element: <AdditionalAnnotationPage />,
+            path: "/upload/ontologies",
+            element: <OntologiesPage />,
           },
           {
-            path: "/upload/additional/sequence",
-            element: <AdditionalSequencePage />,
+            path: "/upload/organism",
+            element: <OrganismPage />,
           },
           {
-            path: "/upload/additional/publication",
-            element: <AdditionalPublicationPage />,
+            path: "/upload/publication",
+            element: <PublicationPage />,
           },
           {
-            path: "/upload/additional/dbxref",
-            element: <AdditionalDBXREFPage />,
+            path: "/upload/fasta",
+            element: <FastaPage />,
+          },
+          {
+            path: "/upload/gff",
+            element: <GFFPage />,
+          },
+          {
+            path: "/upload/additional",
+            element: <AdditionalPage />,
+            children: [
+              {
+                index: true,
+                path: "/upload/additional/annotation",
+                element: <AdditionalAnnotationPage />,
+              },
+              {
+                path: "/upload/additional/sequence",
+                element: <AdditionalSequencePage />,
+              },
+              {
+                path: "/upload/additional/publication",
+                element: <AdditionalPublicationPage />,
+              },
+              {
+                path: "/upload/additional/dbxref",
+                element: <AdditionalDBXREFPage />,
+              },
+            ],
+          },
+          {
+            path: "/upload/similarity",
+            element: <SimilarityPage />,
           },
         ],
       },
       {
-        path: "/upload/similarity",
-        element: <SimilarityPage />,
+        path: "/users",
+        element: <ListUsersPage />,
       },
-    ],
-  },
-  {
-    path: "/users",
-    element: <ListUsersPage />,
+    ]
   },
 ]);
 
 createRoot(document.getElementById("root")).render(
   <NextUIProvider>
-    <RouterProvider router={router} />
+    <AuthProvider>
+      <RouterProvider router={router} />
+    </AuthProvider>
   </NextUIProvider>
 );

@@ -136,7 +136,7 @@ export default function UserCard(props) {
               />
 
               <ButtonComponent
-                icon={<ExcludeIcon />}
+                icon={<ExcludeIcon className='size-6'/>}
                 variant="ghost"
                 size={props.size}
                 color="default"
@@ -153,7 +153,9 @@ export default function UserCard(props) {
               <ModalOption
                 isOpen={isOptionOpen}
                 onOpenChange={setOptionOpen}
-                handleConfirm={() => {
+                handleConfirm={async () => {
+                  const response = await fetch('', {}) //props.dados
+                  const date = await response.json()
                   setOptionOpen(false);
                 }}
               />
