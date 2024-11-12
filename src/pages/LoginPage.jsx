@@ -10,6 +10,7 @@ import { loginUser } from "../services/authService";
 export default function LoginPage() {
   const [username, setUsername] = useState('')
   const [password, setPassword] = useState('')
+  const [isInvalid, setIsInvalid] = useState(false)
   const [open, setOpen] = useState(true);
   const navigate = useNavigate();
 
@@ -23,6 +24,7 @@ export default function LoginPage() {
             <div className="flex flex-col w-full items-center gap-5 mb-5">
               <InputComponent
                 isRequired={true}
+                isInvalid={isInvalid}
                 type="email"
                 label="Email"
                 variant="faded"
@@ -32,6 +34,7 @@ export default function LoginPage() {
               <InputComponent
                 onValueChange={setPassword}
                 value={password}
+                isInvalid={isInvalid}
                 isRequired={true}
                 type={open ? "password" : "text"}
                 label="Senha"
@@ -49,10 +52,20 @@ export default function LoginPage() {
                 variant="solid"
                 size="lg"
                 radius="lg"
-                onPress={() => {
-                  // const toki = loginUser(username, password)
-                  // console.log(toki)
-                  navigate("/history");
+                onPress={async () => {
+                  try{
+                    const token = await loginUser(username, password)
+                    if (token){
+                      navigate("/history")
+                      setIsInvalid(false)
+                    }
+                    else{
+                      setIsInvalid(true)
+                    }
+                  }
+                  catch(e){
+                    setIsInvalid(true)
+                  }
                 }}
               />
             </div>

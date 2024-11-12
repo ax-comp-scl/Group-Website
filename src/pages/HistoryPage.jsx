@@ -4,6 +4,7 @@ import Timeline from "../components/adm/Timeline";
 import StatusFilter from "../components/adm/StatusFilter";
 import { DatePicker } from "@nextui-org/date-picker";
 import { useState, useEffect } from "react";
+import { getData } from "../services/RequestsService";
 
 export default function HistoryPage() {
   const timelineData1 = [
@@ -40,26 +41,33 @@ export default function HistoryPage() {
     },
   ];
 
+  const timelineExampleData = [
+    {
+      "id": 0,
+      "user": {
+        "id": 0,
+        "username": ".9",
+        "email": "user@example.com",
+        "first_name": "string",
+        "last_name": "string",
+        "is_staff": true
+      },
+      "description": "string",
+      "method": "string",
+      "created_at": "2024-11-12T22:56:39.762Z"
+    },
+  ]
+
   const [timelineData, setTimelineData] = useState();
 
   const [status, setStatus] = useState();
   const [date, setDate] = useState();
 
-  useEffect(async () => {
-    try {
-      const response = await fetch(url);
-
-      if (response.ok) {
-        const data = await response.json();
-        setTimelineData(data)
-      } else {
-        const errorData = await response.json();
-        throw new Error(errorData || "Erro de autenticação");
-      }
-    } catch (error) {
-      console.error("Erro na requisição:", error);
-      throw error;
+  useEffect(() => {
+    const loadTimeline = async () => {
+      setTimelineData(await getData(""))
     }
+    loadTimeline()
   }, [])
   
   return (
@@ -92,7 +100,7 @@ export default function HistoryPage() {
               data={timelineData2}
             />
             {/* {
-              data.map(timeline => (
+              timelineData.map(timeline => (
                 <Timeline
                   key={timeline.id}
                   data={timeline}

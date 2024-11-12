@@ -3,136 +3,33 @@ import { useState, useEffect } from "react"
 import { useDebounce } from "use-debounce"
 import UserCard from "../components/adm/UserCard"
 import SearchBar from "../components/adm/SearchBar"
+import { fetchProtectedData } from "../services/authService"
 
 export default function ListUsersPage(){
     const [searchValue, setSearchValue] = useState("")
     const [resultList, setResultList] = useState([])
-    const [debounce] = useDebounce(searchValue, 500)
+    const [allUsersList, setAllUsersList] = useState([])
+    const [debounce] = useDebounce(searchValue, 200)
 
-    // async function handleSearch() {
-    function handleSearch() {
+    async function handleSearch() {
         if (debounce){
-            // const response = await fetch('http://127.0.0.1:8000/api/account') //usar nome
-            // const data = await response.json()
-            // if (data.ok) setResultList(data)
-            // setResultList(prev => prev.filter(usr => usr.name.toLowerCase().includes(debounce.toLowerCase())))
-            setResultList(example.filter(usr => usr.data.name.toLowerCase().includes(debounce.toLowerCase())))
+            setResultList(allUsersList.filter(usr => usr.username.toLowerCase().includes(debounce.toLowerCase())))
         }
         else setResultList([])
     }
 
     useEffect(() => {
         handleSearch()
-    }, [debounce])
+    }, [debounce, allUsersList])
 
-    const example = [
-        {
-            role: "usr",
-            data: {
-                name: "User1",
-                email: "user1@mail.com",
-                role: "Usuário"
-            }
-        },
-        {
-            role: "usr",
-            data: {
-                name: "User2",
-                email: "user2@mail.com",
-                role: "Usuário"
-            }
-        },
-        {
-            role: "usr",
-            data: {
-                name: "User3",
-                email: "user3@mail.com",
-                role: "Usuário"
-            }
-        },
-        {
-            role: "pes",
-            data: {
-                name: "Pes",
-                email: "user4@mail.com",
-                role: "Pesquisador"
-            }
-        },
-        {
-            role: "adm",
-            data: {
-                name: "Adm",
-                email: "user5@mail.com",
-                role: "Administrador"
-            }
-        },
-        {
-            role: "adm",
-            data: {
-                name: "Adm",
-                email: "user5@mail.com",
-                role: "Administrador"
-            }
-        },
-        {
-            role: "adm",
-            data: {
-                name: "Adm",
-                email: "user5@mail.com",
-                role: "Administrador"
-            }
-        },
-        {
-            role: "adm",
-            data: {
-                name: "Adm",
-                email: "user5@mail.com",
-                role: "Administrador"
-            }
-        },
-        {
-            role: "adm",
-            data: {
-                name: "Adm",
-                email: "user5@mail.com",
-                role: "Administrador"
-            }
-        },
-        {
-            role: "adm",
-            data: {
-                name: "Adm",
-                email: "user5@mail.com",
-                role: "Administrador"
-            }
-        },
-        {
-            role: "adm",
-            data: {
-                name: "Adm",
-                email: "user5@mail.com",
-                role: "Administrador"
-            }
-        },
-        {
-            role: "adm",
-            data: {
-                name: "Adm",
-                email: "user5@mail.com",
-                role: "Administrador"
-            }
-        },
-        {
-            role: "adm",
-            data: {
-                name: "Adm",
-                email: "user5@mail.com",
-                role: "Administrador"
-            }
-        },
-        
-        
-    ]
+    const loadData = async () => {
+        const data = await fetchProtectedData("account/")
+        setAllUsersList(data)
+    }
+    
+    useEffect(() => {
+        loadData()
+    }, [])
 
 
     return(
@@ -153,10 +50,8 @@ export default function ListUsersPage(){
                             <p>{`Nenhum resultado foi encontrado para "${searchValue}"`}</p>
                         </div>)
                     : (
-                        // <div className="grid grid-cols-5 justify-items-center gap-5">
                         <div className="px-10 grid grid-cols-4 justify-items-center gap-5 mb-12">
-                            {/* {resultList.map((e, i) => <DataCard type={dataType} name={e} key={i} />)} */}
-                            {resultList.map((e, i) =>  <UserCard role={e.role} data={e.data} key={i}/>)}
+                            {resultList.map((e, i) =>  <UserCard data={e} key={i} loadData={loadData}/>)}
                         </div>
                     )
                 }
