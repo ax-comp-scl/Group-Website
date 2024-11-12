@@ -1,53 +1,55 @@
 import AccordionComponent from "../components/adm/Accordion"
 import InputComponent from "../components/adm/Input"
 import ButtonComponent from "../components/adm/Button"
-import { useState, useContext } from "react"
+import { useState, useContext, useEffect } from "react"
 import { FormsContext } from "../FormsContext"
+import { postData } from "../services/RequestsService"
 
 export default function OrganismPage(){
     const {handleFormChange, formData} = useContext(FormsContext)
 
     const [genus, setGenus] = useState(formData.organism.genus)
-    const [specie, setSpecie] = useState(formData.organism.specie)
+    const [species, setSpecies] = useState(formData.organism.species)
     const [abbreviation, setAbbreviation] = useState(formData.organism.abbreviation)
     const [infraspecificName, setInfraspecificName] = useState(formData.organism.infraspecificName)
     const [comment, setComment] = useState(formData.organism.comment)
     const [commonName, setCommonName] = useState(formData.organism.commonName)
 
     const handleSubmit = async () => {
-        const organismData = {
+         const token = localStorage.getItem("authToken");
+            
+        const config = {
+            headers: {
+                "Authorization": `Token ${token}`,
+                "Content-Type": "application/json",
+                "accept": "application/json"
+            }
+        }
+        
+        const response = await postData("api/organisms", 
+            {genus, species, abbreviation, infraspecific_name: infraspecificName, comment, common_name: commonName},
+            config)
+        setGenus("")
+        setSpecies("")
+        setAbbreviation("")
+        setInfraspecificName("")
+        setComment("")
+        setCommonName("")
+    }
+
+    useEffect(() => {
+      const organismData = {
             genus,
-            specie,
+            species,
             abbreviation,
             infraspecificName,
             comment,
             commonName,
         }
-        
-        // try {
-        //     const response = await fetch(url, {
-            //     method: "POST",
-            //     headers: {
-            //         "Content-Type": "application/json",
-            //     },
-            //     body: JSON.stringify({ username, password }),
-            // });
-
-        //     if (response.ok) {
-        //         const data = await response.json();
-        
-        //     } else {
-        //         const errorData = await response.json();
-        //         throw new Error(errorData || "Erro de autenticação");
-        //     }
-        // } catch (error) {
-        //     console.error("Erro na requisição:", error);
-        //     throw error;
-        // }
-        
         formData["organism"] = organismData
         handleFormChange(formData)
-    }
+    }, [genus, species, abbreviation, infraspecificName, comment, commonName])
+    
 
     return(
         <>
@@ -58,7 +60,7 @@ export default function OrganismPage(){
                         isRequired: true,
                         fields: [
                             <InputComponent isRequired={true} label="genus" type="text" value={genus} onValueChange={setGenus}/>,
-                            <InputComponent isRequired={true} label="species" type="text" value={specie} onValueChange={setSpecie}/>,
+                            <InputComponent isRequired={true} label="species" type="text" value={species} onValueChange={setSpecies}/>,
                         ]
                     },
                     {
