@@ -1,9 +1,10 @@
 import Dropzone from "../components/adm/Dropzone";
 import InputComponent from "../components/adm/Input";
 import ButtonComponent from "../components/adm/Button";
-import { useState, useContext } from "react";
+import { useState, useContext, useEffect } from "react";
 import { FormsContext } from "../FormsContext";
 import { Link } from "@nextui-org/react";
+import { postData } from "../services/RequestsService";
 
 export default function OntologiesPage() {
   const { handleFormChange, formData } = useContext(FormsContext);
@@ -20,11 +21,16 @@ export default function OntologiesPage() {
         };
   };
 
-  const handleSubmit = () => {
+  const handleSubmit = async () => {
+    await postData("", {})
+  };
+
+  useEffect(() => {
     const ontologyData = { cpu };
     formData["ontology"] = ontologyData;
     handleFormChange(formData);
-  };
+  }, [cpu])
+  
 
   return (
     <>

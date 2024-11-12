@@ -20,7 +20,7 @@ const FormsProvider = ({ children }) => {
     
     const handleFormChange = (data) => {
         setFormData(data)
-        console.log(formData)
+        // console.log(formData)
     }
 
   return (

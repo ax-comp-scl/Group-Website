@@ -45,11 +45,6 @@ export default function ModalAssingUser(props) {
               <UserSearchCard></UserSearchCard>
               <UserSearchCard></UserSearchCard>
               <UserSearchCard></UserSearchCard>
-              <UserSearchCard></UserSearchCard>
-              <UserSearchCard></UserSearchCard>
-              <UserSearchCard></UserSearchCard>
-              <UserSearchCard></UserSearchCard>
-              <UserSearchCard></UserSearchCard>
             </ModalBody>
           </div>
         }

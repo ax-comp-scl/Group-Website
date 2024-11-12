@@ -3,8 +3,9 @@ import InputComponent from "../components/adm/Input"
 import SelectComponent from "../components/adm/Select"
 import ButtonComponent from "../components/adm/Button"
 import AccordionComponent from "../components/adm/Accordion"
-import { useState, useContext } from "react"
+import { useState, useContext, useEffect } from "react"
 import { FormsContext } from "../FormsContext"
+import { postData } from "../services/RequestsService"
 
 export default function SimilarityPage(){
     const { handleFormChange, formData} = useContext(FormsContext)
@@ -21,8 +22,12 @@ export default function SimilarityPage(){
     const [description, setDescription] = useState(formData.similarity.description)
     const [cpu, setCpu] = useState(formData.similarity.cpu | 1)
 
-    const handleSubmit = () => {
-        const similarityData = {
+    const handleSubmit = async () => {
+        await postData("", {})
+    }
+
+    useEffect(() => {
+      const similarityData = {
             format,
             soquery,
             sosubject,
@@ -37,7 +42,8 @@ export default function SimilarityPage(){
         }
         formData["similarity"] = similarityData
         handleFormChange(formData)
-    }
+    }, [format, soquery, sosubject, organismquery, organismsubject, program, programversion, name, algorithm, description, cpu])
+    
 
     const fileOptions = [
         "blast-xml",

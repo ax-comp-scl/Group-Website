@@ -1,5 +1,4 @@
 import { createRoot } from "react-dom/client";
-import App from "./App.jsx";
 import "./index.css";
 import { NextUIProvider } from "@nextui-org/react";
 import CreateUserPage from "./pages/CreateUserPage.jsx";
@@ -22,13 +21,14 @@ import LoginPage from "./pages/LoginPage.jsx";
 import { FormsProvider } from "./FormsContext.jsx";
 import ProtectedRoute from "./ProtectedRoute.jsx";
 
-import { createBrowserRouter, RouterProvider } from "react-router-dom";
+import { createBrowserRouter, Navigate, RouterProvider } from "react-router-dom";
 import { AuthProvider } from "./AuthContext.jsx";
+import { isAuthenticated } from "./services/authService.js";
 
 const router = createBrowserRouter([
   {
     path: "/login",
-    element: <LoginPage />,
+    element: isAuthenticated() ? <Navigate to="/"/> : <LoginPage />,
   },
   {
     path: "/",

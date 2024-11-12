@@ -4,8 +4,9 @@ import CheckboxComponent from "../components/adm/Checkbox"
 import SelectComponent from "../components/adm/Select"
 import ButtonComponent from "../components/adm/Button"
 import AccordionComponent from "../components/adm/Accordion"
-import { useState, useContext } from "react"
+import { useState, useContext, useEffect } from "react"
 import { FormsContext } from "../FormsContext"
+import { postData } from "../services/RequestsService"
 
 export default function FastaPage(){
     const {handleFormChange, formData} = useContext(FormsContext)
@@ -26,8 +27,12 @@ export default function FastaPage(){
         }
     }
 
-    const handleSubmit = () => {
-        const fastaData = {
+    const handleSubmit = async () => {
+        await postData("", {})
+    }
+
+    useEffect(() => {
+      const fastaData = {
             organism,
             soterm,
             description,
@@ -38,7 +43,8 @@ export default function FastaPage(){
         }
         formData["fasta"] = fastaData
         handleFormChange(formData)
-    }
+    }, [organism, soterm, description, url, doi, nosequence, cpu])
+    
     
     const organismsOptions = [
         "Organismo 1",

@@ -47,7 +47,7 @@ export default function UserSearchCard() {
         <div className="flex gap-5 items-center">
           <AvatarComponent size="sm" isDisabled={true} />
           <p className="font-semibold text-lg text-gray-700">
-            Usuário interessante
+            Usuário
           </p>
         </div>
         <label {...getBaseProps()}>
