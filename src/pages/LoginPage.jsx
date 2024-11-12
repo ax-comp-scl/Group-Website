@@ -6,6 +6,7 @@ import { ViewIconOpened } from "../components/adm/ViewIconOpened";
 import { ViewIconClosed } from "../components/adm/ViewIconClosed";
 import { useNavigate } from "react-router-dom";
 import { Button, Input } from "@nextui-org/react";
+import { loginUser } from "../services/authService";
 
 export default function LoginPage() {
   const [isVisible, setIsVisible] = React.useState(false);
@@ -90,8 +91,8 @@ export default function LoginPage() {
               }
             />
           </div>
-          <div class="flex justify-end w-full py-4">
-            <span class="font-bold text-md border-b-2 border-black hover:border-green-900 hover:text-green-900 cursor-pointer">
+          <div className="flex justify-end w-full py-4">
+            <span className="font-bold text-md border-b-2 border-black hover:border-green-900 hover:text-green-900 cursor-pointer">
               Recuperar senha
             </span>
           </div>
@@ -100,21 +101,34 @@ export default function LoginPage() {
             variant="solid"
             radius="small"
             className="text-lg bg-black text-white rounded-lg mb-6 p-2 w-full  hover:bg-green-900 hover:text-white hover:border hover:border-gray-300"
-            onPress={() => {
-              navigate("/history");
+            onPress={async () => {
+              try{
+                // const token = await loginUser(username, password)
+                const token = await loginUser(email, password)
+                if (token){
+                  navigate("/history")
+                  // setIsInvalid(false)
+                }
+                else{
+                  // setIsInvalid(true)
+                }
+              }
+              catch(e){
+                // setIsInvalid(true)
+              }
             }}
           >
             Entrar
           </Button>
-          <div class="text-center text-gray-500">
+          <div className="text-center text-gray-500">
             Não possui cadastro?
-            <span class="font-bold text-black border-b-2 border-black hover:border-green-900 hover:text-green-900 cursor-pointer">
+            <span className="font-bold text-black border-b-2 border-black hover:border-green-900 hover:text-green-900 cursor-pointer">
               {" "}
               Contate um administrador
             </span>
           </div>
         </div>
-        <div class="relative w-[350px]">
+        <div className="relative w-[350px]">
           <img
             src={loginImg}
             alt="img"
