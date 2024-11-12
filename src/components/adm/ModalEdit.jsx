@@ -53,7 +53,8 @@ export default function ModalEdit(props) {
       <ModalOption
         isOpen={isOptionOpen}
         onOpenChange={setOptionOpen}
-        handleConfirm={() => {
+        handleConfirm={async () => {
+          props.handleEdit()
           setOptionOpen(false);
         }}
       />

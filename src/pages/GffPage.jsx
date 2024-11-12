@@ -4,9 +4,10 @@ import CheckboxComponent from "../components/adm/Checkbox";
 import ButtonComponent from "../components/adm/Button";
 import AccordionComponent from "../components/adm/Accordion";
 import SelectComponent from "../components/adm/Select";
-import { useState, useContext } from "react";
+import { useState, useContext, useEffect } from "react";
 import { FormsContext } from "../FormsContext";
 import { Link } from "@nextui-org/react";
+import { postData } from "../services/RequestsService";
 
 export default function GFFPage() {
   const { handleFormChange, formData } = useContext(FormsContext);
@@ -28,7 +29,11 @@ export default function GFFPage() {
         };
   };
 
-  const handleSubmit = () => {
+  const handleSubmit = async () => {
+    await postData("", {})
+  };
+
+  useEffect(() => {
     const gffData = {
       organism,
       doi,
@@ -38,7 +43,8 @@ export default function GFFPage() {
     };
     formData["gff"] = gffData;
     handleFormChange(formData);
-  };
+  }, [organism, doi, ignore, qtl, cpu,])
+  
 
   const organismsOptions = [
     "Organismo 1",

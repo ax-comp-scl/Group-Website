@@ -11,17 +11,13 @@ import { Kbd } from "@nextui-org/kbd";
 import { ViewIconOpened } from "./ViewIconOpened";
 import { ViewIconClosed } from "./ViewIconClosed";
 import CheckboxComponent from "./Checkbox";
+import { deleteData, putData } from "../../services/RequestsService";
 
 export default function UserCard(props) {
-  const [admin, setAdmin] = useState(false);
-
-  let isAdm = false;
-  if (props.data.role === "Administrador") isAdm = true;
-
-  const [name, setName] = useState(props.data.name);
+  const [username, setUsername] = useState(props.data.username);
   const [password, setPassword] = useState("");
   const [email, setEmail] = useState(props.data.email);
-  const [selected, setSelected] = useState(props.data.role);
+  const [isStaff, setIsStaff] = useState(props.data.is_staff);
   const [isViewOpen, setViewOpen] = useState(false);
   const [isEditOpen, setEditOpen] = useState(false);
   const [isOptionOpen, setOptionOpen] = useState(false);
@@ -47,8 +43,8 @@ export default function UserCard(props) {
         <InputComponent
           label="Nome"
           type="text"
-          value={name}
-          onValueChange={setName}
+          value={username}
+          onValueChange={setUsername}
         />
         <InputComponent
           label="Email"
@@ -72,9 +68,9 @@ export default function UserCard(props) {
           }
         />
         <CheckboxComponent
-          name="Administrador"
-          isSelected={admin}
-          onValueChange={setAdmin}
+          username="Administrador"
+          isSelected={isStaff}
+          onValueChange={setIsStaff}
         />
       </>
     );
@@ -83,11 +79,48 @@ export default function UserCard(props) {
   function createParagraphs() {
     return (
       <>
-        <p>Nome: {name}</p>
+        <p>Nome: {username}</p>
         <p>Email: {email}</p>
-        <p>Papel: {selected}</p>
+        <p>Papel: {isStaff ? "Administrador" : "Usuário"}</p>
       </>
     );
+  }
+
+  const handleExclude = async () => {
+        try{
+            const token = localStorage.getItem("authToken");
+            
+            const config = {
+                headers: {
+                    Authorization: `Token ${token}`,
+                }
+            }
+            const id = props.data.id
+            const data = await deleteData(`account/${id}`, config)
+            props.loadData()
+            
+        }
+        catch (error){
+            setIsInvalid(true)
+        }
+    }
+
+    const handleEdit = async () => {
+      try{
+          const token = localStorage.getItem("authToken");
+          
+          const config = {
+              headers: {
+                  Authorization: `Token ${token}`,
+              }
+          }
+          const data = await putData(`account/${props.data.id}`, {username, email, password, isStaff}, config)
+          // props.loadData()
+          
+      }
+      catch (error){
+          setIsInvalid(true)
+      }
   }
 
   return (
@@ -97,10 +130,10 @@ export default function UserCard(props) {
           <div className="flex gap-5 items-center">
             <AvatarComponent size="sm" isDisabled={true} />
             <p className="break-all text-left">
-              <span className="font-bold text-lg">{props.data.name}</span>
+              <span className="font-bold text-lg">{username}</span>
             </p>
           </div>
-          {isAdm && (
+          {isStaff && (
             <div>
               <Kbd className="text-[#FF3232]">ADM</Kbd>
             </div>
@@ -111,7 +144,6 @@ export default function UserCard(props) {
           <ButtonComponent
             icon={<ViewIconOpened />}
             variant="ghost"
-            size={props.size}
             color="default"
             text="Visualizar"
             onPress={handleViewOpen}
@@ -124,21 +156,19 @@ export default function UserCard(props) {
             header="Visualizando usuário"
           />
 
-          {!isAdm && (
+          {!isStaff && (
             <div className="flex gap-5 justify-center">
               <ButtonComponent
                 icon={<EditIcon />}
                 variant="ghost"
-                size={props.size}
                 color="default"
                 text="Editar"
                 onPress={handleEditOpen}
               />
 
               <ButtonComponent
-                icon={<ExcludeIcon />}
+                icon={<ExcludeIcon className='size-6'/>}
                 variant="ghost"
-                size={props.size}
                 color="default"
                 text="Excluir"
                 onPress={handleOptionOpen}
@@ -148,12 +178,14 @@ export default function UserCard(props) {
                 onOpenChange={setEditOpen}
                 header="Editando usuário"
                 body={createInputs()}
+                handleEdit={handleEdit}
               />
 
               <ModalOption
                 isOpen={isOptionOpen}
                 onOpenChange={setOptionOpen}
                 handleConfirm={() => {
+                  handleExclude()
                   setOptionOpen(false);
                 }}
               />

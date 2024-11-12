@@ -3,46 +3,73 @@ import { Divider } from "@nextui-org/react";
 import Timeline from "../components/adm/Timeline";
 import StatusFilter from "../components/adm/StatusFilter";
 import { DatePicker } from "@nextui-org/date-picker";
-import { useState } from "react";
+import { useState, useEffect } from "react";
+import { getData } from "../services/RequestsService";
 
 export default function HistoryPage() {
   const timelineData1 = [
     {
-      data: "Athaliana_transcript.fasta",
-      username: "Adm1",
+      description: "Athaliana_transcript.fasta",
+      user: {username: "Adm1",},
       time: "11h30",
-      date: "08/03/2023",
-      isInsert: false,
+      created_at: "08/03/2023",
+      method: false,
     },
     {
-      data: "Daucus_carota.fasta",
-      username: "Adm2",
+      description: "Daucus_carota.fasta",
+      user: {username: "Adm2",},
       time: "11h00",
-      date: "08/03/2023",
-      isInsert: false,
+      created_at: "08/03/2023",
+      method: false,
     },
     {
-      data: "Athaliana_transcript.fasta",
-      username: "Adm3",
+      description: "Athaliana_transcript.fasta",
+      user: {username: "Adm3",},
       time: "10h00",
-      date: "08/03/2023",
-      isInsert: true,
+      created_at: "08/03/2023",
+      method: true,
     },
   ];
 
   const timelineData2 = [
     {
-      data: "Daucus_carota.fasta",
-      username: "Adm4",
+      description: "Daucus_carota.fasta",
+      user: {username: "Adm4"},
       time: "16:24",
-      date: "04/03/2023",
-      isInsert: true,
+      created_at: "04/03/2023",
+      method: true,
     },
   ];
+
+  const timelineExampleData = [
+    {
+      "id": 0,
+      "user": {
+        "id": 0,
+        "username": ".9",
+        "email": "user@example.com",
+        "first_name": "string",
+        "last_name": "string",
+        "is_staff": true
+      },
+      "description": "string",
+      "method": "string",
+      "created_at": "2024-11-12T22:56:39.762Z"
+    },
+  ]
+
+  const [timelineData, setTimelineData] = useState();
 
   const [status, setStatus] = useState();
   const [date, setDate] = useState();
 
+  useEffect(() => {
+    const loadTimeline = async () => {
+      setTimelineData(await getData(""))
+    }
+    loadTimeline()
+  }, [])
+  
   return (
     <>
       <div className="flex flex-col h-screen">
@@ -72,6 +99,14 @@ export default function HistoryPage() {
               year="2024"
               data={timelineData2}
             />
+            {/* {
+              timelineData.map(timeline => (
+                <Timeline
+                  key={timeline.id}
+                  data={timeline}
+                />
+              ))
+            } */}
           </div>
         </div>
       </div>

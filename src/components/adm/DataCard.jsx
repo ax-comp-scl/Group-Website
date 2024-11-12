@@ -5,6 +5,7 @@ import ModalAssingUser from "./ModalAssingUser";
 import ModalOption from "./ModalOption";
 import { useState } from "react";
 import UserSearchCard from "./UserSearchCard";
+import { deleteData } from "../../services/RequestsService";
 
 export default function DataCard(props) {
   const [isViewOpen, setViewOpen] = useState(false);
@@ -17,9 +18,28 @@ export default function DataCard(props) {
   const handleOptionOpen = () => {
     setOptionOpen(true);
   };
+
+  const handleExclude = async () => {
+        try{
+            const token = localStorage.getItem("authToken");
+            
+            const config = {
+                headers: {
+                    Authorization: `Token ${token}`,
+                }
+            }
+            const id = props.data.id
+            const data = await deleteData(`api/${props.url}/${id}`, config)
+            props.loadData()
+            
+        }
+        catch (error){
+        }
+    }
+    
   return (
     <div className="rounded-lg bg-[#F5F5F5] border-2 max-w-72">
-      <p className="m-5 text-center font-bold">{props.name}</p>
+      <p className="m-5 text-center font-bold">{props.data.genus}</p>
       <div className="divider"></div>
       <div className="flex justify-center items-center gap-5 p-3 min-w-72">
         {
@@ -43,7 +63,7 @@ export default function DataCard(props) {
           )
         }
         <ButtonComponent
-          icon={<ExcludeIcon />}
+          icon={<ExcludeIcon className='size-6'/>}
           variant="ghost"
           size={props.size}
           color="default"
@@ -54,6 +74,7 @@ export default function DataCard(props) {
           isOpen={isOptionOpen}
           onOpenChange={setOptionOpen}
           handleConfirm={() => {
+            handleExclude()
             setOptionOpen(false);
           }}
         />

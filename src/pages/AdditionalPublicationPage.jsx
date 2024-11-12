@@ -5,6 +5,7 @@ import AccordionComponent from "../components/adm/Accordion"
 import { useOutletContext } from "react-router-dom"
 import { useEffect, useState, useContext } from "react"
 import { FormsContext } from "../FormsContext"
+import { postData } from "../services/RequestsService"
 
 export default function AdditionalPublicationPage(){
     const { setLabel, setHover } = useOutletContext()
@@ -18,15 +19,20 @@ export default function AdditionalPublicationPage(){
     const [soterm, setSoterm] = useState(formData.additional.publication.soterm)
     const [cpu, setCpu] = useState(formData.additional.publication.cpu | 1)
 
-    const handleSubmit = () => {
-        const publicationData = {
+    const handleSubmit = async () => {
+        await postData("", {})
+    }
+
+    useEffect(() => {
+      const publicationData = {
             organism,
             soterm,
             cpu
         }
         formData["additional"]["publication"] = publicationData
         handleFormChange(formData)
-    }
+    }, [organism, soterm, cpu])
+    
 
     const organismsOptions = [
         "Organismo 1",

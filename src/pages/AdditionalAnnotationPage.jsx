@@ -6,10 +6,12 @@ import SelectComponent from "../components/adm/Select"
 import { useOutletContext } from "react-router-dom"
 import { useEffect, useState, useContext } from "react"
 import { FormsContext } from "../FormsContext"
+import { postData } from "../services/RequestsService"
 
 export default function AdditionalAnnotationPage(){
     const { setLabel, setHover } = useOutletContext()
     const { handleFormChange, formData} = useContext(FormsContext)
+    
     useEffect(() => {
         setHover("Two-column tab separated file. (feature.dbxref\\tannotation text)")
         setLabel("anotação")
@@ -22,8 +24,12 @@ export default function AdditionalAnnotationPage(){
     const [cpu, setCpu] = useState(formData.additional.annotation.cpu | 1)
     const [ignorenotfound, setIgnorenotfound] = useState(formData.additional.annotation.ignorenotfound)
 
-    const handleSubmit = () => {
-        const annotationData = {
+    const handleSubmit = async () => {
+        await postData("", {})
+    }
+
+    useEffect(() => {
+      const annotationData = {
             organism,
             cvterm,
             soterm,
@@ -33,7 +39,8 @@ export default function AdditionalAnnotationPage(){
         }
         formData["additional"]["annotation"] = annotationData
         handleFormChange(formData)
-    }
+    }, [organism, cvterm, soterm, doi, ignorenotfound, cpu])
+    
 
     const organismsOptions = [
         "Organismo 1",

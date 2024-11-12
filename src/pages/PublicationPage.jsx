@@ -1,8 +1,9 @@
 import Dropzone from "../components/adm/Dropzone"
 import InputComponent from "../components/adm/Input"
 import ButtonComponent from "../components/adm/Button"
-import { useState, useContext } from "react"
+import { useState, useContext, useEffect } from "react"
 import { FormsContext } from "../FormsContext"
+import { postData } from "../services/RequestsService"
 
 export default function PublicationPage(){
     const validatePublicationFile = (file) => {
@@ -17,12 +18,16 @@ export default function PublicationPage(){
 
     const [cpu, setCpu] = useState(formData.publication.cpu | 1)
 
-    const handleSubmit = () => {
-        const publicationData = { cpu }
-
-        formData["publication"] = publicationData
-        handleFormChange(formData)
+    const handleSubmit = async () => {
+        await postData("", {})
     }
+
+    useEffect(() => {
+      const publicationData = { cpu }
+      formData["publication"] = publicationData
+      handleFormChange(formData)
+    }, [cpu])
+    
 
     return (
       <>

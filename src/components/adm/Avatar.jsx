@@ -32,25 +32,20 @@ export default function AvatarComponent(props) {
           variant="flat"
           disabledKeys={["user"]}
         >
-          <DropdownItem key="user">
+          <DropdownItem showDivider key="user">
             <p className="break-words">
               Conectado como{" "}
               <span className="font-bold ">
-                {props.username}
-                Luiz Henrique do Nascimento Silva
+                {props.username} User
               </span>
             </p>
-          </DropdownItem>
-          <DropdownItem key="perfil">Perfil</DropdownItem>
-          <DropdownItem showDivider key="configurações">
-            Configurações
           </DropdownItem>
           <DropdownItem
             key="sair"
             color="danger"
             onPress={() => {
-              navigate("/login");
               logoutUser();
+              navigate("/login");
             }}
           >
             Sair

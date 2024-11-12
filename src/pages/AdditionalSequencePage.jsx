@@ -5,6 +5,7 @@ import AccordionComponent from "../components/adm/Accordion"
 import { useOutletContext } from "react-router-dom"
 import { useContext, useEffect, useState } from "react"
 import { FormsContext } from "../FormsContext"
+import { postData } from "../services/RequestsService"
 
 export default function AdditionalSequencePage(){
     const { setLabel, setHover } = useOutletContext()
@@ -18,15 +19,20 @@ export default function AdditionalSequencePage(){
     const [soterm, setSoterm] = useState(formData.additional.sequence.soterm)
     const [cpu, setCpu] = useState(formData.additional.sequence.cpu | 1)
 
-    const handleSubmit = () => {
-        const sequenceData = {
+    const handleSubmit = async () => {
+        await postData("", {})
+    }
+
+    useEffect(() => {
+      const sequenceData = {
             organism,
             soterm,
             cpu
         }
         formData["additional"]["sequence"] = sequenceData
         handleFormChange(formData)
-    }
+    }, [organism, soterm, cpu])
+    
 
     const organismsOptions = [
         "Organismo 1",

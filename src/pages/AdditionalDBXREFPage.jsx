@@ -6,6 +6,7 @@ import { useOutletContext } from "react-router-dom"
 import { useEffect, useState, useContext } from "react"
 import CheckboxComponent from "../components/adm/Checkbox"
 import { FormsContext } from "../FormsContext"
+import { postData } from "../services/RequestsService"
 
 export default function AdditionalDBXREFPage(){
     const { setLabel, setHover } = useOutletContext()
@@ -20,8 +21,12 @@ export default function AdditionalDBXREFPage(){
     const [cpu, setCpu] = useState(formData.additional.dbxref.cpu | 1)
     const [ignorenotfound, setIgnorenotfound] = useState(formData.additional.dbxref.ignorenotfound)
 
-    const handleSubmit = () => {
-        const dbxrefData = {
+    const handleSubmit = async () => {
+        await postData("", {})
+    }
+
+    useEffect(() => {
+      const dbxrefData = {
             organism,
             soterm,
             ignorenotfound,
@@ -29,7 +34,8 @@ export default function AdditionalDBXREFPage(){
         }
         formData["additional"]["dbxref"] = dbxrefData
         handleFormChange(formData)
-    }
+    }, [organism, soterm, ignorenotfound, cpu])
+    
     
     const organismsOptions = [
         "Organismo 1",

@@ -3,36 +3,54 @@ import { useState, useEffect } from "react"
 import { useDebounce } from "use-debounce"
 import DataCard from "../components/adm/DataCard"
 import DataSearchBar from "../components/adm/DataSearchBar"
+import { fetchProtectedData } from "../services/authService"
 
 export default function ListDataPage(){
     const [searchValue, setSearchValue] = useState("")
     const [resultList, setResultList] = useState([])
+    const [allDataList, setAllDataList] = useState([])
     const [selectedKey, setSelectedKey] = useState("Organism")
     const [dataType, setDataType] = useState("organism")
+    const [url, setUrl] = useState("organisms")
+
     const [debounce] = useDebounce(searchValue, 200)
     
-    function handleSearch() {
+    async function handleSearch() {
         if (debounce){
-            // fetch(`${urls[selectedKey.currentKey]['url']}/${searchValue}`)
-            setResultList(example.filter(organism => organism.toLowerCase().includes(debounce.toLowerCase())))
+            setResultList(allDataList.filter(organism => organism['genus'].toLowerCase().includes(debounce.toLowerCase())))
         }
         else
             setResultList([])
+        console.log(allDataList)
     }
 
     useEffect(() => {
         handleSearch()
-    }, [debounce])
+    }, [debounce, allDataList])
 
-    const example = [
-        "Genoma1",
-        "Genoma2",
-        "Genoma3",
-        "Fasta",
-        "Fast",
-        "Fast",
-        "GG"
-    ]
+    const urls = {
+        Ontology: {
+            type: "ontology",
+            url: "ontology",
+        },
+        Organism: {
+            type: "organism",
+            url: "organisms",
+        },
+        Publication: {
+            type: "publication",
+            url: "publication",
+        },
+        File: { type: "file", url: "file" },
+        "Feature annotation": {
+            type: "feature_annotation",
+            url: "feature-annotation",
+        },
+        Analysis: {
+            type: "analysis",
+            url: "analysis",
+        },
+    };
 
     const options = [
         "Ontology",
@@ -43,34 +61,22 @@ export default function ListDataPage(){
         "Analysis",
     ];
 
-    const urls = {
-        Ontology: {
-            type: "ontology",
-            url: "http://localhost:8080/api/v1/ontology",
-        },
-        Organism: {
-            type: "organism",
-            url: "http://localhost:8080/api/v1/organism",
-        },
-        Publication: {
-            type: "publication",
-            url: "http://localhost:8080/api/v1/publication",
-        },
-        File: { type: "file", url: "http://localhost:8080/api/v1/file" },
-        "Feature annotation": {
-            type: "feature_annotation",
-            url: "http://localhost:8080/api/v1/",
-        },
-        Analysis: {
-            type: "analysis",
-            url: "http://localhost:8080/api/v1/analysis",
-        },
-    };
-
     useEffect(()=>{
-        if (selectedKey && urls[selectedKey.currentKey])
+        if (selectedKey && urls[selectedKey.currentKey]){
             setDataType(urls[selectedKey.currentKey]['type'])
+            setUrl(urls[selectedKey.currentKey]['url'])
+        }
+        loadData()
     }, [selectedKey])
+
+    const loadData = async () => {
+        const data = await fetchProtectedData(`api/${url}`)
+        setAllDataList(data)
+    }
+    
+    useEffect(() => {
+        loadData()
+    }, [])
 
     return(
         <div className="flex flex-col h-screen">
@@ -95,7 +101,7 @@ export default function ListDataPage(){
                                 </div>)
                             : (
                                 <div className="grid grid-cols-5 justify-items-center gap-5">
-                                    {resultList.map((e, i) => <DataCard type={dataType} name={e} key={i} />)}
+                                    {resultList.map((e, i) => <DataCard type={dataType} data={e} key={i} loadData={loadData} url={url} />)}
                                 </div>
                             )
                     }

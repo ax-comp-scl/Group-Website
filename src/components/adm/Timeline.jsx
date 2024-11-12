@@ -17,11 +17,11 @@ export default function Timeline(props) {
       {props.data.map((d, i) => (
         <li key={i}>
           <TimelineCard
-            data={d.data}
-            username={d.username}
+            data={d.description}
+            username={d.user.username}
             time={d.time}
-            date={d.date}
-            isInsert={d.isInsert}
+            date={d.created_at}
+            isInsert={d.method}
           />
         </li>
       ))}
