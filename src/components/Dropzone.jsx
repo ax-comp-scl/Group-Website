@@ -1,10 +1,10 @@
 import { Button, Progress, Tooltip } from "@nextui-org/react";
 import { useCallback, useState } from "react";
 import { useDropzone } from "react-dropzone";
-import { UploadIcon } from "./UploadIcon";
+import UploadIcon from "./icons/UploadIcon";
 import axios from "axios";
-import FileTrashIcon from "./FileTrashIcon";
-import FileUploadedIcon from "./FileUploadedIcon";
+import FileTrashIcon from "./icons/FileTrashIcon";
+import FileUploadedIcon from "./icons/FileUploadedIcon";
 
 export default function Dropzone(props) {
   const [files, setFiles] = useState([]);
@@ -63,17 +63,10 @@ export default function Dropzone(props) {
     }
   }, []);
 
-  // const {getRootProps, getInputProps, open} = useDropzone({
-  //     onDrop,
-  //     maxFiles: 1,
-  //     accept: props.accept,
-  //     validator: (file) => props.validator(file)})
   const { getRootProps, getInputProps, open, isDragActive } = useDropzone({
     onDrop,
     maxFiles: 1,
-    // validator: (file) => props.validator(file)
   });
-  //   const {getRootProps, getInputProps, isDragActive} = useDropzone({onDrop})
 
   const removeFile = (name) => {
     setFiles((files) => files.filter((file) => file.name !== name));
@@ -91,7 +84,7 @@ export default function Dropzone(props) {
               (isDragActive ? "bg-gray-200" : "bg-gray-100"),
           })}
         >
-          <input {...getInputProps()} />
+          <input {...getInputProps()} aria-label="input" />
           <div className="flex items-center w-full h-full">
             <div className="flex-1 flex items-center justify-center">
               <UploadIcon />

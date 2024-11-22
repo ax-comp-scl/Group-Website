@@ -1,4 +1,4 @@
-import TimelineEndIcon from "./TimelineEndIcon";
+import TimelineEndIcon from "./icons/TimelineEndIcon";
 import TimelineCard from "./TimelineCard";
 
 export default function Timeline(props) {

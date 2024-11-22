@@ -7,9 +7,11 @@ import {
 } from "@nextui-org/react";
 
 import { useNavigate } from "react-router-dom";
-import { logoutUser } from "../../services/authService";
+import { logoutUser } from "../services/authService";
+import { getUser } from "../services/userService";
 
 export default function AvatarComponent(props) {
+  const user = getUser()
   const navigate = useNavigate();
   return (
     <div className="flex items-center gap-4">
@@ -24,7 +26,6 @@ export default function AvatarComponent(props) {
             isBordered
             as="button"
             className="transition-transform"
-            // name={props.letterName}
           />
         </DropdownTrigger>
         <DropdownMenu
@@ -32,11 +33,11 @@ export default function AvatarComponent(props) {
           variant="flat"
           disabledKeys={["user"]}
         >
-          <DropdownItem showDivider key="user">
+          <DropdownItem showDivider key="user" textValue={`Conectado como ${user.username}`}>
             <p className="break-words">
               Conectado como{" "}
               <span className="font-bold ">
-                {props.username} User
+                {user.username}
               </span>
             </p>
           </DropdownItem>
@@ -44,7 +45,7 @@ export default function AvatarComponent(props) {
             key="sair"
             color="danger"
             onPress={() => {
-              logoutUser();
+              logoutUser()
               navigate("/login");
             }}
           >

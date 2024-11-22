@@ -1,34 +1,39 @@
-import embrapa from "./logo-embrapa.png";
+import embrapa from "../assets/logo-embrapa.png";
 import SelectNavigation from "./SelectNavigation";
 import AvatarComponent from "./Avatar";
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { Divider } from "@nextui-org/divider";
+import { getUser } from "../services/userService";
 
 export default function Header(props) {
   const navigate = useNavigate();
+  const user = getUser()
   const [selected, setSelected] = useState(props.defaultSelectedKeys);
-  const options = [
+  const admOptions = [
     "Histórico",
     "Criar usuário",
     "Listar usuários",
     "Carregar dados",
     "Listar dados",
   ];
+  const userOptions = [
+    "Listar dados",
+  ]
 
   useEffect(() => {
     switch (selected) {
       case "Histórico":
-        navigate("/history");
+        navigate("/admin/history");
         break;
       case "Criar usuário":
-        navigate("/create-user");
+        navigate("/admin/create-user");
         break;
       case "Listar usuários":
-        navigate("/users");
+        navigate("/admin/users");
         break;
       case "Carregar dados":
-        navigate(`/upload/ontologies`);
+        navigate(`/admin/upload/ontologies`);
         break;
       case "Listar dados":
         navigate("/organisms");
@@ -48,7 +53,7 @@ export default function Header(props) {
         </div>
         <SelectNavigation
           isRequired={false}
-          options={options}
+          options={user.is_staff ? admOptions : userOptions}
           onChange={setSelected}
           defaultSelectedKeys={selected}
         />

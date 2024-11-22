@@ -1,7 +1,7 @@
 import { Select, SelectItem } from "@nextui-org/react";
-import { StatusIcon } from "./StatusIcon";
-import InsertIcon from "./InsertIcon";
-import ExcludeIcon from "./ExcludeIcon";
+import StatusIcon from "./icons/StatusIcon";
+import InsertIcon from "./icons/InsertIcon";
+import ExcludeIcon from "./icons/ExcludeIcon";
 import { useState } from "react";
 
 export default function StatusFilter(props) {

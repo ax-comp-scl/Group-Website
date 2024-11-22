@@ -1,5 +1,5 @@
-import EditIcon from "./EditIcon";
-import ExcludeIcon from "./ExcludeIcon";
+import EditIcon from "./icons/EditIcon";
+import ExcludeIcon from "./icons/ExcludeIcon";
 import { useState } from "react";
 import ModalEdit from "./ModalEdit";
 import ButtonComponent from "./Button";
@@ -8,10 +8,10 @@ import ModalOption from "./ModalOption";
 import AvatarComponent from "./Avatar";
 import InputComponent from "./Input";
 import { Kbd } from "@nextui-org/kbd";
-import { ViewIconOpened } from "./ViewIconOpened";
-import { ViewIconClosed } from "./ViewIconClosed";
+import ViewIconOpened from "./icons/ViewIconOpened";
+import ViewIconClosed from "./icons/ViewIconClosed";
 import CheckboxComponent from "./Checkbox";
-import { deleteData, putData } from "../../services/RequestsService";
+import { deleteData, putData } from "../services/RequestsService";
 
 export default function UserCard(props) {
   const [username, setUsername] = useState(props.data.username);
@@ -87,40 +87,38 @@ export default function UserCard(props) {
   }
 
   const handleExclude = async () => {
-        try{
-            const token = localStorage.getItem("authToken");
-            
-            const config = {
-                headers: {
-                    Authorization: `Token ${token}`,
-                }
-            }
-            const id = props.data.id
-            const data = await deleteData(`account/${id}`, config)
-            props.loadData()
-            
-        }
-        catch (error){
-            setIsInvalid(true)
-        }
-    }
+    try {
+      const token = localStorage.getItem("authToken");
 
-    const handleEdit = async () => {
-      try{
-          const token = localStorage.getItem("authToken");
-          
-          const config = {
-              headers: {
-                  Authorization: `Token ${token}`,
-              }
-          }
-          const data = await putData(`account/${props.data.id}`, {username, email, password, isStaff}, config)
-          // props.loadData()
-          
+      const config = {
+        headers: {
+          Authorization: `Token ${token}`,
+        }
       }
-      catch (error){
-          setIsInvalid(true)
+      const id = props.data.id
+      const data = await deleteData(`account/${id}`, config)
+      props.loadData()
+
+    }
+    catch (error) {
+      setIsInvalid(true)
+    }
+  }
+
+  const handleEdit = async () => {
+    try {
+      const token = localStorage.getItem("authToken");
+
+      const config = {
+        headers: {
+          Authorization: `Token ${token}`,
+        }
       }
+      const data = await putData(`account/${props.data.id}`, { username, email, password, isStaff }, config)
+    }
+    catch (error) {
+      setIsInvalid(true)
+    }
   }
 
   return (
@@ -167,7 +165,7 @@ export default function UserCard(props) {
               />
 
               <ButtonComponent
-                icon={<ExcludeIcon className='size-6'/>}
+                icon={<ExcludeIcon className='size-6' />}
                 variant="ghost"
                 color="default"
                 text="Excluir"

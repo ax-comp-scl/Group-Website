@@ -20,6 +20,7 @@ export default function InputComponent(props) {
       onValueChange={props.onValueChange}
       placeholder={props.placeholder}
       isClearable={props.isClearable}
+      aria-label={props.ariaLabel}
     />
   );
   return (

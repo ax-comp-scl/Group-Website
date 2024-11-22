@@ -1,6 +1,6 @@
 import HistoryCard from "./HistoryCard";
-import InsertIcon from "./InsertIcon";
-import ExcludeIcon from "./ExcludeIcon";
+import InsertIcon from "./icons/InsertIcon";
+import ExcludeIcon from "./icons/ExcludeIcon";
 
 export default function TimelineCard(props) {
   return (

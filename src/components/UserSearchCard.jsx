@@ -28,7 +28,7 @@ const checkbox = tv({
   },
 });
 
-export default function UserSearchCard() {
+export default function UserSearchCard(props) {
   const {
     isSelected,
     isFocusVisible,
@@ -47,7 +47,7 @@ export default function UserSearchCard() {
         <div className="flex gap-5 items-center">
           <AvatarComponent size="sm" isDisabled={true} />
           <p className="font-semibold text-lg text-gray-700">
-            Usuário
+            {props.user.username}
           </p>
         </div>
         <label {...getBaseProps()}>
@@ -68,27 +68,5 @@ export default function UserSearchCard() {
         </label>
       </Button>
     </div>
-    // <div className="w-full bg-white rounded-md py-4 px-6 flex gap-10 justify-between items-center bg-content2/50 active:opacity-70 cursor-pointer transition-opacity hover:bg-default-50 transition-all duration-500">
-    //     <div className="flex gap-5 items-center">
-    //         <AvatarComponent  size="sm" isDisabled={true} />
-    //         <p>Usuário interessante</p>
-    //     </div>
-    //     <label {...getBaseProps()}>
-    //     <VisuallyHidden>
-    //         <input {...getInputProps()} />
-    //     </VisuallyHidden>
-    //     <Chip
-    //         classNames={{
-    //         base: styles.base(),
-    //         content: styles.content(),
-    //         }}
-    //         color="primary"
-    //         variant="faded"
-    //         {...getLabelProps()}
-    //     >
-    //         Atribuir
-    //     </Chip>
-    //     </label>
-    // </div>
   );
 }
