@@ -1,11 +1,14 @@
-import Header from "../components/adm/Header"
+import Header from "../components/Header"
 import { useState, useEffect } from "react"
 import { useDebounce } from "use-debounce"
-import DataCard from "../components/adm/DataCard"
-import DataSearchBar from "../components/adm/DataSearchBar"
+import DataCard from "../components/DataCard"
+import DataSearchBar from "../components/DataSearchBar"
 import { fetchProtectedData } from "../services/authService"
+import { getUser } from "../services/userService"
 
-export default function ListDataPage(){
+export default function ListDataPage() {
+    const user = getUser()
+
     const [searchValue, setSearchValue] = useState("")
     const [resultList, setResultList] = useState([])
     const [allDataList, setAllDataList] = useState([])
@@ -14,14 +17,12 @@ export default function ListDataPage(){
     const [url, setUrl] = useState("organisms")
 
     const [debounce] = useDebounce(searchValue, 200)
-    
+
     async function handleSearch() {
-        if (debounce){
+        if (debounce) {
             setResultList(allDataList.filter(organism => organism['genus'].toLowerCase().includes(debounce.toLowerCase())))
         }
-        else
-            setResultList([])
-        console.log(allDataList)
+        else setResultList([])
     }
 
     useEffect(() => {
@@ -52,7 +53,7 @@ export default function ListDataPage(){
         },
     };
 
-    const options = [
+    const admOptions = [
         "Ontology",
         "Organism",
         "Publication",
@@ -61,8 +62,12 @@ export default function ListDataPage(){
         "Analysis",
     ];
 
-    useEffect(()=>{
-        if (selectedKey && urls[selectedKey.currentKey]){
+    const userOptions = [
+        "Organism",
+    ]
+
+    useEffect(() => {
+        if (selectedKey && urls[selectedKey.currentKey]) {
             setDataType(urls[selectedKey.currentKey]['type'])
             setUrl(urls[selectedKey.currentKey]['url'])
         }
@@ -73,21 +78,21 @@ export default function ListDataPage(){
         const data = await fetchProtectedData(`api/${url}`)
         setAllDataList(data)
     }
-    
+
     useEffect(() => {
         loadData()
     }, [])
 
-    return(
+    return (
         <div className="flex flex-col h-screen">
-            <Header defaultSelectedKeys="Listar dados"/> 
+            <Header defaultSelectedKeys="Listar dados" />
             <div className="flex flex-1 flex-col gap-10">
                 <DataSearchBar
                     defaultSelectedKeys="Organism"
                     setValue={setSelectedKey}
                     onValueChange={setSearchValue}
                     onPress={handleSearch}
-                    options={options}
+                    options={user.is_staff ? admOptions : userOptions}
                 />
                 <div className="px-10 mb-12">
                     {
@@ -99,11 +104,11 @@ export default function ListDataPage(){
                                 (<div className="flex items-center justify-center break-all text-zinc-400 font-semibold">
                                     <p>{`Nenhum resultado foi encontrado para "${searchValue}"`}</p>
                                 </div>)
-                            : (
-                                <div className="grid grid-cols-5 justify-items-center gap-5">
-                                    {resultList.map((e, i) => <DataCard type={dataType} data={e} key={i} loadData={loadData} url={url} />)}
-                                </div>
-                            )
+                                : (
+                                    <div className="grid grid-cols-5 justify-items-center gap-5">
+                                        {resultList.map((e, i) => <DataCard type={dataType} data={e} key={i} loadData={loadData} url={url} isStaff={user.is_staff} />)}
+                                    </div>
+                                )
                     }
                 </div>
             </div>

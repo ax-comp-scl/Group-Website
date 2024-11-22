@@ -1,15 +1,23 @@
-import React, { useContext, useEffect } from "react";
+import React, { useEffect } from "react";
 import { Outlet, useNavigate } from "react-router-dom";
-import { AuthContext } from "./AuthContext";
 import { isAuthenticated } from "./services/authService";
+import { getUser } from "./services/userService";
 
-const ProtectedRoute = () => {
+const ProtectedRoute = ({ isStaffRequired }) => {
+  const { isStaff } = getUser() | null;
   const token = isAuthenticated();
-  
+
   const navigate = useNavigate()
-  
-  useEffect(() => {if (!token) navigate("/login")},[])
-  
+
+  useEffect(() => {
+    console.log("t " + token);
+    console.log("is " + isStaff);
+
+
+    if (!token) navigate("/login")
+    else if (isStaffRequired && !isStaff) navigate("/organisms")
+  }, [])
+
   return <Outlet />;
 };
 

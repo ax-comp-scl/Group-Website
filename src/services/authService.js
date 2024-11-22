@@ -16,11 +16,12 @@ export async function loginUser(username, password) {
 
     if (response.ok) {
       const data = await response.json();
+      const user = data.user
       const token = data.token;
-      console.log(token)
-      localStorage.setItem("authToken", token);
+      localStorage.setItem("authToken", token); 
+      localStorage.setItem("userData", JSON.stringify(user)); 
 
-      return token;
+      return user;
     } else {
       const errorData = await response.json();
       throw new Error(errorData || "Erro de autenticação");
@@ -32,9 +33,8 @@ export async function loginUser(username, password) {
 }
 
 export function logoutUser() {
-  const token = localStorage.getItem("authToken");
-  console.log(token)
   localStorage.removeItem("authToken");
+  localStorage.removeItem("userData");
 }
 
 export function isAuthenticated() {

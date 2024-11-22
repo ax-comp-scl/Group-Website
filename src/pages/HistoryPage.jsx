@@ -1,7 +1,7 @@
-import Header from "../components/adm/Header";
+import Header from "../components/Header";
 import { Divider } from "@nextui-org/react";
-import Timeline from "../components/adm/Timeline";
-import StatusFilter from "../components/adm/StatusFilter";
+import Timeline from "../components/Timeline";
+import StatusFilter from "../components/StatusFilter";
 import { DatePicker } from "@nextui-org/date-picker";
 import { useState, useEffect } from "react";
 import { getData } from "../services/RequestsService";
@@ -10,21 +10,21 @@ export default function HistoryPage() {
   const timelineData1 = [
     {
       description: "Athaliana_transcript.fasta",
-      user: {username: "Adm1",},
+      user: { username: "Adm1", },
       time: "11h30",
       created_at: "08/03/2023",
       method: false,
     },
     {
       description: "Daucus_carota.fasta",
-      user: {username: "Adm2",},
+      user: { username: "Adm2", },
       time: "11h00",
       created_at: "08/03/2023",
       method: false,
     },
     {
       description: "Athaliana_transcript.fasta",
-      user: {username: "Adm3",},
+      user: { username: "Adm3", },
       time: "10h00",
       created_at: "08/03/2023",
       method: true,
@@ -34,7 +34,7 @@ export default function HistoryPage() {
   const timelineData2 = [
     {
       description: "Daucus_carota.fasta",
-      user: {username: "Adm4"},
+      user: { username: "Adm4" },
       time: "16:24",
       created_at: "04/03/2023",
       method: true,
@@ -69,7 +69,7 @@ export default function HistoryPage() {
     }
     loadTimeline()
   }, [])
-  
+
   return (
     <>
       <div className="flex flex-col h-screen">

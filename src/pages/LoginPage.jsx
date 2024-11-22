@@ -1,9 +1,9 @@
-import loginImg from "../components/adm/login-page-img.jpg";
-import logoEmbrapa from "../components/adm/logo-embrapa.png";
+import loginImg from "../assets/login-page-img.jpg";
+import logoEmbrapa from "../assets/logo-embrapa.png";
 import React from "react";
 import { useState, useMemo } from "react";
-import { ViewIconOpened } from "../components/adm/ViewIconOpened";
-import { ViewIconClosed } from "../components/adm/ViewIconClosed";
+import ViewIconOpened from "../components/icons/ViewIconOpened";
+import ViewIconClosed from "../components/icons/ViewIconClosed";
 import { useNavigate } from "react-router-dom";
 import { Button, Input } from "@nextui-org/react";
 import { loginUser } from "../services/authService";
@@ -102,18 +102,18 @@ export default function LoginPage() {
             radius="small"
             className="text-lg bg-black text-white rounded-lg mb-6 p-2 w-full  hover:bg-green-900 hover:text-white hover:border hover:border-gray-300"
             onPress={async () => {
-              try{
+              try {
                 // const token = await loginUser(username, password)
-                const token = await loginUser(email, password)
-                if (token){
-                  navigate("/history")
+                const user = await loginUser(email, password)
+                if (user) {
+                  navigate("/admin/history")
                   // setIsInvalid(false)
                 }
-                else{
+                else {
                   // setIsInvalid(true)
                 }
               }
-              catch(e){
+              catch (e) {
                 // setIsInvalid(true)
               }
             }}

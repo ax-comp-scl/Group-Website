@@ -17,18 +17,17 @@ const FormsProvider = ({ children }) => {
         },
         similarity: {}
     })
-    
+
     const handleFormChange = (data) => {
         setFormData(data)
-        // console.log(formData)
     }
 
-  return (
-      <FormsContext.Provider 
-        value={{ handleFormChange, formData }}>
-          {children}
-      </FormsContext.Provider>
-  )
+    return (
+        <FormsContext.Provider
+            value={{ handleFormChange, formData }}>
+            {children}
+        </FormsContext.Provider>
+    )
 }
 
 export { FormsContext, FormsProvider }

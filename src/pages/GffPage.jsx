@@ -1,9 +1,9 @@
-import Dropzone from "../components/adm/Dropzone";
-import InputComponent from "../components/adm/Input";
-import CheckboxComponent from "../components/adm/Checkbox";
-import ButtonComponent from "../components/adm/Button";
-import AccordionComponent from "../components/adm/Accordion";
-import SelectComponent from "../components/adm/Select";
+import Dropzone from "../components/Dropzone";
+import InputComponent from "../components/Input";
+import CheckboxComponent from "../components/Checkbox";
+import ButtonComponent from "../components/Button";
+import AccordionComponent from "../components/Accordion";
+import SelectComponent from "../components/Select";
 import { useState, useContext, useEffect } from "react";
 import { FormsContext } from "../FormsContext";
 import { Link } from "@nextui-org/react";
@@ -23,10 +23,10 @@ export default function GFFPage() {
     return regex.test(file.name)
       ? null
       : {
-          code: "file-invalid-type",
-          message:
-            "Tipo de arquivo inválido. Somente arquivos .gff, .gtf, ou .gff3 são permitidos.",
-        };
+        code: "file-invalid-type",
+        message:
+          "Tipo de arquivo inválido. Somente arquivos .gff, .gtf, ou .gff3 são permitidos.",
+      };
   };
 
   const handleSubmit = async () => {
@@ -44,7 +44,7 @@ export default function GFFPage() {
     formData["gff"] = gffData;
     handleFormChange(formData);
   }, [organism, doi, ignore, qtl, cpu,])
-  
+
 
   const organismsOptions = [
     "Organismo 1",
@@ -67,18 +67,18 @@ export default function GFFPage() {
               <div className="text-tiny">
                 <p>
                   GFF3 genome file indexed with tabix see (<Link
-                  isExternal
-                  size="sm"
-                  underline="hover"
-                  color="#66aaf9"
-                  href="http://www.htslib.org/doc/tabix.html"
-                >
-                  http://www.htslib.org/doc/tabix.html
-                </Link>)
+                    isExternal
+                    size="sm"
+                    underline="hover"
+                    color="#66aaf9"
+                    href="http://www.htslib.org/doc/tabix.html"
+                  >
+                    http://www.htslib.org/doc/tabix.html
+                  </Link>)
                 </p>
               </div>
-          </div>
-        }
+            </div>
+          }
         />
         <AccordionComponent
           itens={[
@@ -92,6 +92,7 @@ export default function GFFPage() {
                   label="organism"
                   setValue={setOrganism}
                   textOnHover="Species name (eg. Homo sapiens, Mus musculus)"
+                  key="organism"
                 />,
               ],
             },
@@ -103,6 +104,7 @@ export default function GFFPage() {
                   label="doi"
                   setValue={setDoi}
                   textOnHover="DOI of the article reference to this sequence. E.g.: 10.1111/s12122-012-1313-4"
+                  key="doi"
                 />,
                 <InputComponent
                   label="Ignore"
@@ -110,20 +112,23 @@ export default function GFFPage() {
                   value={ignore}
                   onValueChange={setIgnore}
                   textOnHover="List of feature types to ignore (eg. chromosome,scaffold)"
+                  key="ignore"
                 />,
                 <InputComponent
                   type="number"
                   label="cpu"
-                  placeholder="0"
+                  placeholder="1"
                   value={cpu}
                   onValueChange={setCpu}
                   textOnHover="Number of threads"
+                  key="cpu"
                 />,
                 <CheckboxComponent
                   name="qtl"
                   isSelected={qtl}
                   onValueChange={setQtl}
                   textOnHover="Set this flag to handle GFF files from QTLDB"
+                  key="qtl"
                 />,
               ],
             },

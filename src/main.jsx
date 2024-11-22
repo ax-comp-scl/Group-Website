@@ -22,32 +22,27 @@ import { FormsProvider } from "./FormsContext.jsx";
 import ProtectedRoute from "./ProtectedRoute.jsx";
 
 import { createBrowserRouter, Navigate, RouterProvider } from "react-router-dom";
-import { AuthProvider } from "./AuthContext.jsx";
 import { isAuthenticated } from "./services/authService.js";
 
 const router = createBrowserRouter([
   {
     path: "/login",
-    element: isAuthenticated() ? <Navigate to="/"/> : <LoginPage />,
+    element: isAuthenticated() ? <Navigate to={"/admin/history"} /> : <LoginPage />,
   },
   {
-    path: "/",
-    element: <ProtectedRoute />,
+    path: "/admin",
+    element: <ProtectedRoute isStaffRequired={true} />,
     children: [
       {
-        path: "/history",
+        path: "history",
         element: <HistoryPage />,
       },
       {
-        path: "/create-user",
+        path: "create-user",
         element: <CreateUserPage />,
       },
       {
-        path: "/organisms",
-        element: <ListDataPage />,
-      },
-      {
-        path: "/upload",
+        path: "upload",
         element: (
           <FormsProvider>
             <UploadPage />
@@ -55,57 +50,67 @@ const router = createBrowserRouter([
         ),
         children: [
           {
-            path: "/upload/ontologies",
+            path: "ontologies",
             element: <OntologiesPage />,
           },
           {
-            path: "/upload/organism",
+            path: "organism",
             element: <OrganismPage />,
           },
           {
-            path: "/upload/publication",
+            path: "publication",
             element: <PublicationPage />,
           },
           {
-            path: "/upload/fasta",
+            path: "fasta",
             element: <FastaPage />,
           },
           {
-            path: "/upload/gff",
+            path: "gff",
             element: <GFFPage />,
           },
           {
-            path: "/upload/additional",
+            path: "additional",
             element: <AdditionalPage />,
             children: [
               {
                 index: true,
-                path: "/upload/additional/annotation",
+                path: "annotation",
                 element: <AdditionalAnnotationPage />,
               },
               {
-                path: "/upload/additional/sequence",
+                path: "sequence",
                 element: <AdditionalSequencePage />,
               },
               {
-                path: "/upload/additional/publication",
+                path: "publication",
                 element: <AdditionalPublicationPage />,
               },
               {
-                path: "/upload/additional/dbxref",
+                path: "dbxref",
                 element: <AdditionalDBXREFPage />,
               },
             ],
           },
           {
-            path: "/upload/similarity",
+            path: "similarity",
             element: <SimilarityPage />,
           },
         ],
       },
       {
-        path: "/users",
+        path: "users",
         element: <ListUsersPage />,
+      },
+    ]
+  },
+  {
+    path: "/",
+    element: <ProtectedRoute isStaffRequired={false} />,
+    children: [
+      {
+        path: "/organisms",
+        element: <ListDataPage />,
       },
     ]
   },
@@ -113,8 +118,6 @@ const router = createBrowserRouter([
 
 createRoot(document.getElementById("root")).render(
   <NextUIProvider>
-    <AuthProvider>
-      <RouterProvider router={router} />
-    </AuthProvider>
+    <RouterProvider router={router} />
   </NextUIProvider>
 );

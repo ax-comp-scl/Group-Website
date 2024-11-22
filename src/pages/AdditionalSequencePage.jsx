@@ -1,15 +1,15 @@
-import InputComponent from "../components/adm/Input"
-import ButtonComponent from "../components/adm/Button"
-import SelectComponent from "../components/adm/Select"
-import AccordionComponent from "../components/adm/Accordion"
+import InputComponent from "../components/Input"
+import ButtonComponent from "../components/Button"
+import SelectComponent from "../components/Select"
+import AccordionComponent from "../components/Accordion"
 import { useOutletContext } from "react-router-dom"
 import { useContext, useEffect, useState } from "react"
 import { FormsContext } from "../FormsContext"
 import { postData } from "../services/RequestsService"
 
-export default function AdditionalSequencePage(){
+export default function AdditionalSequencePage() {
     const { setLabel, setHover } = useOutletContext()
-    const { handleFormChange, formData} = useContext(FormsContext)
+    const { handleFormChange, formData } = useContext(FormsContext)
     useEffect(() => {
         setHover("FASTA File")
         setLabel("sequência")
@@ -24,7 +24,7 @@ export default function AdditionalSequencePage(){
     }
 
     useEffect(() => {
-      const sequenceData = {
+        const sequenceData = {
             organism,
             soterm,
             cpu
@@ -32,7 +32,7 @@ export default function AdditionalSequencePage(){
         formData["additional"]["sequence"] = sequenceData
         handleFormChange(formData)
     }, [organism, soterm, cpu])
-    
+
 
     const organismsOptions = [
         "Organismo 1",
@@ -48,25 +48,25 @@ export default function AdditionalSequencePage(){
         "SOTERM 4",
     ]
 
-    return(
+    return (
         <>
             <div className="w-full flex flex-col items-center gap-10">
                 <AccordionComponent
-                itens = {[
-                    {
-                        isRequired: true,
-                        fields: [
-                            <SelectComponent isRequired={true} options={organismsOptions} defaultSelectedKeys={organism} label="organism" setValue={setOrganism} textOnHover="Species name (eg. Homo sapiens, Mus musculus)"/>,
-                            <SelectComponent isRequired={true} options={sotermOptions} defaultSelectedKeys={soterm} label="soterm" setValue={setSoterm} textOnHover="SO Sequence Ontology Term (eg. mRNA, polypeptide)"/>,
-                        ]
-                    },
-                    {
-                        fields: [
-                            <InputComponent type="number" label="cpu" placeholder="0" value={cpu} onValueChange={setCpu} textOnHover="Number of threads"/>,
-                        ]
-                    },
-                ]}/>
-                <ButtonComponent text="Confirmar" onPress={handleSubmit}/>
+                    itens={[
+                        {
+                            isRequired: true,
+                            fields: [
+                                <SelectComponent isRequired={true} options={organismsOptions} defaultSelectedKeys={organism} label="organism" setValue={setOrganism} textOnHover="Species name (eg. Homo sapiens, Mus musculus)" key="organism" />,
+                                <SelectComponent isRequired={true} options={sotermOptions} defaultSelectedKeys={soterm} label="soterm" setValue={setSoterm} textOnHover="SO Sequence Ontology Term (eg. mRNA, polypeptide)" key="soterm" />,
+                            ]
+                        },
+                        {
+                            fields: [
+                                <InputComponent type="number" label="cpu" placeholder="1" value={cpu} onValueChange={setCpu} textOnHover="Number of threads" key="cpu" />,
+                            ]
+                        },
+                    ]} />
+                <ButtonComponent text="Confirmar" onPress={handleSubmit} />
             </div>
         </>
     )

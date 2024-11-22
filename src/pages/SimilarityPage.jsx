@@ -1,14 +1,14 @@
-import Dropzone from "../components/adm/Dropzone"
-import InputComponent from "../components/adm/Input"
-import SelectComponent from "../components/adm/Select"
-import ButtonComponent from "../components/adm/Button"
-import AccordionComponent from "../components/adm/Accordion"
+import Dropzone from "../components/Dropzone"
+import InputComponent from "../components/Input"
+import SelectComponent from "../components/Select"
+import ButtonComponent from "../components/Button"
+import AccordionComponent from "../components/Accordion"
 import { useState, useContext, useEffect } from "react"
 import { FormsContext } from "../FormsContext"
 import { postData } from "../services/RequestsService"
 
-export default function SimilarityPage(){
-    const { handleFormChange, formData} = useContext(FormsContext)
+export default function SimilarityPage() {
+    const { handleFormChange, formData } = useContext(FormsContext)
 
     const [format, setFormat] = useState(formData.similarity.format)
     const [soquery, setSoquery] = useState(formData.similarity.soquery)
@@ -27,7 +27,7 @@ export default function SimilarityPage(){
     }
 
     useEffect(() => {
-      const similarityData = {
+        const similarityData = {
             format,
             soquery,
             sosubject,
@@ -43,7 +43,7 @@ export default function SimilarityPage(){
         formData["similarity"] = similarityData
         handleFormChange(formData)
     }, [format, soquery, sosubject, organismquery, organismsubject, program, programversion, name, algorithm, description, cpu])
-    
+
 
     const fileOptions = [
         "blast-xml",
@@ -78,36 +78,36 @@ export default function SimilarityPage(){
         "Organism subject 4",
     ]
 
-    return(
+    return (
         <>
             <div className="flex flex-col items-center gap-10">
-                <Dropzone label="Arquivo de similaridade" textOnHover=<p className="text-small font-bold px-1 py-2">Blast or InterproScan XML file</p>/>
-                <div className="w-7/12">    
-                    <SelectComponent options={fileOptions} label="format" className="w-3/12" setValue={setFormat} textOnHover="blast-xml or interproscan-xml" isRequired={true}/>
+                <Dropzone label="Arquivo de similaridade" textOnHover=<p className="text-small font-bold px-1 py-2">Blast or InterproScan XML file</p> />
+                <div className="w-7/12">
+                    <SelectComponent options={fileOptions} label="format" className="w-3/12" setValue={setFormat} textOnHover="blast-xml or interproscan-xml" isRequired={true} />
                 </div>
                 <AccordionComponent
-                itens ={[
-                    {
-                        isRequired: true,
-                        fields: [
-                            <SelectComponent options={soQueryOptions} defaultSelectedKeys={soquery} label="so_query" setValue={setSoquery} textOnHover="Query Sequence Ontology term. eg. assembly, mRNA, CDS, polypeptide" isRequired={true}/>,
-                            <SelectComponent options={soSubjectOptions} defaultSelectedKeys={sosubject} label="so_subject" setValue={setSosubject} textOnHover="Subject Sequence Ontology term. eg. assembly, mRNA, CDS, polypeptide (protein_match if loading InterproScan or BLAST xml file)" isRequired={true}/>,
-                            <SelectComponent options={organismQueryOptions} defaultSelectedKeys={organismquery} label="organism_query" setValue={setOrganismquery} textOnHover="Query's organism name. eg. 'Oryza sativa'. Cannot be multispecies'" isRequired={true}/>,
-                            <SelectComponent options={organismSubjectOptions} defaultSelectedKeys={organismsubject} label="organism_subject" setValue={setOrganismsubject} textOnHover="Subject's organism name eg. 'Oryza sativa'. If using a multispecies database put  'multispecies multispecies'" isRequired={true}/>,
-                            <InputComponent label="program" type="text" value={program} onValueChange={setProgram} isRequired={true}/>,
-                            <InputComponent label="programversion" type="text" value={programversion} onValueChange={setProgramversion} isRequired={true}/>,
-                        ]
-                    },
-                    {
-                        fields: [
-                            <InputComponent label="name" type="text" value={name} onValueChange={setName} textOnHover=""/>,
-                            <InputComponent label="algorithm" type="text" value={algorithm} onValueChange={setAlgorithm} textOnHover=""/>,
-                            <InputComponent label="description" type="text" value={description} onValueChange={setDescription} textOnHover=""/>,
-                            <InputComponent type="number" label="cpu" placeholder="0" value={cpu} onValueChange={setCpu} textOnHover=""/>,
-                        ]
-                    },
-                ]}/>
-                <ButtonComponent text="Confirmar" onPress={handleSubmit}/>
+                    itens={[
+                        {
+                            isRequired: true,
+                            fields: [
+                                <SelectComponent options={soQueryOptions} defaultSelectedKeys={soquery} label="so_query" setValue={setSoquery} textOnHover="Query Sequence Ontology term. eg. assembly, mRNA, CDS, polypeptide" isRequired={true} key="so-query" />,
+                                <SelectComponent options={soSubjectOptions} defaultSelectedKeys={sosubject} label="so_subject" setValue={setSosubject} textOnHover="Subject Sequence Ontology term. eg. assembly, mRNA, CDS, polypeptide (protein_match if loading InterproScan or BLAST xml file)" isRequired={true} key="so-subject" />,
+                                <SelectComponent options={organismQueryOptions} defaultSelectedKeys={organismquery} label="organism_query" setValue={setOrganismquery} textOnHover="Query's organism name. eg. 'Oryza sativa'. Cannot be multispecies'" isRequired={true} key="organism-query" />,
+                                <SelectComponent options={organismSubjectOptions} defaultSelectedKeys={organismsubject} label="organism_subject" setValue={setOrganismsubject} textOnHover="Subject's organism name eg. 'Oryza sativa'. If using a multispecies database put  'multispecies multispecies'" isRequired={true} key="organism-subject" />,
+                                <InputComponent label="program" type="text" value={program} onValueChange={setProgram} isRequired={true} key="program" />,
+                                <InputComponent label="programversion" type="text" value={programversion} onValueChange={setProgramversion} isRequired={true} key="programversion" />,
+                            ]
+                        },
+                        {
+                            fields: [
+                                <InputComponent label="name" type="text" value={name} onValueChange={setName} textOnHover="" key="name" />,
+                                <InputComponent label="algorithm" type="text" value={algorithm} onValueChange={setAlgorithm} textOnHover="" key="algorithm" />,
+                                <InputComponent label="description" type="text" value={description} onValueChange={setDescription} textOnHover="" key="description" />,
+                                <InputComponent type="number" label="cpu" placeholder="1" value={cpu} onValueChange={setCpu} textOnHover="" key="cpu" />,
+                            ]
+                        },
+                    ]} />
+                <ButtonComponent text="Confirmar" onPress={handleSubmit} />
             </div>
         </>
     )
