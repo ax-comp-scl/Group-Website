@@ -6,6 +6,7 @@ import { useOutletContext } from "react-router-dom"
 import { useEffect, useState, useContext } from "react"
 import { FormsContext } from "../FormsContext"
 import { postData } from "../services/RequestsService"
+import SelectOrganisms from "../components/SelectOrganisms"
 
 export default function AdditionalPublicationPage() {
     const { setLabel, setHover } = useOutletContext()
@@ -20,7 +21,7 @@ export default function AdditionalPublicationPage() {
     const [cpu, setCpu] = useState(formData.additional.publication.cpu | 1)
 
     const handleSubmit = async () => {
-        await postData("", {})
+        //await postData("", {})
     }
 
     useEffect(() => {
@@ -56,7 +57,7 @@ export default function AdditionalPublicationPage() {
                         {
                             isRequired: true,
                             fields: [
-                                <SelectComponent isRequired={true} options={organismsOptions} defaultSelectedKeys={organism} label="organism" setValue={setOrganism} textOnHover="Species name (eg. Homo sapiens, Mus musculus)" key="organism" />,
+                                <SelectOrganisms setValue={setOrganism} key="organism" />,
                                 <SelectComponent isRequired={true} options={sotermOptions} defaultSelectedKeys={organism} label="so_term" setValue={setSoterm} textOnHover="SO Sequence Ontology Term (eg. mRNA, polypeptide)" key="soterm" />,
                             ]
                         },

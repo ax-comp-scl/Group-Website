@@ -6,7 +6,8 @@ import ButtonComponent from "../components/Button"
 import AccordionComponent from "../components/Accordion"
 import { useState, useContext, useEffect } from "react"
 import { FormsContext } from "../FormsContext"
-import { postData } from "../services/RequestsService"
+import { postData, getData } from "../services/RequestsService"
+import SelectOrganisms from "../components/SelectOrganisms"
 
 export default function FastaPage() {
   const { handleFormChange, formData } = useContext(FormsContext)
@@ -28,7 +29,7 @@ export default function FastaPage() {
   }
 
   const handleSubmit = async () => {
-    await postData("", {})
+    //await postData("", {})
   }
 
   useEffect(() => {
@@ -44,14 +45,6 @@ export default function FastaPage() {
     formData["fasta"] = fastaData
     handleFormChange(formData)
   }, [organism, soterm, description, url, doi, nosequence, cpu])
-
-
-  const organismsOptions = [
-    "Organismo 1",
-    "Organismo 2",
-    "Organismo 3",
-    "Organismo 4",
-  ]
 
   const sotermOptions = [
     "SOTERM 1",
@@ -81,13 +74,8 @@ export default function FastaPage() {
             {
               isRequired: true,
               fields: [
-                <SelectComponent
-                  isRequired={true}
-                  options={organismsOptions}
-                  defaultSelectedKeys={organism}
-                  label="organism"
+                <SelectOrganisms
                   setValue={setOrganism}
-                  textOnHover="Species name (eg. Homo sapiens, Mus musculus)"
                   key="organism"
                 />,
                 <SelectComponent

@@ -8,6 +8,7 @@ import { useState, useContext, useEffect } from "react";
 import { FormsContext } from "../FormsContext";
 import { Link } from "@nextui-org/react";
 import { postData } from "../services/RequestsService";
+import SelectOrganisms from "../components/SelectOrganisms"
 
 export default function GFFPage() {
   const { handleFormChange, formData } = useContext(FormsContext);
@@ -30,7 +31,7 @@ export default function GFFPage() {
   };
 
   const handleSubmit = async () => {
-    await postData("", {})
+    //await postData("", {})
   };
 
   useEffect(() => {
@@ -85,13 +86,8 @@ export default function GFFPage() {
             {
               isRequired: true,
               fields: [
-                <SelectComponent
-                  isRequired={true}
-                  options={organismsOptions}
-                  defaultSelectedKeys={organism}
-                  label="organism"
+                <SelectOrganisms
                   setValue={setOrganism}
-                  textOnHover="Species name (eg. Homo sapiens, Mus musculus)"
                   key="organism"
                 />,
               ],

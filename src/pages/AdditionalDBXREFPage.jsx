@@ -7,6 +7,7 @@ import { useEffect, useState, useContext } from "react"
 import CheckboxComponent from "../components/Checkbox"
 import { FormsContext } from "../FormsContext"
 import { postData } from "../services/RequestsService"
+import SelectOrganisms from "../components/SelectOrganisms"
 
 export default function AdditionalDBXREFPage() {
     const { setLabel, setHover } = useOutletContext()
@@ -22,7 +23,7 @@ export default function AdditionalDBXREFPage() {
     const [ignorenotfound, setIgnorenotfound] = useState(formData.additional.dbxref.ignorenotfound)
 
     const handleSubmit = async () => {
-        await postData("", {})
+        //await postData("", {})
     }
 
     useEffect(() => {
@@ -59,7 +60,7 @@ export default function AdditionalDBXREFPage() {
                         {
                             isRequired: true,
                             fields: [
-                                <SelectComponent isRequired={true} options={organismsOptions} defaultSelectedKeys={organism} label="organism" setValue={setOrganism} textOnHover="Species name (eg. Homo sapiens, Mus musculus)" key="organism" />,
+                                <SelectOrganisms setValue={setOrganism} key="organism"/>,
                                 <SelectComponent isRequired={true} options={sotermOptions} defaultSelectedKeys={soterm} label="soterm" setValue={setSoterm} textOnHover="SO Sequence Ontology Term (eg. mRNA, polypeptide)" key="soterm" />,
                             ]
                         },

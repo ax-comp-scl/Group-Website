@@ -7,6 +7,7 @@ import { useOutletContext } from "react-router-dom"
 import { useEffect, useState, useContext } from "react"
 import { FormsContext } from "../FormsContext"
 import { postData } from "../services/RequestsService"
+import SelectOrganisms from "../components/SelectOrganisms"
 
 export default function AdditionalAnnotationPage() {
     const { setLabel, setHover } = useOutletContext()
@@ -25,7 +26,7 @@ export default function AdditionalAnnotationPage() {
     const [ignorenotfound, setIgnorenotfound] = useState(formData.additional.annotation.ignorenotfound)
 
     const handleSubmit = async () => {
-        await postData("", {})
+        //await postData("", {})
     }
 
     useEffect(() => {
@@ -78,7 +79,7 @@ export default function AdditionalAnnotationPage() {
                         {
                             isRequired: true,
                             fields: [
-                                <SelectComponent isRequired={true} options={organismsOptions} defaultSelectedKeys={organism} label="organism" setValue={setOrganism} textOnHover="Species name (eg. Homo sapiens, Mus musculus)" key="organism" />,
+                                <SelectOrganisms setValue={setOrganism} key="organism"/>,
                                 <SelectComponent isRequired={true} options={cvtermOptions} defaultSelectedKeys={cvterm} label="cvterm" setValue={setCvterm} textOnHover="SO Sequence Ontology Term (eg. mRNA, polypeptide)" key="cvterm" />,
                                 <SelectComponent isRequired={true} options={sotermOptions} defaultSelectedKeys={soterm} label="soterm" setValue={setSoterm} textOnHover="cvterm.name from cv feature_property. (eg. display, note, product, alias, ontology_term, annotation)" key="soterm" />,
                             ]

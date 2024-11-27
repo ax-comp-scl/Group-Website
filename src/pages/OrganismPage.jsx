@@ -26,7 +26,7 @@ export default function OrganismPage() {
             }
         }
 
-        const response = await postData("api/organisms",
+        const response = await postData("api/organism",
             { genus, species, abbreviation, infraspecific_name: infraspecificName, comment, common_name: commonName },
             config)
         setGenus("")
@@ -49,7 +49,6 @@ export default function OrganismPage() {
         formData["organism"] = organismData
         handleFormChange(formData)
     }, [genus, species, abbreviation, infraspecificName, comment, commonName])
-
 
     return (
         <>
