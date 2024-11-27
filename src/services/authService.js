@@ -1,7 +1,6 @@
 const API_BASE_URL = 'http://127.0.0.1:8000'
 
 export async function loginUser(username, password) {
-  // const API_BASE_URL = import.meta.env.VITE_REACT_APP_API_BASE_URL
   const url = `${API_BASE_URL}/account/login`;
 
   try {
