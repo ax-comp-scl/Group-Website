@@ -17,6 +17,7 @@ export default function UserCard(props) {
   const [username, setUsername] = useState(props.data.username);
   const [password, setPassword] = useState("");
   const [email, setEmail] = useState(props.data.email);
+  const [isStaffCheck, setIsStaffCheck] = useState(props.data.is_staff);
   const [isStaff, setIsStaff] = useState(props.data.is_staff);
   const [isViewOpen, setViewOpen] = useState(false);
   const [isEditOpen, setEditOpen] = useState(false);
@@ -68,9 +69,9 @@ export default function UserCard(props) {
           }
         />
         <CheckboxComponent
-          username="Administrador"
-          isSelected={isStaff}
-          onValueChange={setIsStaff}
+          name="Administrador"
+          isSelected={isStaffCheck}
+          onValueChange={setIsStaffCheck}
         />
       </>
     );
@@ -112,9 +113,13 @@ export default function UserCard(props) {
       const config = {
         headers: {
           Authorization: `Token ${token}`,
+          "Content-Type": "application/json",
+          "accept": "application/json"
         }
       }
-      const data = await putData(`account/${props.data.id}`, { username, email, password, isStaff }, config)
+      
+      const data = await putData(`account/${props.data.id}`, { username, email, password, "is_staff": isStaffCheck }, config)
+      setIsStaff(isStaffCheck)
     }
     catch (error) {
       setIsInvalid(true)

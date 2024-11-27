@@ -23,7 +23,7 @@ export default function SimilarityPage() {
     const [cpu, setCpu] = useState(formData.similarity.cpu | 1)
 
     const handleSubmit = async () => {
-        await postData("", {})
+        //await postData("", {})
     }
 
     useEffect(() => {

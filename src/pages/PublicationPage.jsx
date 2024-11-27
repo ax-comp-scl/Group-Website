@@ -19,7 +19,7 @@ export default function PublicationPage() {
   const [cpu, setCpu] = useState(formData.publication.cpu | 1)
 
   const handleSubmit = async () => {
-    await postData("", {})
+    //await postData("", {})
   }
 
   useEffect(() => {

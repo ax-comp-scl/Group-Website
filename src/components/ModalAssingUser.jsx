@@ -16,19 +16,19 @@ import { getUserByUsername } from "../services/userService";
 export default function ModalAssingUser(props) {
   const [searchValue, setSearchValue] = useState("")
   const [resultList, setResultList] = useState([])
-  const [allDataList, setAllDataList] = useState([])
+  const [allUsersList, setAllUsersList] = useState([])
   const [debounce] = useDebounce(searchValue, 200)
 
   async function handleSearch() {
     if (debounce) {
-      setResultList(allDataList.filter(usr => usr.username.toLowerCase().includes(debounce.toLowerCase())))
+      setResultList(allUsersList.filter(usr => usr.username.toLowerCase().includes(debounce.toLowerCase())))
     }
     else setResultList([])
   }
 
   useEffect(() => {
     handleSearch()
-  }, [debounce, allDataList])
+  }, [debounce, allUsersList])
 
   const loadData = async () => {
     const token = localStorage.getItem("authToken");
@@ -38,7 +38,7 @@ export default function ModalAssingUser(props) {
       }
     }
     const data = await getUserByUsername(searchValue, config)
-    setAllDataList(data)
+    setAllUsersList(data)
   }
 
   useEffect(() => {
@@ -76,7 +76,7 @@ export default function ModalAssingUser(props) {
             {
               resultList.length > 0 &&
               <>
-                <Divider></Divider>
+                <Divider/>
                 <ModalBody className="overflow-y-auto max-h-[60vh] py-5">
                   {resultList.map((u) => <UserSearchCard user={u} />)}
                 </ModalBody>

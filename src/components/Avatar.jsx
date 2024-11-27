@@ -33,11 +33,11 @@ export default function AvatarComponent(props) {
           variant="flat"
           disabledKeys={["user"]}
         >
-          <DropdownItem showDivider key="user" textValue={`Conectado como ${user.username}`}>
+          <DropdownItem showDivider key="user" textValue={`Conectado como ${user.username || ''}`}>
             <p className="break-words">
               Conectado como{" "}
               <span className="font-bold ">
-                {user.username}
+                {user.username || ''}
               </span>
             </p>
           </DropdownItem>

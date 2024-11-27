@@ -22,7 +22,6 @@ export default function Dropzone(props) {
   const handleUpload = async () => {
     const formData = new FormData();
     formData.append("file", selectedFile);
-    console.log(selectedFile);
     try {
       const response = await axios.post(
         "http://localhost:8080/upload",
@@ -44,13 +43,11 @@ export default function Dropzone(props) {
 
   const onDrop = useCallback((acceptedFiles, rejectedFiles) => {
     if (rejectedFiles.length > 0) {
-      rejectedFiles.forEach((r) => console.log(r));
       setRejectedFiles(rejectedFiles);
     }
 
     if (acceptedFiles?.length) {
       setFiles([]);
-      console.log(acceptedFiles);
       setRejectedFiles([]);
       setFiles((previousFiles) => [
         ...previousFiles,

@@ -3,7 +3,7 @@ import { useState, useEffect } from "react"
 import { useDebounce } from "use-debounce"
 import UserCard from "../components/UserCard"
 import SearchBar from "../components/SearchBar"
-import { fetchProtectedData } from "../services/authService"
+import { getUserByUsername } from "../services/userService";
 
 export default function ListUsersPage() {
     const [searchValue, setSearchValue] = useState("")
@@ -23,13 +23,19 @@ export default function ListUsersPage() {
     }, [debounce, allUsersList])
 
     const loadData = async () => {
-        const data = await fetchProtectedData("account/")
+        const token = localStorage.getItem("authToken");
+        const config = {
+            headers: {
+                Authorization: `Token ${token}`,
+            }
+        }
+        const data = await getUserByUsername(searchValue, config)
         setAllUsersList(data)
     }
 
     useEffect(() => {
-        loadData()
-    }, [])
+        if(searchValue) loadData()
+    }, [searchValue])
 
     return (
         <div className="flex flex-col h-screen">

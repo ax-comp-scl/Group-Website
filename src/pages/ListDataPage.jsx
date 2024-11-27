@@ -80,8 +80,8 @@ export default function ListDataPage() {
     }
 
     useEffect(() => {
-        loadData()
-    }, [])
+        if(searchValue) loadData()
+    }, [searchValue, selectedKey])
 
     return (
         <div className="flex flex-col h-screen">

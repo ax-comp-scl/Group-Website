@@ -22,7 +22,7 @@ export default function OntologiesPage() {
   };
 
   const handleSubmit = async () => {
-    await postData("", {})
+    //await postData("", {})
   };
 
   useEffect(() => {
