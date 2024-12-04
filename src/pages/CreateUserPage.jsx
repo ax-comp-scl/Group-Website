@@ -52,7 +52,7 @@ export default function CreateUserPage() {
                     />
                     <InputComponent
                         isInvalid={isInvalid}
-                        isRequired={false}
+                        isRequired={true}
                         type="email"
                         label="Email"
                         variant="faded"

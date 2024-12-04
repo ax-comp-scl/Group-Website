@@ -14,7 +14,7 @@ export default function ListDataPage() {
     const [allDataList, setAllDataList] = useState([])
     const [selectedKey, setSelectedKey] = useState("Organism")
     const [dataType, setDataType] = useState("organism")
-    const [url, setUrl] = useState("organisms")
+    const [url, setUrl] = useState("organism")
 
     const [debounce] = useDebounce(searchValue, 200)
 
@@ -36,7 +36,7 @@ export default function ListDataPage() {
         },
         Organism: {
             type: "organism",
-            url: "organisms",
+            url: "organism",
         },
         Publication: {
             type: "publication",
@@ -80,7 +80,7 @@ export default function ListDataPage() {
     }
 
     useEffect(() => {
-        if(searchValue) loadData()
+        if (searchValue) loadData()
     }, [searchValue, selectedKey])
 
     return (

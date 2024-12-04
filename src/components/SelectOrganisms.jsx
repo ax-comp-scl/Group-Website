@@ -13,7 +13,7 @@ export default function SelectOrganisms(props) {
         }
     }
     async function getOrganisms(){
-      setOrganismsOptions(await getData("api/organisms", config))
+      setOrganismsOptions(await getData("api/organism", config))
     }
     getOrganisms()
   }, [])

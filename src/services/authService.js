@@ -1,6 +1,6 @@
 const API_BASE_URL = 'http://127.0.0.1:8000'
 
-export async function loginUser(username, password) {
+export async function loginUser(email, password) {
   const url = `${API_BASE_URL}/account/login`;
 
   try {
@@ -10,7 +10,7 @@ export async function loginUser(username, password) {
         "accept": "application/json",
         "Content-Type": "application/json",
       },
-      body: JSON.stringify({username, password}),
+      body: JSON.stringify({email, password}),
     });
 
     if (response.ok) {

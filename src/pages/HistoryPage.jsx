@@ -107,14 +107,6 @@ export default function HistoryPage() {
               year="2024"
               data={timelineData2}
             />
-            {/* {
-              timelineData.map(timeline => (
-                <Timeline
-                  key={timeline.id}
-                  data={timeline}
-                />
-              ))
-            } */}
           </div>
         </div>
       </div>
