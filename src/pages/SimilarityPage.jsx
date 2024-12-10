@@ -21,10 +21,27 @@ export default function SimilarityPage() {
     const [algorithm, setAlgorithm] = useState(formData.similarity.algorithm)
     const [description, setDescription] = useState(formData.similarity.description)
     const [cpu, setCpu] = useState(formData.similarity.cpu | 1)
+    const [similarityFiles, setSimilarityFiles] = useState([]);
 
     const handleSubmit = async () => {
-        //await postData("", {})
-    }
+        const token = localStorage.getItem("authToken");
+
+        const config = {
+            headers: {
+                "Authorization": `Token ${token}`,
+                "Content-Type": "multipart/form-data"
+            }
+        }
+
+        const formData = new FormData()
+
+        // formData.append('file', relationOntologyFiles[0])
+
+        // const response = await postData("api/ontology/insert",
+        //   formData,
+        //   config)
+
+    };
 
     useEffect(() => {
         const similarityData = {
@@ -81,7 +98,11 @@ export default function SimilarityPage() {
     return (
         <>
             <div className="flex flex-col items-center gap-10">
-                <Dropzone label="Arquivo de similaridade" textOnHover=<p className="text-small font-bold px-1 py-2">Blast or InterproScan XML file</p> />
+                <Dropzone 
+                    files={similarityFiles}
+                    setFiles={setSimilarityFiles}
+                    label="Arquivo de similaridade"
+                    textOnHover={<p className="text-small font-bold px-1 py-2">Blast or InterproScan XML file</p>}/>
                 <div className="w-7/12">
                     <SelectComponent options={fileOptions} label="format" className="w-3/12" setValue={setFormat} textOnHover="blast-xml or interproscan-xml" isRequired={true} />
                 </div>

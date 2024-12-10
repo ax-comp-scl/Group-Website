@@ -18,6 +18,7 @@ export default function GFFPage() {
   const [ignore, setIgnore] = useState(formData.gff.abbreviation);
   const [qtl, setQtl] = useState(formData.gff.qtl);
   const [cpu, setCpu] = useState(formData.gff.cpu | 1);
+  const [gffFiles, setGffFiles] = useState([]);
 
   const validateGFFFile = (file) => {
     const regex = /\.(gff|gtf|gff3)$/i;
@@ -31,7 +32,23 @@ export default function GFFPage() {
   };
 
   const handleSubmit = async () => {
-    //await postData("", {})
+    const token = localStorage.getItem("authToken");
+
+    const config = {
+      headers: {
+        "Authorization": `Token ${token}`,
+        "Content-Type": "multipart/form-data"
+      }
+    }
+
+    const formData = new FormData()
+
+    // formData.append('file', relationOntologyFiles[0])
+
+    // const response = await postData("api/ontology/insert",
+    //   formData,
+    //   config)
+
   };
 
   useEffect(() => {
@@ -61,6 +78,8 @@ export default function GFFPage() {
       <div className="flex flex-col gap-10 items-center">
         <Dropzone
           validator={validateGFFFile}
+          files={gffFiles}
+          setFiles={setGffFiles}
           label="GFF File"
           textOnHover={
             <div className="px-1 py-2">

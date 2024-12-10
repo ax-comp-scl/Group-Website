@@ -26,8 +26,24 @@ export default function AdditionalAnnotationPage() {
     const [ignorenotfound, setIgnorenotfound] = useState(formData.additional.annotation.ignorenotfound)
 
     const handleSubmit = async () => {
-        //await postData("", {})
-    }
+        const token = localStorage.getItem("authToken");
+
+        const config = {
+            headers: {
+                "Authorization": `Token ${token}`,
+                "Content-Type": "multipart/form-data"
+            }
+        }
+
+        const formData = new FormData()
+
+        // formData.append('file', relationOntologyFiles[0])
+
+        // const response = await postData("api/ontology/insert",
+        //   formData,
+        //   config)
+
+    };
 
     useEffect(() => {
         const annotationData = {

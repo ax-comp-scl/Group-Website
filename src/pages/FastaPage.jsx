@@ -19,6 +19,7 @@ export default function FastaPage() {
   const [doi, setDoi] = useState(formData.fasta.doi)
   const [nosequence, setNosequence] = useState(formData.fasta.nosequence)
   const [cpu, setCpu] = useState(formData.fasta.cpu | 1)
+  const [fastaFiles, setFastaFiles] = useState([]);
 
   const validateFastaFile = (file) => {
     const regex = /\.(fasta|fa|fna|faa)$/i
@@ -29,8 +30,24 @@ export default function FastaPage() {
   }
 
   const handleSubmit = async () => {
-    //await postData("", {})
-  }
+    const token = localStorage.getItem("authToken");
+
+    const config = {
+      headers: {
+        "Authorization": `Token ${token}`,
+        "Content-Type": "multipart/form-data"
+      }
+    }
+
+    const formData = new FormData()
+
+    // formData.append('file', relationOntologyFiles[0])
+
+    // const response = await postData("api/ontology/insert",
+    //   formData,
+    //   config)
+
+  };
 
   useEffect(() => {
     const fastaData = {
@@ -59,13 +76,15 @@ export default function FastaPage() {
     "DOI 3",
     "DOI 4",
   ]
-
+  
   return (
     <>
       <div className="flex flex-col gap-10 items-center">
         <Dropzone
           accept={{ "*/*": [".fasta", ".fa", ".fna", ".faa"] }}
           validator={validateFastaFile}
+          files={fastaFiles}
+          setFiles={setFastaFiles}
           label="FASTA File"
           textOnHover={<p className="text-small font-bold px-1 py-2">FASTA File</p>}
         />

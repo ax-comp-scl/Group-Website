@@ -32,7 +32,7 @@ export default function SelectOrganisms(props) {
       variant="bordered"
       onSelectionChange={props.setValue}
     >
-      {item => <SelectItem key={item.organism_id}>{`${item.genus} | ${item.species}`}</SelectItem>}
+      {item => <SelectItem key={item.organism_id}>{`${item.genus} ${item.species}`}</SelectItem>}
     </Select>
   );
   return (

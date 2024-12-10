@@ -21,8 +21,24 @@ export default function AdditionalSequencePage() {
     const [cpu, setCpu] = useState(formData.additional.sequence.cpu | 1)
 
     const handleSubmit = async () => {
-        //await postData("", {})
-    }
+        const token = localStorage.getItem("authToken");
+
+        const config = {
+            headers: {
+                "Authorization": `Token ${token}`,
+                "Content-Type": "multipart/form-data"
+            }
+        }
+
+        const formData = new FormData()
+
+        // formData.append('file', relationOntologyFiles[0])
+
+        // const response = await postData("api/ontology/insert",
+        //   formData,
+        //   config)
+
+    };
 
     useEffect(() => {
         const sequenceData = {

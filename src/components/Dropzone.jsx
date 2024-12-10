@@ -2,43 +2,34 @@ import { Button, Progress, Tooltip } from "@nextui-org/react";
 import { useCallback, useState } from "react";
 import { useDropzone } from "react-dropzone";
 import UploadIcon from "./icons/UploadIcon";
-import axios from "axios";
 import FileTrashIcon from "./icons/FileTrashIcon";
 import FileUploadedIcon from "./icons/FileUploadedIcon";
 
 export default function Dropzone(props) {
-  const [files, setFiles] = useState([]);
   const [rejectedFiles, setRejectedFiles] = useState([]);
   const [selectedFile, setSelectedFile] = useState(null);
   const [progress, setProgress] = useState(0);
-  const [uploadStatus, setUploadStatus] = useState("selectione"); //selecionar carregado carregando
 
   const clearFileInput = () => {
     setSelectedFile(null);
     setProgress(0);
-    setUploadStatus("selecione");
   };
 
   const handleUpload = async () => {
     const formData = new FormData();
     formData.append("file", selectedFile);
-    try {
-      const response = await axios.post(
-        "http://localhost:8080/upload",
-        formData,
-        {
-          onUploadProgress: (ProgressEvent) => {
-            const percent = Math.round(
-              (ProgressEvent.loaded * 100) / ProgressEvent.total
-            );
-            setProgress(percent);
-          },
-        }
-      );
-      setUploadStatus("carregado");
-    } catch (error) {
-      setUploadStatus("selecione");
-    }
+    const response = await axios.post(
+      "http://localhost:8080/upload",
+      formData,
+      {
+        onUploadProgress: (ProgressEvent) => {
+          const percent = Math.round(
+            (ProgressEvent.loaded * 100) / ProgressEvent.total
+          );
+          setProgress(percent);
+        },
+      }
+    );
   };
 
   const onDrop = useCallback((acceptedFiles, rejectedFiles) => {
@@ -47,16 +38,16 @@ export default function Dropzone(props) {
     }
 
     if (acceptedFiles?.length) {
-      setFiles([]);
+      props.setFiles([]);
       setRejectedFiles([]);
-      setFiles((previousFiles) => [
+      props.setFiles((previousFiles) => [
         ...previousFiles,
         ...acceptedFiles.map((file) =>
           Object.assign(file, { preview: URL.createObjectURL(file) })
         ),
       ]);
-      setSelectedFile(files[0]);
-      handleUpload();
+      handleUpload()
+      setSelectedFile(props.files[0]);
     }
   }, []);
 
@@ -66,7 +57,7 @@ export default function Dropzone(props) {
   });
 
   const removeFile = (name) => {
-    setFiles((files) => files.filter((file) => file.name !== name));
+    props.setFiles((files) => files.filter((file) => file.name !== name));
     clearFileInput();
   };
 
@@ -119,7 +110,7 @@ export default function Dropzone(props) {
                 ))}
               </div>
             ) : (
-              files.map((file) => (
+              props.files.map((file) => (
                 <>
                   <div className="flex justify-between px-4">
                     <p className="font-semibold text-lg">

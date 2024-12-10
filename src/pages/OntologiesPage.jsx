@@ -9,6 +9,9 @@ import { postData } from "../services/RequestsService";
 export default function OntologiesPage() {
   const { handleFormChange, formData } = useContext(FormsContext);
   const [cpu, setCpu] = useState(formData.ontology.cpu | 1);
+  const [relationOntologyFiles, setRelationOntologyFiles] = useState([]);
+  const [sequenceOntologyFiles, setSequenceOntologyFiles] = useState([]);
+  const [geneOntologyFiles, setGeneOntologyFiles] = useState([]);
 
   const validateOntologyFile = (file) => {
     const regex = /\.(obo)$/i;
@@ -21,8 +24,25 @@ export default function OntologiesPage() {
       };
   };
 
+  //relation ontology
   const handleSubmit = async () => {
-    //await postData("", {})
+    const token = localStorage.getItem("authToken");
+
+    const config = {
+      headers: {
+        "Authorization": `Token ${token}`,
+        "Content-Type": "multipart/form-data"
+      }
+    }
+
+    const formData = new FormData()
+
+    formData.append('file', relationOntologyFiles[0])
+
+    const response = await postData("api/ontology/insert",
+      formData,
+      config)
+
   };
 
   useEffect(() => {
@@ -37,6 +57,8 @@ export default function OntologiesPage() {
       <div className="flex flex-col items-center gap-10">
         <Dropzone
           validator={validateOntologyFile}
+          files={relationOntologyFiles}
+          setFiles={setRelationOntologyFiles}
           label="Relation Ontology"
           textOnHover={
             <div className="px-1 py-2">
@@ -54,6 +76,8 @@ export default function OntologiesPage() {
         />
         <Dropzone
           validator={validateOntologyFile}
+          files={sequenceOntologyFiles}
+          setFiles={setSequenceOntologyFiles}
           label="Sequence Ontology"
           textOnHover={
             <div className="px-1 py-2">
@@ -72,6 +96,8 @@ export default function OntologiesPage() {
         />
         <Dropzone
           validator={validateOntologyFile}
+          files={geneOntologyFiles}
+          setFiles={setGeneOntologyFiles}
           label="Gene Ontology"
           textOnHover={
             <div className="px-1 py-2">

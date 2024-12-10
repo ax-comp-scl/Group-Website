@@ -39,7 +39,7 @@ export default function DataCard(props) {
 
   return (
     <div className="rounded-lg bg-[#F5F5F5] border-2 max-w-72">
-      <p className="m-5 text-center font-bold">{props.data.genus}</p>
+      <p className="m-5 text-center font-bold">{props.data.genus} {props.data.species}</p>
       <div className="divider"></div>
       <div className="flex justify-center items-center gap-5 p-3 min-w-72">
         {
