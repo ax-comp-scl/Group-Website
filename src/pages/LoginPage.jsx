@@ -1,6 +1,6 @@
 import loginImg from "../assets/login-page-img.jpg";
 import logoEmbrapa from "../assets/logo-embrapa.png";
-import React from "react";
+import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { Button, Input } from "@nextui-org/react";
 import { useForm, Controller } from "react-hook-form";
@@ -16,9 +16,10 @@ const loginSchema = z.object({
 });
 
 export default function LoginPage() {
-  const [isVisible, setIsVisible] = React.useState(false);
+  const [isVisible, setIsVisible] = useState(false);
   const toggleVisibility = () => setIsVisible(!isVisible);
   const navigate = useNavigate();
+  const [loginErrorMessage, setLoginErrorMessage] = useState('')
 
   const {
     control,
@@ -40,6 +41,11 @@ export default function LoginPage() {
       }
     } catch (error) {
       console.error("Erro ao fazer login:", error);
+      setLoginErrorMessage('Credenciais inválidas')
+
+      setTimeout(() => {
+        setLoginErrorMessage('')
+      }, 1500)
     }
   };
 
@@ -67,7 +73,6 @@ export default function LoginPage() {
                 render={({ field }) => (
                   <Input
                     {...field}
-                    type="email"
                     placeholder="Seu e-mail"
                     variant="bordered"
                     radius="sm"
@@ -112,6 +117,12 @@ export default function LoginPage() {
                 )}
               />
             </div>
+
+            {loginErrorMessage && (
+              <div className="flex justify-center py-4">
+                <span className="text-danger font-bold text-lg">{loginErrorMessage}</span>
+              </div>
+            )}
             <div className="flex justify-end w-full py-4">
               <span className="font-bold text-md border-b-2 border-black hover:border-green-900 hover:text-green-900 cursor-pointer">
                 Recuperar senha
