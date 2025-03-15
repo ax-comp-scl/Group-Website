@@ -109,6 +109,10 @@ const router = createBrowserRouter([
     element: <ProtectedRoute isStaffRequired={false} />,
     children: [
       {
+        index: true,
+        element: <Navigate to="/login" />,
+      },
+      {
         path: "/organisms",
         element: <ListDataPage />,
       },
