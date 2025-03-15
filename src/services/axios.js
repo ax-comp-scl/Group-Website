@@ -18,7 +18,12 @@ api.interceptors.response.use(
   (response) => response,
   (error) => {
     if (error.response && error.response.status === 401) {
-    
+      const requestUrl = error.config.url;
+
+      if (requestUrl === "/login" || window.location.pathname === "/login") {
+        return Promise.reject(error); // rejeita a promise sem redirecionar novamente para /login
+      }
+
       localStorage.removeItem("authToken");
       localStorage.removeItem("userData");
       window.location.href = "/login";
