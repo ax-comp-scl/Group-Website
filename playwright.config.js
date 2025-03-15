@@ -7,4 +7,5 @@ export default defineConfig({
     browserName: 'chromium',
     headless: true,
   },
+  fullyParallel: true,
 });

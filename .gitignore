@@ -62,3 +62,5 @@ desktop.ini
 **/Dockerfile
 **/docker-compose.yml
 
+# Tests
+test-results/

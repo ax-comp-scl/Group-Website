@@ -76,4 +76,16 @@ test.describe('Página de Login', () => {
     await expect(passwordError).toBeVisible();
     await expect(passwordError).toHaveText("A senha deve ter pelo menos 5 caracteres");
   });
+
+  test('deve exibir a senha ao clicar no botão do "olhinho"', async ({ page }) => {
+    await page.goto('/login');
+
+    const passwordInput = page.locator('input[placeholder="Sua senha"]')
+  
+    await passwordInput.fill('senha');
+    
+    await page.click('button[aria-label="toggle password visibility"]');
+  
+    await expect(passwordInput).toHaveValue('senha');
+  });
 });
