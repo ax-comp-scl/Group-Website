@@ -1,66 +1,70 @@
-import Header from "../components/Header"
-import { useState, useEffect } from "react"
-import { useDebounce } from "use-debounce"
-import UserCard from "../components/UserCard"
-import SearchBar from "../components/SearchBar"
-import { getUserByUsername } from "../services/userService";
+import React, { useState } from "react";
+import { useQuery } from "@tanstack/react-query";
+import { useDebounce } from "use-debounce";
+import Header from "../components/Header";
+import UserCard from "../components/UserCard";
+import SearchBar from "../components/SearchBar";
+import { getAllUsers, getUserByUsername } from "../services/userService";
 
 export default function ListUsersPage() {
-    const [searchValue, setSearchValue] = useState("")
-    const [resultList, setResultList] = useState([])
-    const [allUsersList, setAllUsersList] = useState([])
-    const [debounce] = useDebounce(searchValue, 200)
+  const [searchValue, setSearchValue] = useState("");
+  const [debouncedSearchValue] = useDebounce(searchValue, 300);
 
-    async function handleSearch() {
-        if (debounce) {
-            setResultList(allUsersList.filter(usr => usr.username.toLowerCase().includes(debounce.toLowerCase())))
-        }
-        else setResultList([])
+  const fetchUsers = async () => {
+    if (debouncedSearchValue) {
+      return await getUserByUsername(debouncedSearchValue);
+    } else {
+      return await getAllUsers();
     }
+  };
 
-    useEffect(() => {
-        handleSearch()
-    }, [debounce, allUsersList])
+  const {
+    data: allUsersList,
+    isLoading,
+    isError,
+    error,
+  } = useQuery({
+    queryKey: ["users", debouncedSearchValue],
+    queryFn: fetchUsers,
+    enabled: !!debouncedSearchValue || debouncedSearchValue === "",
+  });
 
-    const loadData = async () => {
-        const token = localStorage.getItem("authToken");
-        const config = {
-            headers: {
-                Authorization: `Token ${token}`,
-            }
-        }
-        const data = await getUserByUsername(searchValue, config)
-        setAllUsersList(data)
-    }
+  return (
+    <div className="flex flex-col h-screen">
+      <Header defaultSelectedKeys="Listar usuários" />
+      <div className="flex-1 flex flex-col gap-10">
+        <SearchBar
+          onValueChange={setSearchValue}
+        />
 
-    useEffect(() => {
-        if(searchValue) loadData()
-    }, [searchValue])
+        {isLoading && (
+          <div className="flex items-center justify-center text-zinc-400 font-semibold">
+            <p>Carregando...</p>
+          </div>
+        )}
 
-    return (
-        <div className="flex flex-col h-screen">
-            <Header defaultSelectedKeys="Listar usuários" />
-            <div className="flex-1 flex flex-col gap-10">
-                <SearchBar
-                    onValueChange={setSearchValue}
-                    onPress={handleSearch}
-                />
-                {
-                    searchValue === "" ?
-                        (<div className="flex items-center justify-center text-zinc-400 font-semibold">
-                            <p>Digite para buscar...</p>
-                        </div>)
-                        : resultList.length === 0 ?
-                            (<div className="flex items-center justify-center break-all text-zinc-400 font-semibold">
-                                <p>{`Nenhum resultado foi encontrado para "${searchValue}"`}</p>
-                            </div>)
-                            : (
-                                <div className="px-10 grid grid-cols-4 justify-items-center gap-5 mb-12">
-                                    {resultList.map((e, i) => <UserCard data={e} key={i} loadData={loadData} />)}
-                                </div>
-                            )
-                }
-            </div>
-        </div>
-    )
+        {isError && (
+          <div className="flex items-center justify-center text-red-500 font-semibold">
+            <p>{`Erro ao carregar usuários: ${error.message}`}</p>
+          </div>
+        )}
+
+        {!isLoading && !isError && (
+          <>
+            {allUsersList?.length === 0 ? (
+              <div className="flex items-center justify-center break-all text-zinc-400 font-semibold">
+                <p>{`Nenhum resultado foi encontrado para "${debouncedSearchValue}"`}</p>
+              </div>
+            ) : (
+              <div className="px-10 grid grid-cols-4 justify-items-center gap-5 mb-12">
+                {allUsersList?.map((user, index) => (
+                  <UserCard data={user} key={index} />
+                ))}
+              </div>
+            )}
+          </>
+        )}
+      </div>
+    </div>
+  );
 }

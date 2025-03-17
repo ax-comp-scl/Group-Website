@@ -4,7 +4,7 @@ import { useDebounce } from "use-debounce"
 import DataCard from "../components/DataCard"
 import DataSearchBar from "../components/DataSearchBar"
 import { getUser } from "../services/userService"
-import { api } from '../services/axios'
+import { api } from '../lib/axios'
 
 export default function ListDataPage() {
     const user = getUser()
