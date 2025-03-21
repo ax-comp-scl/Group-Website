@@ -1,12 +1,15 @@
-import axios from "axios";
-
-const API_BASE_URL = 'http://127.0.0.1:8000'
+import { api } from '../lib/axios';
 
 export function getUser(){
     return JSON.parse(localStorage.getItem("userData"));
 }
 
-export async function getUserByUsername(username, config){
-    const response = await axios.get(`${API_BASE_URL}/account/username/${username}`, config)
+export async function getAllUsers() {
+    const response = await api.get('/account/')
+    return response.data
+}
+
+export async function getUserByUsername(username){
+    const response = await api.get(`/account/username/${username}`)
     return response.data
 }

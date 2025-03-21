@@ -3,8 +3,8 @@ import { useState, useEffect } from "react"
 import { useDebounce } from "use-debounce"
 import DataCard from "../components/DataCard"
 import DataSearchBar from "../components/DataSearchBar"
-import { fetchProtectedData } from "../services/authService"
 import { getUser } from "../services/userService"
+import { api } from '../lib/axios'
 
 export default function ListDataPage() {
     const user = getUser()
@@ -75,7 +75,7 @@ export default function ListDataPage() {
     }, [selectedKey])
 
     const loadData = async () => {
-        const data = await fetchProtectedData(`api/${url}`)
+        const data = await api.post(`/${url}`)
         setAllDataList(data)
     }
 
