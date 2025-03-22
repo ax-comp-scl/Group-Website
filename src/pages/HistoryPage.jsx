@@ -65,14 +65,7 @@ export default function HistoryPage() {
 
   useEffect(() => {
     const loadTimeline = async () => {
-      const token = localStorage.getItem("authToken");
-      const config = {
-        headers: {
-          "Authorization": `Token ${token}`,
-          "accept": "application/json"
-        }
-      }
-      const data = await getData("history/all", config)
+      const data = await getData("history/all")
       setTimelineData(data)
     }
     loadTimeline()
