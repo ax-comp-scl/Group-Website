@@ -10,53 +10,35 @@ export default function HistoryPage() {
   const timelineData1 = [
     {
       description: "Athaliana_transcript.fasta",
-      user: { username: "Adm1", },
+      user: { username: "Rennan Marcile Lazarini" },
       time: "11h30",
       created_at: "08/03/2023",
-      method: false,
+      method: "POST",
+      status: "completed",
+      uploadProgress: 100,
+      errorMessage: null
     },
     {
       description: "Daucus_carota.fasta",
-      user: { username: "Adm2", },
+      user: { username: "Abel Baes Correia" },
       time: "11h00",
       created_at: "08/03/2023",
-      method: false,
+      method: "DELETE",
+      status: "in_progress",
+      uploadProgress: 45,
+      errorMessage: null
     },
     {
       description: "Athaliana_transcript.fasta",
-      user: { username: "Adm3", },
+      user: { username: "Pedro Henrique Aissa" },
       time: "10h00",
       created_at: "08/03/2023",
-      method: true,
-    },
+      method: "POST",
+      status: "failed",
+      uploadProgress: 0,
+      errorMessage: "Upload failed: File format not supported"
+    }
   ];
-
-  const timelineData2 = [
-    {
-      description: "Daucus_carota.fasta",
-      user: { username: "Adm4" },
-      time: "16:24",
-      created_at: "04/03/2023",
-      method: true,
-    },
-  ];
-
-  const timelineExampleData = [
-    {
-      "id": 0,
-      "user": {
-        "id": 0,
-        "username": ".9",
-        "email": "user@example.com",
-        "first_name": "string",
-        "last_name": "string",
-        "is_staff": true
-      },
-      "description": "string",
-      "method": "string",
-      "created_at": "2024-11-12T22:56:39.762Z"
-    },
-  ]
 
   const [timelineData, setTimelineData] = useState();
 
@@ -93,12 +75,6 @@ export default function HistoryPage() {
               month="Março"
               year="2024"
               data={timelineData1}
-            />
-            <Timeline
-              weekday="Segunda-Feira"
-              month="Março"
-              year="2024"
-              data={timelineData2}
             />
           </div>
         </div>
