@@ -25,11 +25,16 @@ import { queryClient } from './lib/react-query.js'
 import { createBrowserRouter, Navigate, RouterProvider } from "react-router-dom";
 import { isAuthenticated } from "./services/authService.js";
 import { QueryClientProvider } from '@tanstack/react-query'
+import ContactAdm from "./pages/ContactAdm.jsx";
 
 const router = createBrowserRouter([
   {
     path: "/login",
     element: isAuthenticated() ? <Navigate to={"/admin/history"} /> : <LoginPage />,
+  },
+  {
+    path: "/contact",
+    element: <ContactAdm/>
   },
   {
     path: "/admin",
