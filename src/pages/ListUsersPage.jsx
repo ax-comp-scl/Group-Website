@@ -57,8 +57,8 @@ export default function ListUsersPage() {
               </div>
             ) : (
               <div className="px-10 grid grid-cols-4 justify-items-center gap-5 mb-12">
-                {allUsersList?.map((user, index) => (
-                  <UserCard data={user} key={index} />
+                {allUsersList?.map((user) => (
+                  <UserCard data={user} key={user.id} />
                 ))}
               </div>
             )}
