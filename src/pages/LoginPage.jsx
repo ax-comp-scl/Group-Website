@@ -140,10 +140,10 @@ export default function LoginPage() {
           </form>
           <div className="text-center text-gray-500">
             Não possui cadastro?
-            <span className="font-bold text-black border-b-2 border-black hover:border-green-900 hover:text-green-900 cursor-pointer">
+            <a href="/contact" className="font-bold text-black border-b-2 border-black hover:border-green-900 hover:text-green-900 cursor-pointer">
               {" "}
               Contate um administrador
-            </span>
+            </a>
           </div>
         </div>
         <div className="relative w-[350px]">

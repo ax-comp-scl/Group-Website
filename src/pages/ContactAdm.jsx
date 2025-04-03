@@ -40,7 +40,7 @@ export default function ContactAdminPage() {
 
   
   return (
-    <div className="flex items-center justify-center min-h-screen bg-emerald-50">
+    <div className="flex items-center justify-center min-h-screen bg-gray-50">
       <div className="flex flex-col m-6 space-y-8 bg-white shadow-2xl rounded-2xl md:flex-row md:space-y-0 ">
         <div className="flex flex-col justify-center p-8 md:p-14">
 
@@ -56,9 +56,7 @@ export default function ContactAdminPage() {
               className="h-full rounded-r-2xl md:block object-cover"
             />
           </div>
-          <span className="mb-8 font-light text-center md:text-left">
-            Contate um Admin
-          </span>
+          <span className="mb-3 text-4xl font-bold">Contate um Admin</span>
           <form onSubmit={handleSubmit(onSubmit)}>
             <div className="py-4">
               <span className="mb-2 text-md">E-mail para entrarmos em contato</span>
