@@ -43,11 +43,6 @@ export default function SearchBar(props) {
               <SearchIcon className="text-black/50 mb-0.5 dark:text-white/90 text-slate-400               pointer-events-none flex-shrink-0" />
             }
           />
-          <ButtonComponent
-            text="Buscar"
-            variant="flat"
-            onPress={props.onPress}
-          />
         </div>
         {props.children}
       </div>
