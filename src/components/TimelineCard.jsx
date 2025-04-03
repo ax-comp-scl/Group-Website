@@ -3,7 +3,7 @@ import { Loader2, CheckCircle2, XCircle } from 'lucide-react';
   
 function StatusIndicator({ status, progress, errorMessage }) {
   switch (status) {
-    case "in_progress":
+    case "I":
       return (
         <div className="flex items-center gap-2">
           <Loader2 className="w-5 h-5 text-info animate-spin" />
@@ -15,9 +15,9 @@ function StatusIndicator({ status, progress, errorMessage }) {
           </div>
         </div>
       );
-    case "completed":
+    case "C":
       return <CheckCircle2 className="w-5 h-5 text-success" />;
-    case "failed":
+    case "F":
       return <XCircle className="w-5 h-5 text-error" />;
     default:
       return null;
@@ -32,7 +32,7 @@ export default function TimelineCard(props) {
     <div className="relative">
       <div className="absolute right-4 z-[1]">
         <StatusIndicator 
-          status="completed"
+          status={props.status}
           progress={props.progress}
           errorMessage={props.errorMessage}
         />

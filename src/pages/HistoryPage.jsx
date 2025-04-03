@@ -11,15 +11,6 @@ export default function HistoryPage() {
   const [status, setStatus] = useState();
   const [date, setDate] = useState();
 
-  useEffect(() => {
-    const loadTimeline = async () => {
-      const data = await getData("history/all")
-      setTimelineData(data)
-    }
-    loadTimeline()
-  }, [])
-
-
   // TODO: acrescentar barra de progresso, status da operação, nome do arquivo e 
   // mensagem de erro (se houver)
   async function fetchHistory() {

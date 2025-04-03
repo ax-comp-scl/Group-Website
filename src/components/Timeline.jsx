@@ -11,6 +11,7 @@ export default function Timeline(props) {
             time={d.time}
             date={d.created_at}
             method={d.method}
+            status={d.status}
           />
       ))}
     </div>
