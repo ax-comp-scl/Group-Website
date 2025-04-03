@@ -5,43 +5,9 @@ import StatusFilter from "../components/StatusFilter";
 import { DatePicker } from "@nextui-org/date-picker";
 import { useState, useEffect } from "react";
 import { getData } from "../services/RequestsService";
+import { useQuery } from "@tanstack/react-query";
 
 export default function HistoryPage() {
-  const timelineData1 = [
-    {
-      description: "Athaliana_transcript.fasta",
-      user: { username: "Rennan Marcile Lazarini" },
-      time: "11h30",
-      created_at: "08/03/2023",
-      method: "POST",
-      status: "completed",
-      uploadProgress: 100,
-      errorMessage: null
-    },
-    {
-      description: "Daucus_carota.fasta",
-      user: { username: "Abel Baes Correia" },
-      time: "11h00",
-      created_at: "08/03/2023",
-      method: "DELETE",
-      status: "in_progress",
-      uploadProgress: 45,
-      errorMessage: null
-    },
-    {
-      description: "Athaliana_transcript.fasta",
-      user: { username: "Pedro Henrique Aissa" },
-      time: "10h00",
-      created_at: "08/03/2023",
-      method: "POST",
-      status: "failed",
-      uploadProgress: 0,
-      errorMessage: "Upload failed: File format not supported"
-    }
-  ];
-
-  const [timelineData, setTimelineData] = useState();
-
   const [status, setStatus] = useState();
   const [date, setDate] = useState();
 
@@ -52,6 +18,18 @@ export default function HistoryPage() {
     }
     loadTimeline()
   }, [])
+
+
+  // TODO: acrescentar barra de progresso, status da operação, nome do arquivo e 
+  // mensagem de erro (se houver)
+  async function fetchHistory() {
+    return await getData("history/all")
+  }
+
+  const { data, isFetched } = useQuery({
+    queryKey: ["history"],
+    queryFn: fetchHistory
+  })
 
   return (
     <>
@@ -70,12 +48,14 @@ export default function HistoryPage() {
           </div>
           <Divider />
           <div className="mt-10 mb-12 flex flex-col gap-10">
-            <Timeline
-              weekday="Sexta-Feira"
-              month="Março"
-              year="2024"
-              data={timelineData1}
-            />
+            { isFetched && (
+              <Timeline
+                weekday="Sexta-Feira"
+                month="Março"
+                year="2024"
+                data={data}
+              />
+            )}
           </div>
         </div>
       </div>

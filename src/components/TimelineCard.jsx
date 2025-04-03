@@ -1,3 +1,4 @@
+import dayjs from 'dayjs'
 import { Loader2, CheckCircle2, XCircle } from 'lucide-react';
   
 function StatusIndicator({ status, progress, errorMessage }) {
@@ -24,6 +25,9 @@ function StatusIndicator({ status, progress, errorMessage }) {
 }
 
 export default function TimelineCard(props) {
+  const formattedTime = dayjs(props.date).format('HH:mm');
+  const formattedDate = dayjs(props.date).format('DD/MM/YYYY');
+
   return (
     <div className="relative">
       <div className="absolute right-4 z-[1]">
@@ -44,13 +48,13 @@ export default function TimelineCard(props) {
             <div className="flex items-center gap-2">
               <div className="avatar placeholder">
                 <div className="bg-neutral text-neutral-content rounded-full w-10">
-                  <span>{props.username.charAt(0)}</span>
+                  <span>{props.username.charAt(0).toUpperCase()}</span>
                 </div>
               </div>
               <div>
                 <p className="font-medium">{props.username}</p>
                 <p className="text-sm text-base-content/70">
-                  {props.time} • {props.date}
+                  {formattedTime} • {formattedDate}
                 </p>
 
               </div>
