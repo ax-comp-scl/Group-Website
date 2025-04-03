@@ -2,7 +2,7 @@ import embrapa from "../assets/logo-embrapa.png";
 import SelectNavigation from "./SelectNavigation";
 import AvatarComponent from "./Avatar";
 import { useEffect, useState } from "react";
-import { useNavigate } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { Divider } from "@nextui-org/divider";
 import { getUser } from "../services/userService";
 
@@ -48,7 +48,7 @@ export default function Header(props) {
       <div className="navbar px-12 py-4 gap-4 ">
         <div className="flex-1">
           <div className="hidden md:block w-40">
-            <img src={embrapa} alt="" />
+            <Link to={"/admin/history"}><img src={embrapa} alt="Logo da Embrapa" /></Link>
           </div>
         </div>
         <SelectNavigation
