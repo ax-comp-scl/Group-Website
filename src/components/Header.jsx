@@ -48,7 +48,7 @@ export default function Header(props) {
       <div className="navbar px-12 py-4 gap-4 ">
         <div className="flex-1">
           <div className="hidden md:block w-40">
-            <img src={embrapa} alt="" />
+            <img src={embrapa} alt="Logo da Embrapa" />
           </div>
         </div>
         <SelectNavigation
