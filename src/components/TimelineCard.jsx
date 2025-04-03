@@ -54,7 +54,7 @@ export default function TimelineCard(props) {
               <div>
                 <p className="font-medium">{props.username}</p>
                 <p className="text-sm text-base-content/70">
-                  {formattedTime} • {formattedDate}
+                  {formattedDate} • {formattedTime}
                 </p>
 
               </div>
