@@ -1,5 +1,4 @@
 import { Input } from "@nextui-org/react";
-import ButtonComponent from "./Button";
 import SearchIcon from "./icons/SearchIcon";
 import { Divider } from "@nextui-org/react";
 import { twMerge } from "tailwind-merge";
