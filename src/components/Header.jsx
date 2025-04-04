@@ -1,63 +1,44 @@
 import embrapa from "../assets/logo-embrapa.png";
-import SelectNavigation from "./SelectNavigation";
 import AvatarComponent from "./Avatar";
-import { useEffect, useState } from "react";
-import { Link, useNavigate } from "react-router-dom";
+import { Link } from "react-router-dom";
 import { Divider } from "@nextui-org/divider";
 import { getUser } from "../services/userService";
+import Navbar from "./Navbar";
+import { Tab } from "@nextui-org/react";
 
-export default function Header(props) {
-  const navigate = useNavigate();
-  const user = getUser()
-  const [selected, setSelected] = useState(props.defaultSelectedKeys);
+export default function Header() {
+  const user = getUser();
+
   const admOptions = [
-    "Histórico",
-    "Criar usuário",
-    "Listar usuários",
-    "Carregar dados",
-    "Listar dados",
+    { key: "/admin/history", title: "Histórico" },
+    { key: "/admin/create-user", title: "Criar usuário" },
+    { key: "/admin/users", title: "Listar usuários" },
+    { key: "/admin/upload/ontologies", title: "Carregar dados" },
+    { key: "/organisms", title: "Listar dados" },
   ];
-  const userOptions = [
-    "Listar dados",
-  ]
 
-  useEffect(() => {
-    switch (selected) {
-      case "Histórico":
-        navigate("/admin/history");
-        break;
-      case "Criar usuário":
-        navigate("/admin/create-user");
-        break;
-      case "Listar usuários":
-        navigate("/admin/users");
-        break;
-      case "Carregar dados":
-        navigate(`/admin/upload/ontologies`);
-        break;
-      case "Listar dados":
-        navigate("/organisms");
-        break;
-      default:
-        break;
-    }
-  }, [selected]);
+  const userOptions = [{ key: "/organisms", title: "Listar dados" }];
+
+  const tabOptions = (user.is_staff ? admOptions : userOptions).map((tab) => (
+    <Tab key={tab.key} title={tab.title} />
+  ));
 
   return (
     <div className="sticky top-0 bg-white/50 backdrop-blur-sm z-50">
-      <div className="navbar px-12 py-4 gap-4 ">
-        <div className="flex-1">
-          <div className="hidden md:block w-40">
-            <Link to={"/admin/history"}><img src={embrapa} alt="Logo da Embrapa" /></Link>
-          </div>
+      <div className="px-12 py-4 flex items-center justify-between">
+        <div className="w-40 hidden md:block">
+          <Link to={"/admin/history"}>
+            <img src={embrapa} alt="Logo da Embrapa" />
+          </Link>
         </div>
-        <SelectNavigation
-          isRequired={false}
-          options={user.is_staff ? admOptions : userOptions}
-          onChange={setSelected}
-          defaultSelectedKeys={selected}
-        />
-        <AvatarComponent size="lg" />
+
+        <div className=" flex justify-center">
+          <Navbar options={tabOptions} base="w-full max-w-2xl" />
+        </div>
+
+        <div className="w-40 flex justify-end">
+          <AvatarComponent size="lg" />
+        </div>
       </div>
       <Divider />
     </div>
