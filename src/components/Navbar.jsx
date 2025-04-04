@@ -1,8 +1,10 @@
 import { Tabs } from "@nextui-org/react";
-import { useNavigate } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
 
 export default function Navbar(props) {
   const navigate = useNavigate();
+  const location = useLocation();
+
   const handleChange = (key) => {
     navigate(key);
   };
@@ -11,6 +13,7 @@ export default function Navbar(props) {
     <Tabs
       size="lg"
       radius="sm"
+      selectedKey={location.pathname}
       onSelectionChange={handleChange}
       classNames={{
         base: props.base,
