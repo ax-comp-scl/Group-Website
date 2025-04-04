@@ -6,8 +6,14 @@ export default function SelectOrganisms(props) {
     const [organismsOptions, setOrganismsOptions] = useState([])
 
     useEffect(() => {
+    const token = localStorage.getItem("authToken");
+    const config = {
+        headers: {
+            Authorization: `Token ${token}`,
+        }
+    }
     async function getOrganisms(){
-      setOrganismsOptions(await getData("api/organism"))
+      setOrganismsOptions(await getData("api/organism", config))
     }
     getOrganisms()
   }, [])

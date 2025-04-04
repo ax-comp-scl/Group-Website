@@ -89,8 +89,15 @@ export default function UserCard(props) {
 
   const handleExclude = async () => {
     try {
+      const token = localStorage.getItem("authToken");
+
+      const config = {
+        headers: {
+          Authorization: `Token ${token}`,
+        }
+      }
       const id = props.data.id
-      const data = await deleteData(`account/${id}`)
+      const data = await deleteData(`account/${id}`, config)
       props.loadData()
 
     }
@@ -101,7 +108,17 @@ export default function UserCard(props) {
 
   const handleEdit = async () => {
     try {
-      const data = await putData(`account/${props.data.id}`, { username, email, password, "is_staff": isStaffCheck })
+      const token = localStorage.getItem("authToken");
+
+      const config = {
+        headers: {
+          Authorization: `Token ${token}`,
+          "Content-Type": "application/json",
+          "accept": "application/json"
+        }
+      }
+      
+      const data = await putData(`account/${props.data.id}`, { username, email, password, "is_staff": isStaffCheck }, config)
       setIsStaff(isStaffCheck)
     }
     catch (error) {

@@ -26,10 +26,23 @@ export default function OntologiesPage() {
 
   //relation ontology
   const handleSubmit = async () => {
+    const token = localStorage.getItem("authToken");
+
+    const config = {
+      headers: {
+        "Authorization": `Token ${token}`,
+        "Content-Type": "multipart/form-data"
+      }
+    }
+
     const formData = new FormData()
+
     formData.append('file', relationOntologyFiles[0])
 
-    const response = await postData("api/ontology/insert", formData)
+    const response = await postData("api/ontology/insert",
+      formData,
+      config)
+
   };
 
   useEffect(() => {

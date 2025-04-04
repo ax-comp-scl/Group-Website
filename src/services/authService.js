@@ -23,5 +23,5 @@ export function logoutUser() {
 }
 
 export function isAuthenticated() {
-  return !!localStorage.getItem("authToken") && !!localStorage.getItem("userData");
+  return !!localStorage.getItem("authToken");
 }

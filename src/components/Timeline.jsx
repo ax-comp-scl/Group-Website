@@ -1,19 +1,37 @@
+import TimelineEndIcon from "./icons/TimelineEndIcon";
 import TimelineCard from "./TimelineCard";
 
 export default function Timeline(props) {
   return (
-    <div className="flex flex-col mx-6 gap-3">
+    <ul className="timeline timeline-vertical">
+      <li>
+        <hr />
+        <div className="timeline-middle "></div>
+        <div className="timeline-start">
+          <p className="font-bold text-xl">
+            {props.weekday}, {props.month}, {props.year}
+          </p>
+        </div>
+        <hr />
+      </li>
       {props.data.map((d, i) => (
+        <li key={i}>
           <TimelineCard
-            key={i}
             description={d.description}
             username={d.user.username}
             time={d.time}
             date={d.created_at}
-            method={d.method}
-            status={d.status}
+            isInsert={d.method == 'POST' ? true : false}
           />
+        </li>
       ))}
-    </div>
+      <li>
+        <hr />
+        <div className="timeline-middle ">
+          <TimelineEndIcon />
+        </div>
+        <hr />
+      </li>
+    </ul>
   );
 }

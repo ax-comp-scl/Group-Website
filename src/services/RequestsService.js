@@ -1,23 +1,23 @@
-import { api } from '../lib/axios'
+import axios from "axios"
 
 const API_BASE_URL = 'http://127.0.0.1:8000'
 
-export async function getData(endpoint){
-    const response = await api.get(`${API_BASE_URL}/${endpoint}`)
+export async function getData(endpoint, config = ''){
+    const response = await axios.get(`${API_BASE_URL}/${endpoint}`, config)
     return response.data
 }
 
-export async function postData(endpoint, data = {}){
-    const response = await api.post(`${API_BASE_URL}/${endpoint}`, data)
+export async function postData(endpoint, data, config = {}){
+    const response = await axios.post(`${API_BASE_URL}/${endpoint}`, data, config)
     return response.data
 }
 
-export async function putData(endpoint, data = {}){
-    const response = await api.put(`${API_BASE_URL}/${endpoint}`, data)
+export async function putData(endpoint, data, config = {}){
+    const response = await axios.put(`${API_BASE_URL}/${endpoint}`, data, config)
     return response.data
 }
 
-export async function deleteData(endpoint){
-    const response = await api.delete(`${API_BASE_URL}/${endpoint}`)
+export async function deleteData(endpoint, config){
+    const response = await axios.delete(`${API_BASE_URL}/${endpoint}`, config)
     return response.data
 }
