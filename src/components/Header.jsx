@@ -1,14 +1,12 @@
 import embrapa from "../assets/logo-embrapa.png";
-import SelectNavigation from "./SelectNavigation";
 import AvatarComponent from "./Avatar";
-import { useEffect, useState } from "react";
-import { Link, useNavigate } from "react-router-dom";
+import { Link } from "react-router-dom";
 import { Divider } from "@nextui-org/divider";
 import { getUser } from "../services/userService";
 import Navbar from "./Navbar";
 import { Tab } from "@nextui-org/react";
 
-export default function Header(props) {
+export default function Header() {
   const user = getUser()
 
   const admOptions = [
@@ -35,7 +33,7 @@ export default function Header(props) {
             <Link to={"/admin/history"}><img src={embrapa} alt="Logo da Embrapa" /></Link>
           </div>
         </div>
-        
+
         <Navbar
           options={tabOptions}
           base="w-full max-w-2xl"
