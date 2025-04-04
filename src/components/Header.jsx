@@ -32,7 +32,7 @@ export default function Header() {
           </Link>
         </div>
 
-        <div className="flex-1 flex justify-center">
+        <div className=" flex justify-center">
           <Navbar options={tabOptions} base="w-full max-w-2xl" />
         </div>
 

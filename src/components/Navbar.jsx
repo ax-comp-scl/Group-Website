@@ -17,7 +17,7 @@ export default function Navbar(props) {
       onSelectionChange={handleChange}
       classNames={{
         base: props.base,
-        tabList: "flex w-full flex-wrap",
+        tabList: "flex flex-wrap",
         tab: "flex-1 text-center",
       }}
     >
