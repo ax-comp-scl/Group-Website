@@ -31,13 +31,7 @@ export default function ModalAssingUser(props) {
   }, [debounce, allUsersList])
 
   const loadData = async () => {
-    const token = localStorage.getItem("authToken");
-    const config = {
-      headers: {
-        Authorization: `Token ${token}`,
-      }
-    }
-    const data = await getUserByUsername(searchValue, config)
+    const data = await getUserByUsername(searchValue)
     setAllUsersList(data)
   }
 

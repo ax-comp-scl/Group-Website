@@ -20,17 +20,8 @@ export default function DataCard(props) {
 
   const handleExclude = async () => {
     try {
-      const token = localStorage.getItem("authToken");
-
-      const config = {
-        headers: {
-          "Authorization": `Token ${token}`,
-          "Content-Type": "application/json",
-          "accept": "application/json"
-        }
-      }
       const id = props.data.organism_id
-      const data = await deleteData(`api/${props.url}/${id}`, config)
+      const data = await deleteData(`api/${props.url}/${id}`)
       props.loadData()
     }
     catch (error) {
