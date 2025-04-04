@@ -16,8 +16,19 @@ export default function OrganismPage() {
     const [commonName, setCommonName] = useState(formData.organism.commonName)
 
     const handleSubmit = async () => {
+        const token = localStorage.getItem("authToken");
+
+        const config = {
+            headers: {
+                "Authorization": `Token ${token}`,
+                "Content-Type": "application/json",
+                "accept": "application/json"
+            }
+        }
+
         const response = await postData("api/organism",
-            { genus, species, abbreviation, infraspecific_name: infraspecificName, comment, common_name: commonName })
+            { genus, species, abbreviation, infraspecific_name: infraspecificName, comment, common_name: commonName },
+            config)
         setGenus("")
         setSpecies("")
         setAbbreviation("")

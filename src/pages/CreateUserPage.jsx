@@ -18,7 +18,14 @@ export default function CreateUserPage() {
 
     const handleSubmit = async () => {
         try {
-            const data = await postData("account/", { username, email, password, is_staff: isStaff })
+            const token = localStorage.getItem("authToken");
+
+            const config = {
+                headers: {
+                    Authorization: `Token ${token}`,
+                }
+            }
+            const data = await postData("account/", { username, email, password, is_staff: isStaff }, config)
             setUserName("")
             setEmail("")
             setPassword("")
