@@ -19,7 +19,8 @@ export default function Header() {
 
   const userOptions = [{ key: "/organisms", title: "Listar dados" }];
 
-  const tabOptions = (user.is_staff ? admOptions : userOptions).map((tab) => (
+  const options = user.is_staff ? admOptions : userOptions;
+  const tabOptions = options.map((tab) => (
     <Tab key={tab.key} title={tab.title} />
   ));
 
@@ -33,7 +34,10 @@ export default function Header() {
         </div>
 
         <div className=" flex justify-center">
-          <Navbar options={tabOptions} base="w-full max-w-2xl" />
+          <Navbar
+            options={tabOptions}
+            base="w-full max-w-2xl"
+          />
         </div>
 
         <div className="w-40 flex justify-end">
@@ -44,3 +48,4 @@ export default function Header() {
     </div>
   );
 }
+
