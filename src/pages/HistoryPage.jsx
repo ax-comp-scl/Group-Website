@@ -31,7 +31,6 @@ export default function HistoryPage() {
         <Header defaultSelectedKeys="Histórico" />
         <div className="flex-1 flex-col">
           <div className="flex justify-end px-12 my-5 gap-x-10">
-          <StatusFilter setValue={setStatus} value={status} />
             <DatePicker
               variant="bordered"
               label="Data"
