@@ -1,16 +1,16 @@
 import { useQuery } from "@tanstack/react-query";
-import { useState } from "react";
 import Header from "../components/Header"
 import StatusFilter from "../components/StatusFilter";
 import { Divider } from "@nextui-org/react";
-import { DatePicker } from "@nextui-org/react";
 import Timeline from "../components/Timeline";
+import { DatePicker } from "@nextui-org/date-picker";
+import { useState, useEffect } from "react";
 import { getData } from "../services/RequestsService";
 
 export default function HistoryPage() {
   const [status, setStatus] = useState();
   const [date, setDate] = useState();
-
+  
   async function fetchHistory() {
     const response = await getData("api/history");
     console.log("response: ", response)
@@ -26,24 +26,27 @@ export default function HistoryPage() {
   console.log(isFetched)
 
   return (
-    <div className="flex flex-col h-screen">
-      <Header defaultSelectedKeys="Histórico" />
-      <div className="flex-1 flex-col">
-        <div className="flex justify-end px-12 my-5 gap-x-10">
+    <>
+      <div className="flex flex-col h-screen">
+        <Header defaultSelectedKeys="Histórico" />
+        <div className="flex-1 flex-col">
+          <div className="flex justify-end px-12 my-5 gap-x-10">
           <StatusFilter setValue={setStatus} value={status} />
-          <DatePicker
-            variant="bordered"
-            label="Data"
-            className="max-w-[284px]"
-            value={date}
-            onChange={setDate}
-          />
-        </div>
-        <Divider />
-        <div className="mt-10 mb-12 flex flex-col gap-10">
+            <DatePicker
+              variant="bordered"
+              label="Data"
+              className="max-w-[284px]"
+              value={date}
+              onChange={setDate}
+            />
+          </div>
+          <Divider />
+          <div className="mt-10 mb-12 flex flex-col gap-10">
           {isFetched && <Timeline data={data} />}
+           
+          </div>
         </div>
       </div>
-    </div>
+    </>
   );
 }
