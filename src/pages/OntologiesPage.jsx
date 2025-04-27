@@ -29,7 +29,8 @@ export default function OntologiesPage() {
     const formData = new FormData()
     formData.append('file', relationOntologyFiles[0])
 
-    const response = await postData("api/ontology/insert", formData)
+    // TODO: adicionar try catch e tratativas de erro/sucesso (toast na tela?)
+    await postData("api/load/relations_ontology", formData)
   };
 
   useEffect(() => {

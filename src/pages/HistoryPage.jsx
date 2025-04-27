@@ -17,6 +17,7 @@ export default function HistoryPage() {
   const { data, isFetched } = useQuery({
     queryKey: ["history"],
     queryFn: fetchHistory,
+    refetchInterval: 1500,
   });
 
   return (

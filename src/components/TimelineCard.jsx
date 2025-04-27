@@ -1,4 +1,4 @@
-import { CheckCircle2, XCircle } from 'lucide-react';
+import { CheckCircle2, Loader2, XCircle } from 'lucide-react';
 import dayjs from 'dayjs'
   
 function StatusIndicator({ exitCode }) {
@@ -8,13 +8,20 @@ function StatusIndicator({ exitCode }) {
     case 1:
       return <XCircle className="w-5 h-5 text-error" />;
     default:
-      return null;
+      return (
+        <div className="flex items-center gap-2">
+          <Loader2 className="w-5 h-5 text-info animate-spin" />
+          <div className="w-24 bg-base-200 rounded-full h-2">
+            <div className="bg-info rounded-full h-2 transition-all duration-300 w-1/2" />
+          </div>
+        </div>
+      )
   }
 }
 
 export default function TimelineCard(props) {
-  const createdAt = dayjs(props.created_at).format('DD/MM/YYYY HH:mm:ss')
-  const finishedAt = dayjs(props.finished_at).format('DD/MM/YYYY HH:mm:ss')
+  const createdAt = dayjs(props.createdAt)
+  const finishedAt = dayjs(props.finishedAt)
 
   return (
     <div className="relative">
@@ -36,7 +43,8 @@ export default function TimelineCard(props) {
             <div className="flex items-center gap-2">
               <div>
                 <p className="text-sm text-base-content/70">
-                  {createdAt} • {finishedAt}
+                  {createdAt.isValid() ? createdAt.format('DD/MM/YYYY HH:mm:ss') : '-'} •
+                  {finishedAt.isValid() ? ' ' + finishedAt.format('DD/MM/YYYY HH:mm:ss') : ' Não finalizado'}
                 </p>
 
               </div>
