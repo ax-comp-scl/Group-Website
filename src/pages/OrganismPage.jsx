@@ -16,7 +16,7 @@ export default function OrganismPage() {
     const [commonName, setCommonName] = useState(formData.organism.commonName)
 
     const handleSubmit = async () => {
-        const response = await postData("api/organism",
+        await postData("api/load/organism",
             { genus, species, abbreviation, infraspecific_name: infraspecificName, comment, common_name: commonName })
         setGenus("")
         setSpecies("")
