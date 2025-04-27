@@ -1,19 +1,16 @@
 import { useQuery } from "@tanstack/react-query";
 import Header from "../components/Header"
-import StatusFilter from "../components/StatusFilter";
 import { Divider } from "@nextui-org/react";
 import Timeline from "../components/Timeline";
 import { DatePicker } from "@nextui-org/date-picker";
-import { useState, useEffect } from "react";
+import { useState } from "react";
 import { getData } from "../services/RequestsService";
 
 export default function HistoryPage() {
-  const [status, setStatus] = useState();
   const [date, setDate] = useState();
   
   async function fetchHistory() {
     const response = await getData("api/history");
-    console.log("response: ", response)
     return response;
   }
 
@@ -21,9 +18,6 @@ export default function HistoryPage() {
     queryKey: ["history"],
     queryFn: fetchHistory,
   });
-
-  console.log(data)
-  console.log(isFetched)
 
   return (
     <>
@@ -42,7 +36,6 @@ export default function HistoryPage() {
           <Divider />
           <div className="mt-10 mb-12 flex flex-col gap-10">
           {isFetched && <Timeline data={data} />}
-           
           </div>
         </div>
       </div>
