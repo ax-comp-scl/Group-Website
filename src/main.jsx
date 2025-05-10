@@ -26,6 +26,7 @@ import { createBrowserRouter, Navigate, RouterProvider } from "react-router-dom"
 import { isAuthenticated } from "./services/authService.js";
 import { QueryClientProvider } from '@tanstack/react-query'
 import ContactAdm from "./pages/ContactAdm.jsx";
+import { Toaster } from 'react-hot-toast'
 
 const router = createBrowserRouter([
   {
@@ -131,6 +132,7 @@ createRoot(document.getElementById("root")).render(
   <QueryClientProvider client={queryClient}>
     <NextUIProvider>
       <RouterProvider router={router} />
+      <Toaster />
     </NextUIProvider>
   </QueryClientProvider>
 );

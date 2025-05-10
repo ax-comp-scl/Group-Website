@@ -10,6 +10,7 @@ export default function ButtonComponent(props) {
         color={props.color}
         variant={props.variant}
         onPress={props.onPress}
+        {...props}
       >
         {props.text}
       </Button>
