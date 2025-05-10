@@ -1,44 +1,44 @@
-import Dropzone from "../components/Dropzone";
-import InputComponent from "../components/Input";
-import CheckboxComponent from "../components/Checkbox";
-import ButtonComponent from "../components/Button";
-import AccordionComponent from "../components/Accordion";
-import SelectComponent from "../components/Select";
-import { useState, useContext, useEffect } from "react";
-import { FormsContext } from "../FormsContext";
-import { Link } from "@nextui-org/react";
-import { postData } from "../services/RequestsService";
-import SelectOrganisms from "../components/SelectOrganisms"
+import { Link } from '@nextui-org/react'
+import { useContext, useEffect, useState } from 'react'
+import { FormsContext } from '../FormsContext'
+import AccordionComponent from '../components/Accordion'
+import ButtonComponent from '../components/Button'
+import CheckboxComponent from '../components/Checkbox'
+import Dropzone from '../components/Dropzone'
+import InputComponent from '../components/Input'
+import SelectComponent from '../components/Select'
+import SelectOrganisms from '../components/SelectOrganisms'
+import { postData } from '../services/RequestsService'
 
 export default function GFFPage() {
-  const { handleFormChange, formData } = useContext(FormsContext);
+  const { handleFormChange, formData } = useContext(FormsContext)
 
-  const [organism, setOrganism] = useState(formData.gff.organism);
-  const [doi, setDoi] = useState(formData.gff.doi);
-  const [ignore, setIgnore] = useState(formData.gff.abbreviation);
-  const [qtl, setQtl] = useState(formData.gff.qtl);
-  const [cpu, setCpu] = useState(formData.gff.cpu | 1);
-  const [gffFiles, setGffFiles] = useState([]);
+  const [organism, setOrganism] = useState(formData.gff.organism)
+  const [doi, setDoi] = useState(formData.gff.doi)
+  const [ignore, setIgnore] = useState(formData.gff.abbreviation)
+  const [qtl, setQtl] = useState(formData.gff.qtl)
+  const [cpu, setCpu] = useState(formData.gff.cpu | 1)
+  const [gffFiles, setGffFiles] = useState([])
 
-  const validateGFFFile = (file) => {
-    const regex = /\.(gff|gtf|gff3)$/i;
+  const validateGFFFile = file => {
+    const regex = /\.(gff|gtf|gff3)$/i
     return regex.test(file.name)
       ? null
       : {
-        code: "file-invalid-type",
-        message:
-          "Tipo de arquivo inválido. Somente arquivos .gff, .gtf, ou .gff3 são permitidos.",
-      };
-  };
+          code: 'file-invalid-type',
+          message:
+            'Tipo de arquivo inválido. Somente arquivos .gff, .gtf, ou .gff3 são permitidos.',
+        }
+  }
 
   const handleSubmit = async () => {
-    const token = localStorage.getItem("authToken");
+    const token = localStorage.getItem('authToken')
 
     const config = {
       headers: {
-        "Authorization": `Token ${token}`,
-        "Content-Type": "multipart/form-data"
-      }
+        Authorization: `Token ${token}`,
+        'Content-Type': 'multipart/form-data',
+      },
     }
 
     const formData = new FormData()
@@ -48,8 +48,7 @@ export default function GFFPage() {
     // const response = await postData("api/ontology/insert",
     //   formData,
     //   config)
-
-  };
+  }
 
   useEffect(() => {
     const gffData = {
@@ -58,20 +57,19 @@ export default function GFFPage() {
       ignore,
       qtl,
       cpu,
-    };
-    formData["gff"] = gffData;
-    handleFormChange(formData);
-  }, [organism, doi, ignore, qtl, cpu,])
-
+    }
+    formData.gff = gffData
+    handleFormChange(formData)
+  }, [organism, doi, ignore, qtl, cpu, formData, handleFormChange])
 
   const organismsOptions = [
-    "Organismo 1",
-    "Organismo 2",
-    "Organismo 3",
-    "Organismo 4",
-  ];
+    'Organismo 1',
+    'Organismo 2',
+    'Organismo 3',
+    'Organismo 4',
+  ]
 
-  const doiOptions = ["DOI 1", "DOI 2", "DOI 3", "DOI 4"];
+  const doiOptions = ['DOI 1', 'DOI 2', 'DOI 3', 'DOI 4']
 
   return (
     <>
@@ -86,7 +84,8 @@ export default function GFFPage() {
               <div className="text-small font-bold">GFF</div>
               <div className="text-tiny">
                 <p>
-                  GFF3 genome file indexed with tabix see (<Link
+                  GFF3 genome file indexed with tabix see (
+                  <Link
                     isExternal
                     size="sm"
                     underline="hover"
@@ -94,7 +93,8 @@ export default function GFFPage() {
                     href="http://www.htslib.org/doc/tabix.html"
                   >
                     http://www.htslib.org/doc/tabix.html
-                  </Link>)
+                  </Link>
+                  )
                 </p>
               </div>
             </div>
@@ -105,10 +105,7 @@ export default function GFFPage() {
             {
               isRequired: true,
               fields: [
-                <SelectOrganisms
-                  setValue={setOrganism}
-                  key="organism"
-                />,
+                <SelectOrganisms setValue={setOrganism} key="organism" />,
               ],
             },
             {
@@ -152,5 +149,5 @@ export default function GFFPage() {
         <ButtonComponent text="Confirmar" onPress={handleSubmit} />
       </div>
     </>
-  );
+  )
 }

@@ -1,11 +1,11 @@
-import TimelineCard from "./TimelineCard";
+import TimelineCard from './TimelineCard'
 
 export default function Timeline(props) {
   return (
     <div className="flex flex-col mx-6 gap-3">
       {props.data.map((d, i) => (
         <TimelineCard
-          key={i}
+          key={`${i}-${d.created_at}`}
           description={d.description}
           command={d.command}
           finished_at={d.finished_at}
@@ -15,5 +15,5 @@ export default function Timeline(props) {
         />
       ))}
     </div>
-  );
+  )
 }

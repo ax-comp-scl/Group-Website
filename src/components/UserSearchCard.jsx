@@ -1,32 +1,32 @@
-import AvatarComponent from "./Avatar";
 import {
-  useCheckbox,
+  Button,
   Chip,
   VisuallyHidden,
   tv,
-  Button,
-} from "@nextui-org/react";
+  useCheckbox,
+} from '@nextui-org/react'
+import AvatarComponent from './Avatar'
 
 const checkbox = tv({
   slots: {
-    base: "border-default hover:bg-default-200",
-    content: "text-default-500",
+    base: 'border-default hover:bg-default-200',
+    content: 'text-default-500',
   },
   variants: {
     isSelected: {
       true: {
-        base: "bg-primary-500 hover:bg-primary-400",
-        content: "text-primary-foreground",
+        base: 'bg-primary-500 hover:bg-primary-400',
+        content: 'text-primary-foreground',
       },
     },
     isFocusVisible: {
       true: {
-        base: "outline-none ring-2 ring-focus ring-offset-2 ring-offset-background",
-        content: "text-primary-foreground",
+        base: 'outline-none ring-2 ring-focus ring-offset-2 ring-offset-background',
+        content: 'text-primary-foreground',
       },
     },
   },
-});
+})
 
 export default function UserSearchCard(props) {
   const {
@@ -37,9 +37,9 @@ export default function UserSearchCard(props) {
     getInputProps,
   } = useCheckbox({
     defaultSelected: false,
-  });
+  })
 
-  const styles = checkbox({ isSelected, isFocusVisible });
+  const styles = checkbox({ isSelected, isFocusVisible })
 
   return (
     <div className="h-full">
@@ -68,5 +68,5 @@ export default function UserSearchCard(props) {
         </label>
       </Button>
     </div>
-  );
+  )
 }

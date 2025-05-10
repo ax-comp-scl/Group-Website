@@ -1,42 +1,42 @@
-import EditIcon from "./icons/EditIcon";
-import ExcludeIcon from "./icons/ExcludeIcon";
-import { useState } from "react";
-import ModalEdit from "./ModalEdit";
-import ButtonComponent from "./Button";
-import ModalView from "./ModalView";
-import ModalOption from "./ModalOption";
-import AvatarComponent from "./Avatar";
-import InputComponent from "./Input";
-import { Kbd } from "@nextui-org/kbd";
-import ViewIconOpened from "./icons/ViewIconOpened";
-import ViewIconClosed from "./icons/ViewIconClosed";
-import CheckboxComponent from "./Checkbox";
-import { deleteData, putData } from "../services/RequestsService";
+import { Kbd } from '@nextui-org/kbd'
+import { useState } from 'react'
+import { deleteData, putData } from '../services/RequestsService'
+import AvatarComponent from './Avatar'
+import ButtonComponent from './Button'
+import CheckboxComponent from './Checkbox'
+import InputComponent from './Input'
+import ModalEdit from './ModalEdit'
+import ModalOption from './ModalOption'
+import ModalView from './ModalView'
+import EditIcon from './icons/EditIcon'
+import ExcludeIcon from './icons/ExcludeIcon'
+import ViewIconClosed from './icons/ViewIconClosed'
+import ViewIconOpened from './icons/ViewIconOpened'
 
 export default function UserCard(props) {
-  const [username, setUsername] = useState(props.data.username);
-  const [password, setPassword] = useState("");
-  const [email, setEmail] = useState(props.data.email);
-  const [isStaffCheck, setIsStaffCheck] = useState(props.data.is_staff);
-  const [isStaff, setIsStaff] = useState(props.data.is_staff);
-  const [isViewOpen, setViewOpen] = useState(false);
-  const [isEditOpen, setEditOpen] = useState(false);
-  const [isOptionOpen, setOptionOpen] = useState(false);
-  const [isVisible, setIsVisible] = useState(false);
+  const [username, setUsername] = useState(props.data.username)
+  const [password, setPassword] = useState('')
+  const [email, setEmail] = useState(props.data.email)
+  const [isStaffCheck, setIsStaffCheck] = useState(props.data.is_staff)
+  const [isStaff, setIsStaff] = useState(props.data.is_staff)
+  const [isViewOpen, setViewOpen] = useState(false)
+  const [isEditOpen, setEditOpen] = useState(false)
+  const [isOptionOpen, setOptionOpen] = useState(false)
+  const [isVisible, setIsVisible] = useState(false)
 
   const handleViewOpen = () => {
-    setViewOpen(true);
-  };
+    setViewOpen(true)
+  }
 
   const handleEditOpen = () => {
-    setEditOpen(true);
-  };
+    setEditOpen(true)
+  }
 
   const handleOptionOpen = () => {
-    setOptionOpen(true);
-  };
+    setOptionOpen(true)
+  }
 
-  const toggleVisibility = () => setIsVisible(!isVisible);
+  const toggleVisibility = () => setIsVisible(!isVisible)
 
   function createInputs() {
     return (
@@ -74,7 +74,7 @@ export default function UserCard(props) {
           onValueChange={setIsStaffCheck}
         />
       </>
-    );
+    )
   }
 
   function createParagraphs() {
@@ -82,9 +82,9 @@ export default function UserCard(props) {
       <>
         <p>Nome: {username}</p>
         <p>Email: {email}</p>
-        <p>Papel: {isStaff ? "Administrador" : "Usuário"}</p>
+        <p>Papel: {isStaff ? 'Administrador' : 'Usuário'}</p>
       </>
-    );
+    )
   }
 
   const handleExclude = async () => {
@@ -92,19 +92,21 @@ export default function UserCard(props) {
       const id = props.data.id
       const data = await deleteData(`account/${id}`)
       props.loadData()
-
-    }
-    catch (error) {
+    } catch (error) {
       setIsInvalid(true)
     }
   }
 
   const handleEdit = async () => {
     try {
-      const data = await putData(`account/${props.data.id}`, { username, email, password, "is_staff": isStaffCheck })
+      const data = await putData(`account/${props.data.id}`, {
+        username,
+        email,
+        password,
+        is_staff: isStaffCheck,
+      })
       setIsStaff(isStaffCheck)
-    }
-    catch (error) {
+    } catch (error) {
       setIsInvalid(true)
     }
   }
@@ -125,7 +127,7 @@ export default function UserCard(props) {
             </div>
           )}
         </div>
-        <div className="border-t-2"></div>
+        <div className="border-t-2" />
         <div className="flex-1 flex flex-col items-center gap-5 p-3">
           <ButtonComponent
             icon={<ViewIconOpened />}
@@ -153,7 +155,7 @@ export default function UserCard(props) {
               />
 
               <ButtonComponent
-                icon={<ExcludeIcon className='size-6' />}
+                icon={<ExcludeIcon className="size-6" />}
                 variant="ghost"
                 color="default"
                 text="Excluir"
@@ -172,7 +174,7 @@ export default function UserCard(props) {
                 onOpenChange={setOptionOpen}
                 handleConfirm={() => {
                   handleExclude()
-                  setOptionOpen(false);
+                  setOptionOpen(false)
                 }}
               />
             </div>
@@ -180,5 +182,5 @@ export default function UserCard(props) {
         </div>
       </div>
     </>
-  );
+  )
 }

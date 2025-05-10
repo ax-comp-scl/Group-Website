@@ -1,24 +1,24 @@
-import { Select, SelectItem } from "@nextui-org/react";
-import StatusIcon from "./icons/StatusIcon";
-import InsertIcon from "./icons/InsertIcon";
-import ExcludeIcon from "./icons/ExcludeIcon";
-import { useState } from "react";
+import { Select, SelectItem } from '@nextui-org/react'
+import { useState } from 'react'
+import ExcludeIcon from './icons/ExcludeIcon'
+import InsertIcon from './icons/InsertIcon'
+import StatusIcon from './icons/StatusIcon'
 
 export default function StatusFilter(props) {
   const items = [
     {
-      value: "insercao",
-      status: "Inserção",
+      value: 'insercao',
+      status: 'Inserção',
       icon: <ExcludeIcon className="size-5" />,
     },
     {
-      value: "delecao",
-      status: "Deleção",
+      value: 'delecao',
+      status: 'Deleção',
       icon: <InsertIcon className="size-5" />,
     },
-  ];
+  ]
 
-  const [isOpen, setIsOpen] = useState(false);
+  const [isOpen, setIsOpen] = useState(false)
 
   return (
     <Select
@@ -33,17 +33,17 @@ export default function StatusFilter(props) {
       variant="bordered"
       className="max-w-40"
       onSelectionChange={props.setValue}
-      onOpenChange={(open) => open !== isOpen && setIsOpen(open)}
-      renderValue={(selected) => {
-        return selected.map((s) => (
+      onOpenChange={open => open !== isOpen && setIsOpen(open)}
+      renderValue={selected => {
+        return selected.map(s => (
           <div key={s.data.icon} className="flex items-center gap-2">
             <span>{s.data.status}</span>
             <span className="text-default-500 text-tiny">{s.data.icon}</span>
           </div>
-        ));
+        ))
       }}
     >
-      {(item) => (
+      {item => (
         <SelectItem key={item.status} value={item}>
           <div key={item.status} className="flex items-center gap-2">
             <div className="flex gap-2 items-center">
@@ -54,5 +54,5 @@ export default function StatusFilter(props) {
         </SelectItem>
       )}
     </Select>
-  );
+  )
 }

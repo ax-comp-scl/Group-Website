@@ -1,18 +1,18 @@
 import {
   Modal,
-  ModalContent,
-  ModalHeader,
   ModalBody,
+  ModalContent,
   ModalFooter,
-} from "@nextui-org/react";
-import ButtonComponent from "./Button";
+  ModalHeader,
+} from '@nextui-org/react'
+import ButtonComponent from './Button'
 
 export default function ModalView(props) {
   return (
     <>
       <Modal isOpen={props.isOpen} onOpenChange={props.onOpenChange}>
         <ModalContent>
-          {(onClose) => (
+          {onClose => (
             <>
               <ModalHeader className="flex flex-col gap-1">
                 {props.header}
@@ -32,5 +32,5 @@ export default function ModalView(props) {
         </ModalContent>
       </Modal>
     </>
-  );
+  )
 }

@@ -1,19 +1,22 @@
-import Dropzone from "../components/Dropzone"
-import InputComponent from "../components/Input"
-import ButtonComponent from "../components/Button"
-import { useState, useContext, useEffect } from "react"
-import { FormsContext } from "../FormsContext"
-import { postData } from "../services/RequestsService"
+import { useContext, useEffect, useState } from 'react'
+import { FormsContext } from '../FormsContext'
+import ButtonComponent from '../components/Button'
+import Dropzone from '../components/Dropzone'
+import InputComponent from '../components/Input'
+import { postData } from '../services/RequestsService'
 
 export default function PublicationPage() {
-  const [publicationFiles, setPublicationFiles] = useState([]);
+  const [publicationFiles, setPublicationFiles] = useState([])
 
-  const validatePublicationFile = (file) => {
+  const validatePublicationFile = file => {
     const regex = /\.(bib)$/i
-    return regex.test(file.name) ? null : {
-      code: "file-invalid-type",
-      message: "Tipo de arquivo inválido. Somente arquivos .bib são permitidos."
-    }
+    return regex.test(file.name)
+      ? null
+      : {
+          code: 'file-invalid-type',
+          message:
+            'Tipo de arquivo inválido. Somente arquivos .bib são permitidos.',
+        }
   }
 
   const { handleFormChange, formData } = useContext(FormsContext)
@@ -21,13 +24,13 @@ export default function PublicationPage() {
   const [cpu, setCpu] = useState(formData.publication.cpu | 1)
 
   const handleSubmit = async () => {
-    const token = localStorage.getItem("authToken");
+    const token = localStorage.getItem('authToken')
 
     const config = {
       headers: {
-        "Authorization": `Token ${token}`,
-        "Content-Type": "multipart/form-data"
-      }
+        Authorization: `Token ${token}`,
+        'Content-Type': 'multipart/form-data',
+      },
     }
 
     const formData = new FormData()
@@ -37,15 +40,13 @@ export default function PublicationPage() {
     // const response = await postData("api/ontology/insert",
     //   formData,
     //   config)
-
-  };
+  }
 
   useEffect(() => {
     const publicationData = { cpu }
-    formData["publication"] = publicationData
+    formData.publication = publicationData
     handleFormChange(formData)
-  }, [cpu])
-
+  }, [cpu, formData, handleFormChange])
 
   return (
     <>
@@ -55,7 +56,10 @@ export default function PublicationPage() {
           files={publicationFiles}
           setFiles={setPublicationFiles}
           label="BibTeX File"
-          textOnHover={<p className="text-small font-bold px-1 py-2">BibTeX File</p>} />
+          textOnHover={
+            <p className="text-small font-bold px-1 py-2">BibTeX File</p>
+          }
+        />
         <div className="w-7/12">
           <InputComponent
             className="font-xl"
@@ -70,5 +74,5 @@ export default function PublicationPage() {
         <ButtonComponent text="Confirmar" onPress={handleSubmit} />
       </div>
     </>
-  );
+  )
 }

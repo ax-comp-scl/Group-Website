@@ -1,33 +1,32 @@
-import React, { createContext, useState } from "react";
+import React, { createContext, useState } from 'react'
 
-const FormsContext = createContext();
+const FormsContext = createContext()
 
 const FormsProvider = ({ children }) => {
-    const [formData, setFormData] = useState({
-        ontology: {},
-        organism: {},
-        publication: {},
-        fasta: {},
-        gff: {},
-        additional: {
-            annotation: {},
-            sequence: {},
-            publication: {},
-            dbxref: {}
-        },
-        similarity: {}
-    })
+  const [formData, setFormData] = useState({
+    ontology: {},
+    organism: {},
+    publication: {},
+    fasta: {},
+    gff: {},
+    additional: {
+      annotation: {},
+      sequence: {},
+      publication: {},
+      dbxref: {},
+    },
+    similarity: {},
+  })
 
-    const handleFormChange = (data) => {
-        setFormData(data)
-    }
+  const handleFormChange = data => {
+    setFormData(data)
+  }
 
-    return (
-        <FormsContext.Provider
-            value={{ handleFormChange, formData }}>
-            {children}
-        </FormsContext.Provider>
-    )
+  return (
+    <FormsContext.Provider value={{ handleFormChange, formData }}>
+      {children}
+    </FormsContext.Provider>
+  )
 }
 
 export { FormsContext, FormsProvider }

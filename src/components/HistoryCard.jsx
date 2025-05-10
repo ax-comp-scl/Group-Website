@@ -1,4 +1,4 @@
-import AvatarComponent from "./Avatar.jsx";
+import AvatarComponent from './Avatar.jsx'
 
 export default function HistoryCard(props) {
   return (
@@ -8,7 +8,7 @@ export default function HistoryCard(props) {
           <span className="font-bold">{props.description}</span>
         </p>
       </div>
-      <div className="border-t-2"></div>
+      <div className="border-t-2" />
       <div className="flex-1 flex items-center gap-5 p-3">
         <AvatarComponent size="md" isDisabled={true} />
         <p className="break-all text-left">
@@ -17,5 +17,5 @@ export default function HistoryCard(props) {
         </p>
       </div>
     </div>
-  );
+  )
 }

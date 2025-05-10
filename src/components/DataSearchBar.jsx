@@ -1,5 +1,5 @@
-import SearchBar from "./SearchBar";
-import SelectComponent from "./Select";
+import SearchBar from './SearchBar'
+import SelectComponent from './Select'
 
 export default function DataSearchBar(props) {
   return (
@@ -18,5 +18,5 @@ export default function DataSearchBar(props) {
         />
       </SearchBar>
     </>
-  );
+  )
 }

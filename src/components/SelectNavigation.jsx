@@ -1,13 +1,13 @@
-import { Select, SelectItem } from "@nextui-org/react";
-import { useNavigate } from "react-router-dom";
+import { Select, SelectItem } from '@nextui-org/react'
+import { useNavigate } from 'react-router-dom'
 
 export default function SelectNavigation({ options, defaultSelectedKey }) {
-  const navigate = useNavigate();
+  const navigate = useNavigate()
 
-  const handleChange = (value) => {
-    const selectedKey = value.currentKey;
-    navigate(selectedKey);
-  };
+  const handleChange = value => {
+    const selectedKey = value.currentKey
+    navigate(selectedKey)
+  }
 
   return (
     <Select
@@ -18,9 +18,9 @@ export default function SelectNavigation({ options, defaultSelectedKey }) {
       onSelectionChange={handleChange}
       disallowEmptySelection
     >
-      {options.map((o) => (
+      {options.map(o => (
         <SelectItem key={o.key}>{o.label}</SelectItem>
       ))}
     </Select>
-  );
+  )
 }

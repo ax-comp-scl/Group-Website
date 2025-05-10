@@ -1,20 +1,20 @@
-import AccordionComponent from "../components/Accordion"
-import InputComponent from "../components/Input"
-import ButtonComponent from "../components/Button"
-import { toast } from "react-hot-toast"
-import { postData } from "../services/RequestsService"
-import { useForm, Controller } from "react-hook-form"
-import { z } from "zod"
-import { zodResolver } from "@hookform/resolvers/zod"
-import { Loader2 } from "lucide-react"
+import { zodResolver } from '@hookform/resolvers/zod'
+import { Loader2 } from 'lucide-react'
+import { Controller, useForm } from 'react-hook-form'
+import { toast } from 'react-hot-toast'
+import { z } from 'zod'
+import AccordionComponent from '../components/Accordion'
+import ButtonComponent from '../components/Button'
+import InputComponent from '../components/Input'
+import { postData } from '../services/RequestsService'
 
 const organismSchema = z.object({
-  genus: z.string().min(1, "Campo obrigatório"),
-  species: z.string().min(1, "Campo obrigatório"),
-  abbreviation: z.string().optional().or(z.literal("")),
-  infraspecificName: z.string().optional().or(z.literal("")),
-  comment: z.string().optional().or(z.literal("")),
-  commonName: z.string().optional().or(z.literal("")),
+  genus: z.string().min(1, 'Campo obrigatório'),
+  species: z.string().min(1, 'Campo obrigatório'),
+  abbreviation: z.string().optional().or(z.literal('')),
+  infraspecificName: z.string().optional().or(z.literal('')),
+  comment: z.string().optional().or(z.literal('')),
+  commonName: z.string().optional().or(z.literal('')),
 })
 
 export default function OrganismPage() {
@@ -24,12 +24,12 @@ export default function OrganismPage() {
     reset,
     formState: { errors, isSubmitting },
   } = useForm({
-    resolver: zodResolver(organismSchema)
-	})
+    resolver: zodResolver(organismSchema),
+  })
 
-  const onSubmit = async (data) => {
+  const onSubmit = async data => {
     try {
-      await postData("api/load/organism", {
+      await postData('api/load/organism', {
         genus: data.genus,
         species: data.species,
         abbreviation: data.abbreviation,
@@ -39,12 +39,12 @@ export default function OrganismPage() {
       })
       toast.success('Comando para cadastro de organismo enviado com sucesso!')
       reset({
-        genus: "",
-        species: "",
-        abbreviation: "",
-        infraspecificName: "",
-        comment: "",
-        commonName: "",
+        genus: '',
+        species: '',
+        abbreviation: '',
+        infraspecificName: '',
+        comment: '',
+        commonName: '',
       })
     } catch {
       toast.error('Erro ao enviar comando para cadastro de organismo.')
@@ -53,7 +53,10 @@ export default function OrganismPage() {
 
   return (
     <div className="flex flex-col items-center gap-10">
-      <form onSubmit={handleSubmit(onSubmit)} className="flex flex-col items-center gap-10 w-full">
+      <form
+        onSubmit={handleSubmit(onSubmit)}
+        className="flex flex-col items-center gap-10 w-full"
+      >
         <AccordionComponent
           itens={[
             {
@@ -74,7 +77,7 @@ export default function OrganismPage() {
                       placeholder="Ex: Homo sapiens"
                     />
                   )}
-                />, 
+                />,
                 <Controller
                   key="species"
                   name="species"
@@ -90,8 +93,8 @@ export default function OrganismPage() {
                       placeholder="Ex: sapiens"
                     />
                   )}
-                />
-              ]
+                />,
+              ],
             },
             {
               fields: [
@@ -109,7 +112,7 @@ export default function OrganismPage() {
                       placeholder="Ex: H. sapiens"
                     />
                   )}
-                />, 
+                />,
                 <Controller
                   key="infraspecificName"
                   name="infraspecificName"
@@ -124,7 +127,7 @@ export default function OrganismPage() {
                       placeholder="Ex: sapiens"
                     />
                   )}
-                />, 
+                />,
                 <Controller
                   key="comment"
                   name="comment"
@@ -138,7 +141,7 @@ export default function OrganismPage() {
                       errorMessage={errors.comment?.message}
                     />
                   )}
-                />, 
+                />,
                 <Controller
                   key="commonName"
                   name="commonName"
@@ -152,15 +155,19 @@ export default function OrganismPage() {
                       errorMessage={errors.commonName?.message}
                     />
                   )}
-                />
-              ]
+                />,
+              ],
             },
           ]}
         />
         <div className="w-full flex flex-col items-center gap-4">
           <ButtonComponent
-            text={isSubmitting ? "Enviando..." : "Confirmar"}
-            icon={isSubmitting ? <Loader2 className="animate-spin w-5 h-5" /> : undefined}
+            text={isSubmitting ? 'Enviando...' : 'Confirmar'}
+            icon={
+              isSubmitting ? (
+                <Loader2 className="animate-spin w-5 h-5" />
+              ) : undefined
+            }
             color="default"
             variant="solid"
             size="md"
