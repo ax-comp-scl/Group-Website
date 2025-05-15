@@ -11,13 +11,15 @@ export default function HistoryPage() {
 
   async function fetchHistory() {
     const response = await getData('api/history')
-    return response
+    return response?.results
   }
+
+  const oneMinuteInMiliseconds = 1 * 1000 * 60;
 
   const { data, isFetched } = useQuery({
     queryKey: ['history'],
     queryFn: fetchHistory,
-    refetchInterval: 1500,
+    refetchInterval: oneMinuteInMiliseconds,
   })
 
   return (
