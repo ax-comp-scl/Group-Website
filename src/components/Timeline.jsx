@@ -8,8 +8,8 @@ export default function Timeline(props) {
           key={`${i}-${d.created_at}`}
           description={d.description}
           command={d.command}
-          finished_at={d.finished_at}
-          created_at={d.created_at}
+          createdAt={d.created_at}
+          finishedAt={d.finished_at}
           exitCode={d.exit_code}
           params={d.params}
         />
