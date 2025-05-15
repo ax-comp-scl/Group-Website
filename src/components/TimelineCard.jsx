@@ -32,15 +32,15 @@ export default function TimelineCard(props) {
           errorMessage={props.errorMessage}
         />
       </div>
-      <div className="card bg-base-100 shadow-sm hover:shadow-md">
+      <div className="card w-full bg-base-100 shadow-sm hover:shadow-md">
         <div className="card-body p-4">
-          <div className="flex items-center justify-between">
-            <h3 className="card-title text-base-content">
+          <div className="flex items-center justify-center">
+            <h3 className="card-title text-base-content text-center">
               {props.description} - ({props.command})
             </h3>
           </div>
 
-          <div className="flex items-center justify-between gap-3 mt-4">
+          <div className="flex items-center justify-center gap-3 mt-4">
             <div className="flex items-center gap-2">
               <div>
                 <p className="text-sm text-base-content/70">

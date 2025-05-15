@@ -2,7 +2,7 @@ import TimelineCard from './TimelineCard'
 
 export default function Timeline(props) {
   return (
-    <div className="flex flex-col mx-6 gap-3">
+    <div className="grid grid-cols-1 md:grid-cols-2 gap-6 w-full mt-5 max-w-screen-xl mx-auto px-4">
       {props.data.map((d, i) => (
         <TimelineCard
           key={`${i}-${d.created_at}`}
