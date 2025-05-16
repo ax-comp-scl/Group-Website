@@ -24,13 +24,71 @@ export default function OntologiesPage() {
         }
   }
 
-  //relation ontology
-  const handleSubmit = async () => {
-    const formData = new FormData()
-    formData.append('file', relationOntologyFiles[0])
+  const uploadRelationOntology = async () => {
+    const file = relationOntologyFiles[0]
+    const validationError = validateOntologyFile(file)
 
-    // TODO: adicionar try catch e tratativas de erro/sucesso (toast na tela?)
-    await postData('api/load/relations_ontology', formData)
+    try {
+      const response = await postData('/api/load/relations_ontology', file)
+      toast.success('Relation ontology file uploaded successfully')
+      setRelationOntologyFiles([])
+    } catch (error) {
+      console.error('Error uploading relation ontology file:', error)
+      toast.error(
+        error.response?.data?.message || 'An unexpected error occurred while uploading the Relation Ontology File.'
+      )
+    }
+  }
+
+  const uploadSequenceOntologyFile = async () => {
+    const file = sequenceOntologyFiles[0]
+    const validationError = validateOntologyFile(file)
+
+    try {
+      const response = await postData('/api/load/sequence_ontology', file)
+      toast.success('Sequence ontology file uploaded successfully')
+      setSequenceOntologyFiles([])
+    } catch (error) {
+      console.error('Error uploading sequence ontology file:', error)
+      toast.error(
+        error.response?.data?.message || 'An unexpected error occurred while uploading the Sequence Ontology File.'
+      )
+    }
+  }
+
+  const uploadGeneOntologyFile = async () => {
+    const file = geneOntologyFiles[0]
+    const validationError = validateOntologyFile(file)
+
+    try {
+      const response = await postData('/api/load/gene_ontology', file)
+      toast.success('Gene ontology file uploaded successfully')
+      setGeneOntologyFiles([])
+    } catch (error) {
+      console.error('Error uploading gene ontology file:', error)
+      toast.error(
+        error.response?.data?.message || 'An unexpected error occurred while uploading the Gene Ontology File.'
+      )
+    }
+  }
+
+  const handleSubmit = async () => {
+    if (!relationOntologyFiles.length && !sequenceOntologyFiles.length && !geneOntologyFiles.length) {
+      toast.error('Nenhum arquivo encontrado, tente novamente.')
+      return
+    }
+
+    if (relationOntologyFiles.length) {
+      await uploadRelationOntology();
+    }
+
+    if (sequenceOntologyFiles.length) {
+      await uploadSequenceOntologyFile();
+    }
+
+    if (geneOntologyFiles.length) {
+      await uploadGeneOntologyFile();
+    }
   }
 
   useEffect(() => {
