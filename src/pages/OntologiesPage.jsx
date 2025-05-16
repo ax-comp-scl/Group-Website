@@ -5,6 +5,7 @@ import ButtonComponent from '../components/Button'
 import Dropzone from '../components/Dropzone'
 import InputComponent from '../components/Input'
 import { postData } from '../services/RequestsService'
+import { toast } from 'react-hot-toast'
 
 export default function OntologiesPage() {
   const { handleFormChange, formData } = useContext(FormsContext)
