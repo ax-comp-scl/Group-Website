@@ -29,6 +29,11 @@ export default function OntologiesPage() {
     const file = relationOntologyFiles[0]
     const validationError = validateOntologyFile(file)
 
+    if (validationError) {
+      toast.error(validationError.message)
+      return
+    }
+
     try {
       const response = await postFile('api/load/relations_ontology', file)
       toast.success('Relation ontology file uploaded successfully')
@@ -45,6 +50,11 @@ export default function OntologiesPage() {
     const file = sequenceOntologyFiles[0]
     const validationError = validateOntologyFile(file)
 
+    if (validationError) {
+      toast.error(validationError.message)
+      return
+    }
+
     try {
       const response = await postFile('api/load/sequence_ontology', file)
       toast.success('Sequence ontology file uploaded successfully')
@@ -60,6 +70,11 @@ export default function OntologiesPage() {
   const uploadGeneOntologyFile = async () => {
     const file = geneOntologyFiles[0]
     const validationError = validateOntologyFile(file)
+
+    if (validationError) {
+      toast.error(validationError.message)
+      return
+    }
 
     try {
       const response = await postFile('api/load/gene_ontology', file)
