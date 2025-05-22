@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react'
+import { useEffect, useState, useCallback } from 'react'
 import { useDebounce } from 'use-debounce'
 import DataCard from '../components/DataCard'
 import DataSearchBar from '../components/DataSearchBar'
