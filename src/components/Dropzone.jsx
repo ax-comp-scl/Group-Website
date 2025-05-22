@@ -4,6 +4,7 @@ import { useDropzone } from 'react-dropzone'
 import FileTrashIcon from './icons/FileTrashIcon'
 import FileUploadedIcon from './icons/FileUploadedIcon'
 import UploadIcon from './icons/UploadIcon'
+import { api } from '../lib/axios'
 
 export default function Dropzone(props) {
   const [rejectedFiles, setRejectedFiles] = useState([])
@@ -120,7 +121,6 @@ export default function Dropzone(props) {
                         : file.name}
                     </p>
                     <div className="flex items-center">
-                      {progress === 100 ? <FileUploadedIcon /> : `${progress}%`}
                       <button
                         onClick={() => removeFile(file.name)}
                         type="button"
