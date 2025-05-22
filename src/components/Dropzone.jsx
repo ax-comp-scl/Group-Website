@@ -4,6 +4,7 @@ import { useDropzone } from 'react-dropzone'
 import FileTrashIcon from './icons/FileTrashIcon'
 import FileUploadedIcon from './icons/FileUploadedIcon'
 import UploadIcon from './icons/UploadIcon'
+import { axios } from '../lib/axios'
 
 export default function Dropzone(props) {
   const [rejectedFiles, setRejectedFiles] = useState([])
