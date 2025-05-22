@@ -10,6 +10,9 @@ export default {
   theme: {
     extend: {},
   },
-  darkMode: 'class',
+  darkMode: false,
   plugins: [require('daisyui'), nextui()],
+  daisyui: {
+    themes: ['light'], 
+  },
 }

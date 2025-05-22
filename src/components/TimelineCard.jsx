@@ -25,14 +25,14 @@ export default function TimelineCard(props) {
 
   return (
     <div className="relative">
-      <div className="absolute right-4 z-[1]">
+      <div className="absolute right-4 z-[1] mt-2.5">
         <StatusIndicator
           exitCode={props.exitCode}
           progress={props.progress}
           errorMessage={props.errorMessage}
         />
       </div>
-      <div className="card w-full bg-base-100 shadow-sm hover:shadow-md">
+      <div className="card bg-gray-200 shadow-sm hover:shadow-md">
         <div className="card-body p-4">
           <div className="flex items-center justify-center">
             <h3 className="card-title text-base-content text-center">
