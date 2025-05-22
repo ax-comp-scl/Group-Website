@@ -121,7 +121,6 @@ export default function Dropzone(props) {
                         : file.name}
                     </p>
                     <div className="flex items-center">
-                      {progress === 100 ? <FileUploadedIcon /> : `${progress}%`}
                       <button
                         onClick={() => removeFile(file.name)}
                         type="button"
