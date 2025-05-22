@@ -4,7 +4,7 @@ import { FormsContext } from '../FormsContext'
 import ButtonComponent from '../components/Button'
 import Dropzone from '../components/Dropzone'
 import InputComponent from '../components/Input'
-import { postData } from '../services/RequestsService'
+import { postFile } from '../services/RequestsService'
 import { toast } from 'react-hot-toast'
 
 export default function OntologiesPage() {
@@ -30,7 +30,7 @@ export default function OntologiesPage() {
     const validationError = validateOntologyFile(file)
 
     try {
-      const response = await postData('/api/load/relations_ontology', file)
+      const response = await postFile('/api/load/relations_ontology', file)
       toast.success('Relation ontology file uploaded successfully')
       setRelationOntologyFiles([])
     } catch (error) {
@@ -46,7 +46,7 @@ export default function OntologiesPage() {
     const validationError = validateOntologyFile(file)
 
     try {
-      const response = await postData('/api/load/sequence_ontology', file)
+      const response = await postFile('/api/load/sequence_ontology', file)
       toast.success('Sequence ontology file uploaded successfully')
       setSequenceOntologyFiles([])
     } catch (error) {
@@ -62,7 +62,7 @@ export default function OntologiesPage() {
     const validationError = validateOntologyFile(file)
 
     try {
-      const response = await postData('/api/load/gene_ontology', file)
+      const response = await postFile('/api/load/gene_ontology', file)
       toast.success('Gene ontology file uploaded successfully')
       setGeneOntologyFiles([])
     } catch (error) {
