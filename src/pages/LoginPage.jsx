@@ -12,7 +12,7 @@ import { loginUser } from '../services/authService'
 
 const loginSchema = z.object({
   email: z.string().email('Insira um E-mail válido'),
-  password: z.string().min(5, 'A senha deve ter pelo menos 5 caracteres'),
+  password: z.string().min(4, 'A senha deve ter pelo menos 4 caracteres'),
 })
 
 export default function LoginPage() {
