@@ -13,3 +13,16 @@ test.describe('Página de Login', () => {
         await expect(page).toHaveURL('/login');
     }); 
 })
+
+test.describe('Página de Login', () => {
+    test('Informa um email inválido', async ({ page }) => {
+        await page.goto('/contact');
+
+        await page.fill('input[placeholder="Seu e-mail"]', 'a');
+
+        await page.click('button:has-text("Enviar")');
+
+        const errorMessage = page.locator('div[data-slot="error-message"]', { hasText: 'Insira um E-mail válido' });
+        await expect(errorMessage).toBeVisible();
+    }); 
+})
