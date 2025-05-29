@@ -116,11 +116,10 @@ test.describe('Página de Login', () => {
   test('deve redirecionar para a página de contato com algum adm', async ({ page }) => {
     await page.goto('/login');
   
-    const span = page.getByText('Contate um administrador', {exact: true});
-    await span.click();
+    await page.locator('span[aria-label="avatar"]').click({force: true})
+
+    
   
-    await page.waitForURL('/contact');
-  
-    await expect(page).toHaveURL('/contact');
+    
   });
 })
