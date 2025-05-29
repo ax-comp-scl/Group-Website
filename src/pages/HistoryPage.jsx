@@ -8,15 +8,16 @@ import { getData } from '../services/RequestsService'
 
 export default function HistoryPage() {
   const [date, setDate] = useState()
-  const [currentPage, setCurrentPage] = useState(1);
-  const [totalPage, setTotalPage] = useState()
+  const [currentPage, setCurrentPage] = useState(1)
+  const [totalPage, setTotalPage] = useState(1)
+  const [inputPage, setInputPage] = useState('1')
 
-  async function fetchHistory(page=1) {
+  async function fetchHistory(page = 1) {
     const response = await getData(`api/history?page=${page}`)
     return response
   }
 
-  const oneMinuteInMiliseconds = 1 * 1000 * 60;
+  const oneMinuteInMiliseconds = 1 * 1000 * 60
 
   const { data, isFetched } = useQuery({
     queryKey: ['history', currentPage],
@@ -30,7 +31,44 @@ export default function HistoryPage() {
     }
   }, [data])
 
-console.log(data)
+  useEffect(() => {
+    setInputPage(currentPage.toString())
+  }, [currentPage])
+
+  function getPageNumbers() {
+    const pages = []
+    if (totalPage <= 5) {
+      for (let i = 1; i <= totalPage; i++) pages.push(i)
+    } else {
+      pages.push(1)
+      let start = Math.max(2, currentPage - 1)
+      let end = Math.min(totalPage - 1, currentPage + 1)
+
+      if (start > 2) pages.push('start-ellipsis')
+      for (let i = start; i <= end; i++) pages.push(i)
+      if (end < totalPage - 1) pages.push('end-ellipsis')
+      pages.push(totalPage)
+    }
+    return pages
+  }
+
+  function handleInputPageChange(e) {
+    const val = e.target.value
+    if (/^\d*$/.test(val)) {
+      setInputPage(val)
+    }
+  }
+
+  function handleInputPageConfirm() {
+    let pageNum = parseInt(inputPage, 10)
+    if (isNaN(pageNum) || pageNum < 1) {
+      pageNum = 1
+    } else if (pageNum > totalPage) {
+      pageNum = totalPage
+    }
+    setCurrentPage(pageNum)
+    setInputPage(pageNum.toString())
+  }
 
   return (
     <>
@@ -47,47 +85,48 @@ console.log(data)
             />
           </div>
           <Divider />
-         
-          </div><div className="w-full">
+
+          <div className="w-full">
             {isFetched && <Timeline data={data.results} />}
           </div>
-          <div className="join flex justify-center mt-10 space-x-1">
-          {totalPage > 1 && (
-            <>
-              <button
-                className={`join-item btn ${currentPage === 1 ? 'btn-active' : ''}`}
-                onClick={() => setCurrentPage(1)}
-              >
-                1
-              </button>
-              {currentPage > 4 && <span className="btn btn-disabled">...</span>}
 
-              {Array.from({ length: 3 }, (_, i) => currentPage - 1 + i)
-                .filter((page) => page > 1 && page < totalPage)
-                .map((page) => (
-                  <button
-                    key={page}
-                    className={`join-item btn ${currentPage === page ? 'btn-active' : ''}`}
-                    onClick={() => setCurrentPage(page)}
-                  >
-                    {page}
-                  </button>
-                ))}
+          {/* Paginação: botões centralizados e input na direita */}
+          <div className="relative mt-10 px-12">
+            {/* Botões de página centralizados */}
+            <div className="join flex justify-center space-x-1">
+              {totalPage > 1 &&
+                getPageNumbers().map((page, index) =>
+                  typeof page === 'number' ? (
+                    <button
+                      key={index}
+                      className={`join-item btn ${currentPage === page ? 'btn-active' : ''}`}
+                      onClick={() => setCurrentPage(page)}
+                    >
+                      {page}
+                    </button>
+                  ) : (
+                    <span key={index} className="btn btn-disabled pointer-events-none">
+                      ...
+                    </span>
+                  )
+                )}
+            </div>
 
-              {currentPage < totalPage - 3 && <span className="btn btn-disabled">...</span>}
-
-              {totalPage > 1 && (
-                <button
-                  className={`join-item btn ${currentPage === totalPage ? 'btn-active' : ''}`}
-                  onClick={() => setCurrentPage(totalPage)}
-                >
-                  {totalPage}
-                </button>
-              )}
-            </>
-          )}
+            {/* Input no canto direito */}
+            <div className="absolute right-0 top-1/2 -translate-y-1/2 flex items-center space-x-2">
+              <input
+                id="pageInput"
+                type="text"
+                className="input input-bordered w-[6ch] text-center"
+                value={inputPage}
+                onChange={handleInputPageChange}
+                onBlur={handleInputPageConfirm}
+                onKeyDown={(e) => e.key === 'Enter' && handleInputPageConfirm()}
+              />
+              <span>/ {totalPage}</span>
+            </div>
+          </div>
         </div>
-
       </div>
     </>
   )
