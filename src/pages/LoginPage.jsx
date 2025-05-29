@@ -37,7 +37,7 @@ export default function LoginPage() {
     try {
       const user = await loginUser(data.email, data.password)
       if (user) {
-        navigate('/admin/history')
+        navigate('/history')
       }
     } catch (error) {
       console.error('Erro ao fazer login:', error)

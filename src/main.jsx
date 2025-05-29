@@ -32,7 +32,7 @@ const router = createBrowserRouter([
   {
     path: '/login',
     element: isAuthenticated() ? (
-      <Navigate to={'/admin/history'} />
+      <Navigate to={'/history'} />
     ) : (
       <LoginPage />
     ),
@@ -45,10 +45,6 @@ const router = createBrowserRouter([
     path: '/admin',
     element: <ProtectedRoute isStaffRequired={true} />,
     children: [
-      {
-        path: 'history',
-        element: <HistoryPage />,
-      },
       {
         path: 'create-user',
         element: <CreateUserPage />,
@@ -96,7 +92,7 @@ const router = createBrowserRouter([
               },
               {
                 path: 'publication',
-                element: <AdditionalPublicationPage />,
+                element: <AdditionalPublicationPage />
               },
               {
                 path: 'dbxref',
@@ -125,9 +121,9 @@ const router = createBrowserRouter([
         element: <Navigate to="/login" />,
       },
       {
-        path: '/organisms',
-        element: <ListDataPage />,
-      },
+        path: 'history',
+        element: <HistoryPage />,
+      }
     ],
   },
 ])
