@@ -17,6 +17,11 @@ export default function CreateUserPage() {
   const [isInvalid, setIsInvalid] = useState(false)
 
   const handleSubmit = async () => {
+    if (!password || password.length < 4) {
+    setIsInvalid(true)
+    return
+  }
+
     try {
       const data = await postData('account/', {
         username,
