@@ -17,12 +17,12 @@ export default function HistoryPage() {
     return response
   }
 
-  const oneMinuteInMiliseconds = 1 * 1000 * 60
+  const fiveSecondsInMiliseconds = 1 * 1000 * 5
 
   const { data, isFetched } = useQuery({
     queryKey: ['history', currentPage],
     queryFn: () => fetchHistory(currentPage),
-    refetchInterval: oneMinuteInMiliseconds,
+    refetchInterval: fiveSecondsInMiliseconds,
   })
 
   useEffect(() => {

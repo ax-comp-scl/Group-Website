@@ -8,14 +8,7 @@ function StatusIndicator({ exitCode }) {
     case 1:
       return <XCircle className="w-5 h-5 text-error" />
     default:
-      return (
-        <div className="flex items-center gap-2">
-          <Loader2 className="w-5 h-5 text-info animate-spin" />
-          <div className="w-24 bg-base-200 rounded-full h-2">
-            <div className="bg-info rounded-full h-2 transition-all duration-300 w-1/2" />
-          </div>
-        </div>
-      )
+      return <Loader2 className="w-5 h-5 text-info animate-spin" />
   }
 }
 
@@ -49,31 +42,6 @@ export default function TimelineCard(props) {
               </div>
             </div>
           </div>
-
-          <div className="mt-4 space-y-1 text-sm text-base-content/80">
-            <p>
-              <strong>Nome comum:</strong> {props.params.common_name}
-            </p>
-            <p>
-              <strong>Comentário:</strong> {props.params.comment}
-            </p>
-            <p>
-              <strong>Gênero:</strong> {props.params.genus}
-            </p>
-            <p>
-              <strong>Espécie:</strong> {props.params.species}
-            </p>
-            {props.infraspecific_name && (
-              <p>
-                <strong>Nome infraespecífico:</strong>{' '}
-                {props.params.infraspecific_name}
-              </p>
-            )}
-            <p>
-              <strong>Abreviação:</strong> {props.params.abbreviation}
-            </p>
-          </div>
-
           {props.status === 'failed' && (
             <div className="mt-4">
               <div className="alert alert-error text-sm">
