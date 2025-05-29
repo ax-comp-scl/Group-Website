@@ -3,10 +3,13 @@ import { FormsContext } from '../FormsContext'
 import ButtonComponent from '../components/Button'
 import Dropzone from '../components/Dropzone'
 import InputComponent from '../components/Input'
-import { postData } from '../services/RequestsService'
+import { postFile } from '../services/RequestsService'
+import { toast } from 'react-hot-toast'
 
 export default function PublicationPage() {
+  const { handleFormChange, formData } = useContext(FormsContext)
   const [publicationFiles, setPublicationFiles] = useState([])
+  const [cpu, setCpu] = useState(formData.publication.cpu || 1)
 
   const validatePublicationFile = file => {
     const regex = /\.(bib)$/i
@@ -19,27 +22,30 @@ export default function PublicationPage() {
         }
   }
 
-  const { handleFormChange, formData } = useContext(FormsContext)
-
-  const [cpu, setCpu] = useState(formData.publication.cpu | 1)
-
   const handleSubmit = async () => {
-    const token = localStorage.getItem('authToken')
-
-    const config = {
-      headers: {
-        Authorization: `Token ${token}`,
-        'Content-Type': 'multipart/form-data',
-      },
+    if (!publicationFiles.length) {
+      toast.error('Nenhum arquivo encontrado, tente novamente.')
+      return
     }
 
-    const formData = new FormData()
+    const file = publicationFiles[0]
+    const validationError = validatePublicationFile(file)
 
-    // formData.append('file', relationOntologyFiles[0])
+    if (validationError) {
+      toast.error(validationError.message)
+      return
+    }
 
-    // const response = await postData("api/ontology/insert",
-    //   formData,
-    //   config)
+    try {
+      const response = await postFile('api/publications/load', file)
+      toast.success('Publicação enviada com sucesso!')
+      setPublicationFiles([])
+    } catch (error) {
+      console.error('Erro ao enviar publicação:', error)
+      toast.error(
+        error.response?.data?.message || 'Ocorreu um erro inesperado ao enviar a publicação.'
+      )
+    }
   }
 
   useEffect(() => {
