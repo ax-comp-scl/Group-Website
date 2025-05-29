@@ -125,11 +125,11 @@ export default function LoginPage() {
                 </span>
               </div>
             )}
-            <div className="flex justify-end w-full py-4">
+            {/* <div className="flex justify-end w-full py-4">
               <span className="font-bold text-md border-b-2 border-black hover:border-green-900 hover:text-green-900 cursor-pointer">
                 Recuperar senha
               </span>
-            </div>
+            </div> */}
             <Button
               type="submit"
               color="default"
