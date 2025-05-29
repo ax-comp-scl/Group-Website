@@ -33,7 +33,6 @@ export default function ContactAdminPage() {
 
   const onSubmit = async data => {
     setShowModal(true)
-    console.log(data)
   }
 
   return (

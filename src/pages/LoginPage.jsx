@@ -12,7 +12,7 @@ import { loginUser } from '../services/authService'
 
 const loginSchema = z.object({
   email: z.string().email('Insira um E-mail válido'),
-  password: z.string().min(5, 'A senha deve ter pelo menos 5 caracteres'),
+  password: z.string().min(4, 'A senha deve ter pelo menos 4 caracteres'),
 })
 
 export default function LoginPage() {
@@ -61,7 +61,7 @@ export default function LoginPage() {
             />
           </div>
           <span className="mb-3 text-4xl font-bold">Bem-Vindo</span>
-          <span className="mb-8 font-light text-gray-500">
+          <span className="mb-2 font-light text-gray-500">
             Acesse sua conta
           </span>
           <form onSubmit={handleSubmit(onSubmit)}>
@@ -125,11 +125,11 @@ export default function LoginPage() {
                 </span>
               </div>
             )}
-            <div className="flex justify-end w-full py-4">
+            {/* <div className="flex justify-end w-full py-4">
               <span className="font-bold text-md border-b-2 border-black hover:border-green-900 hover:text-green-900 cursor-pointer">
                 Recuperar senha
               </span>
-            </div>
+            </div> */}
             <Button
               type="submit"
               color="default"
