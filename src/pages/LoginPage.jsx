@@ -76,7 +76,6 @@ export default function LoginPage() {
                     placeholder="Seu e-mail"
                     variant="bordered"
                     radius="sm"
-                    isClearable
                     color={errors.email ? 'danger' : 'success'}
                     isInvalid={!!errors.email}
                     errorMessage={errors.email?.message}
