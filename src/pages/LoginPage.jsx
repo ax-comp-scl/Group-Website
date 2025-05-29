@@ -61,7 +61,7 @@ export default function LoginPage() {
             />
           </div>
           <span className="mb-3 text-4xl font-bold">Bem-Vindo</span>
-          <span className="mb-8 font-light text-gray-500">
+          <span className="mb-2 font-light text-gray-500">
             Acesse sua conta
           </span>
           <form onSubmit={handleSubmit(onSubmit)}>
