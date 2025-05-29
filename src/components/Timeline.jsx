@@ -11,7 +11,6 @@ export default function Timeline(props) {
           finishedAt={d.finished_at}
           createdAt={d.created_at}
           exitCode={d.exit_code}
-          params={d.params}
         />
       ))}
     </div>
