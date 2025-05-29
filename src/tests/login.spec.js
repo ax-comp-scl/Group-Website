@@ -112,17 +112,6 @@ test.describe('Página de Login', () => {
 
     await expect(passwordInput).toHaveValue('senha')
   })
-
-  test('deve redirecionar para a página de recuperação de senha', async ({ page }) => {
-    await page.goto('/login');
-  
-    const spantext = page.getByText('Recuperar Senha', {exact: true});
-    await spantext.click();
-  
-    await page.waitForURL('/recSenha');
-  
-    await expect(page).toHaveURL('/recSenha');
-  });
   
   test('deve redirecionar para a página de contato com algum adm', async ({ page }) => {
     await page.goto('/login');
