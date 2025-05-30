@@ -89,8 +89,15 @@ export default function UserCard(props) {
 
   const handleExclude = async () => {
     try {
+      const token = localStorage.getItem("authToken");
+
+      const config = {
+        headers: {
+          Authorization: `Token ${token}`,
+        }
+      }
       const id = props.data.id
-      const data = await deleteData(`account/${id}`)
+      const data = await deleteData(`account/${id}`, config)
       props.loadData()
     } catch (error) {
       setIsInvalid(true)
