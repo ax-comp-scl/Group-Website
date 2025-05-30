@@ -145,37 +145,38 @@ export default function HistoryPage() {
           </div>
 
           <div className="relative mt-10 px-12">
-            <div className="join flex justify-center space-x-1">
-              {totalPage > 1 &&
-                getPageNumbers().map((page, index) =>
-                  typeof page === 'number' ? (
-                    <button
-                      key={page}
-                      type="button"
-                      className={`join-item btn ${currentPage === page ? 'btn-active' : ''}`}
-                      onClick={() => setCurrentPage(page)}
-                    >
-                      {page}
-                    </button>
-                  ) : (
-                    <span key={page} className="btn btn-disabled pointer-events-none">
-                      ...
-                    </span>
-                  )
-                )}
-            </div>
-
-            <div className="flex items-center space-x-2">
-              <input
-                id="pageInput"
-                type="text"
-                className="input input-bordered w-[5ch] h-[5ch] text-center"
-                value={inputPage}
-                onChange={handleInputPageChange}
-                onBlur={handleInputPageConfirm}
-                onKeyDown={(e) => e.key === 'Enter' && handleInputPageConfirm()}
-              />
-              <span>/ {totalPage}</span>
+            <div className="flex items-center justify-center gap-4">
+              <div className="join flex space-x-1">
+                {totalPage > 1 &&
+                  getPageNumbers().map((page, index) =>
+                    typeof page === 'number' ? (
+                      <button
+                        key={page}
+                        type="button"
+                        className={`join-item btn ${currentPage === page ? 'btn-active' : ''}`}
+                        onClick={() => setCurrentPage(page)}
+                      >
+                        {page}
+                      </button>
+                    ) : (
+                      <span key={page} className="btn btn-disabled pointer-events-none">
+                        ...
+                      </span>
+                    )
+                  )}
+              </div>
+              <div className="flex items-center space-x-2">
+                <input
+                  id="pageInput"
+                  type="text"
+                  className="input input-bordered w-[5ch] h-[5ch] text-center"
+                  value={inputPage}
+                  onChange={handleInputPageChange}
+                  onBlur={handleInputPageConfirm}
+                  onKeyDown={(e) => e.key === 'Enter' && handleInputPageConfirm()}
+                />
+                <span>/ {totalPage}</span>
+              </div>
             </div>
           </div>
         </div>
