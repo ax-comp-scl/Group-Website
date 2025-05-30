@@ -90,9 +90,7 @@ export default function HistoryPage() {
             {isFetched && <Timeline data={data.results} />}
           </div>
 
-          {/* Paginação: botões centralizados e input na direita */}
           <div className="relative mt-10 px-12">
-            {/* Botões de página centralizados */}
             <div className="join flex justify-center space-x-1">
               {totalPage > 1 &&
                 getPageNumbers().map((page, index) =>
@@ -112,7 +110,6 @@ export default function HistoryPage() {
                 )}
             </div>
 
-            {/* Input no canto direito */}
             <div className="absolute right-0 top-1/2 -translate-y-1/2 flex items-center space-x-2">
               <input
                 id="pageInput"
