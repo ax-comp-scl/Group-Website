@@ -1,5 +1,5 @@
-import { Input, Tooltip } from "@nextui-org/react";
-import { twMerge } from "tailwind-merge";
+import { Input, Tooltip } from '@nextui-org/react'
+import { twMerge } from 'tailwind-merge'
 
 export default function InputComponent(props) {
   const inputComponent = (
@@ -10,9 +10,9 @@ export default function InputComponent(props) {
       type={props.type}
       label={props.label}
       classNames={{
-        label: "font-normal",
+        label: 'font-normal',
       }}
-      className={twMerge("max-w-xs", props.className)}
+      className={twMerge('max-w-xs', props.className)}
       value={props.value}
       endContent={props.endContent}
       startContent={props.startContent}
@@ -22,7 +22,7 @@ export default function InputComponent(props) {
       isClearable={props.isClearable}
       aria-label={props.ariaLabel}
     />
-  );
+  )
   return (
     <>
       {props.textOnHover ? (
@@ -38,5 +38,5 @@ export default function InputComponent(props) {
         inputComponent
       )}
     </>
-  );
+  )
 }

@@ -1,17 +1,17 @@
 import {
   Modal,
-  ModalContent,
-  ModalHeader,
   ModalBody,
+  ModalContent,
   ModalFooter,
-} from "@nextui-org/react";
-import ButtonComponent from "./Button";
+  ModalHeader,
+} from '@nextui-org/react'
+import ButtonComponent from './Button'
 
 export default function ModalOption(props) {
   return (
     <Modal isOpen={props.isOpen} onOpenChange={props.onOpenChange}>
       <ModalContent>
-        {(onClose) => (
+        {onClose => (
           <>
             <ModalHeader className="text-center">
               <p>Essa é uma ação irreversível</p>
@@ -39,5 +39,5 @@ export default function ModalOption(props) {
         )}
       </ModalContent>
     </Modal>
-  );
+  )
 }

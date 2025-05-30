@@ -1,18 +1,18 @@
 import {
-  Dropdown,
-  DropdownTrigger,
-  DropdownMenu,
-  DropdownItem,
   Avatar,
-} from "@nextui-org/react";
+  Dropdown,
+  DropdownItem,
+  DropdownMenu,
+  DropdownTrigger,
+} from '@nextui-org/react'
 
-import { useNavigate } from "react-router-dom";
-import { logoutUser } from "../services/authService";
-import { getUser } from "../services/userService";
+import { useNavigate } from 'react-router-dom'
+import { logoutUser } from '../services/authService'
+import { getUser } from '../services/userService'
 
 export default function AvatarComponent(props) {
   const user = getUser()
-  const navigate = useNavigate();
+  const navigate = useNavigate()
   return (
     <div className="flex items-center gap-4">
       <Dropdown
@@ -31,14 +31,16 @@ export default function AvatarComponent(props) {
         <DropdownMenu
           aria-label="Profile Actions"
           variant="flat"
-          disabledKeys={["user"]}
+          disabledKeys={['user']}
         >
-          <DropdownItem showDivider key="user" textValue={`Conectado como ${user.username || ''}`}>
+          <DropdownItem
+            showDivider
+            key="user"
+            textValue={`Conectado como ${user.username || ''}`}
+          >
             <p className="break-words">
-              Conectado como{" "}
-              <span className="font-bold ">
-                {user.username || ''}
-              </span>
+              Conectado como{' '}
+              <span className="font-bold ">{user.username || ''}</span>
             </p>
           </DropdownItem>
           <DropdownItem
@@ -46,7 +48,7 @@ export default function AvatarComponent(props) {
             color="danger"
             onPress={() => {
               logoutUser()
-              navigate("/login");
+              navigate('/login')
             }}
           >
             Sair
@@ -54,5 +56,5 @@ export default function AvatarComponent(props) {
         </DropdownMenu>
       </Dropdown>
     </div>
-  );
+  )
 }

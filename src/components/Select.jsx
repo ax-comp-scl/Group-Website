@@ -1,4 +1,4 @@
-import { Select, SelectItem, Tooltip } from "@nextui-org/react";
+import { Select, SelectItem, Tooltip } from '@nextui-org/react'
 
 export default function SelectComponent(props) {
   const selectComponent = (
@@ -12,11 +12,11 @@ export default function SelectComponent(props) {
       isInvalid={props.isInvalid}
       disallowEmptySelection={props.disallowEmptySelection}
     >
-      {props.options.map((o) => (
+      {props.options.map(o => (
         <SelectItem key={o}>{o}</SelectItem>
       ))}
     </Select>
-  );
+  )
   return (
     <>
       {props.textOnHover ? (
@@ -33,5 +33,5 @@ export default function SelectComponent(props) {
         selectComponent
       )}
     </>
-  );
+  )
 }

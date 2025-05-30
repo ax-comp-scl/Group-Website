@@ -1,27 +1,27 @@
 import {
   Modal,
-  ModalContent,
-  ModalHeader,
   ModalBody,
+  ModalContent,
   ModalFooter,
-} from "@nextui-org/react";
-import { useState } from "react";
-import ButtonComponent from "./Button";
-import ModalOption from "./ModalOption";
+  ModalHeader,
+} from '@nextui-org/react'
+import { useState } from 'react'
+import ButtonComponent from './Button'
+import ModalOption from './ModalOption'
 
 export default function ModalEdit(props) {
-  const [isOptionOpen, setOptionOpen] = useState(false);
+  const [isOptionOpen, setOptionOpen] = useState(false)
 
   const handleConfirm = () => {
-    props.onOpenChange(false);
-    setOptionOpen(true);
-  };
+    props.onOpenChange(false)
+    setOptionOpen(true)
+  }
 
   return (
     <>
       <Modal isOpen={props.isOpen} onOpenChange={props.onOpenChange}>
         <ModalContent>
-          {(onClose) => (
+          {onClose => (
             <>
               <ModalHeader className="flex flex-col gap-1">
                 {props.header}
@@ -55,9 +55,9 @@ export default function ModalEdit(props) {
         onOpenChange={setOptionOpen}
         handleConfirm={async () => {
           props.handleEdit()
-          setOptionOpen(false);
+          setOptionOpen(false)
         }}
       />
     </>
-  );
+  )
 }

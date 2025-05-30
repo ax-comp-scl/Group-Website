@@ -1,4 +1,4 @@
-import { Checkbox, Tooltip } from "@nextui-org/react";
+import { Checkbox, Tooltip } from '@nextui-org/react'
 
 export default function CheckboxComponent(props) {
   const checkboxComponent = (
@@ -11,7 +11,7 @@ export default function CheckboxComponent(props) {
     >
       {props.name}
     </Checkbox>
-  );
+  )
   return props.textOnHover ? (
     <Tooltip
       content={props.textOnHover}
@@ -23,5 +23,5 @@ export default function CheckboxComponent(props) {
     </Tooltip>
   ) : (
     checkboxComponent
-  );
+  )
 }

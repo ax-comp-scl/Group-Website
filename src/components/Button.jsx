@@ -1,4 +1,4 @@
-import { Button } from "@nextui-org/react";
+import { Button } from '@nextui-org/react'
 
 export default function ButtonComponent(props) {
   return (
@@ -10,9 +10,10 @@ export default function ButtonComponent(props) {
         color={props.color}
         variant={props.variant}
         onPress={props.onPress}
+        {...props}
       >
         {props.text}
       </Button>
     </>
-  );
+  )
 }

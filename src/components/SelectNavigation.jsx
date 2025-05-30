@@ -1,22 +1,26 @@
-import { Select, SelectItem } from "@nextui-org/react";
+import { Select, SelectItem } from '@nextui-org/react'
+import { useNavigate } from 'react-router-dom'
 
-export default function SelectNavigation(props) {
+export default function SelectNavigation({ options, defaultSelectedKey }) {
+  const navigate = useNavigate()
+
+  const handleChange = value => {
+    const selectedKey = value.currentKey
+    navigate(selectedKey)
+  }
+
   return (
     <Select
       label="Selecione uma opção"
       className="max-w-xs"
-      isRequired={props.isRequired}
       variant="bordered"
-      onSelectionChange={(value) => {
-        const selectedValue = value.currentKey;
-        props.onChange(selectedValue);
-      }}
-      defaultSelectedKeys={new Set([props.defaultSelectedKeys])}
+      defaultSelectedKeys={new Set([defaultSelectedKey])}
+      onSelectionChange={handleChange}
       disallowEmptySelection
     >
-      {props.options.map((o) => (
-        <SelectItem key={o}>{o}</SelectItem>
+      {options.map(o => (
+        <SelectItem key={o.key}>{o.label}</SelectItem>
       ))}
     </Select>
-  );
+  )
 }

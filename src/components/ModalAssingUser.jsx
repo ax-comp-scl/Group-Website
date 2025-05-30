@@ -1,49 +1,46 @@
 import {
   Modal,
-  ModalContent,
-  ModalHeader,
   ModalBody,
+  ModalContent,
   ModalFooter,
-} from "@nextui-org/react";
-import SearchIcon from "./icons/SearchIcon";
-import { Divider } from "@nextui-org/react";
-import { Kbd } from "@nextui-org/react";
-import UserSearchCard from "./UserSearchCard";
-import { useState, useEffect } from "react"
-import { useDebounce } from "use-debounce"
-import { getUserByUsername } from "../services/userService";
+  ModalHeader,
+} from '@nextui-org/react'
+import { Divider } from '@nextui-org/react'
+import { Kbd } from '@nextui-org/react'
+import { useEffect, useState } from 'react'
+import { useDebounce } from 'use-debounce'
+import { getUserByUsername } from '../services/userService'
+import UserSearchCard from './UserSearchCard'
+import SearchIcon from './icons/SearchIcon'
 
 export default function ModalAssingUser(props) {
-  const [searchValue, setSearchValue] = useState("")
+  const [searchValue, setSearchValue] = useState('')
   const [resultList, setResultList] = useState([])
   const [allUsersList, setAllUsersList] = useState([])
   const [debounce] = useDebounce(searchValue, 200)
 
-  async function handleSearch() {
+  const handleSearch = useCallback(() => {
     if (debounce) {
-      setResultList(allUsersList.filter(usr => usr.username.toLowerCase().includes(debounce.toLowerCase())))
-    }
-    else setResultList([])
-  }
+      setResultList(
+        allUsersList.filter(usr =>
+          usr.username.toLowerCase().includes(debounce.toLowerCase())
+        )
+      )
+    } else setResultList([])
+  }, [debounce, allUsersList])
 
   useEffect(() => {
     handleSearch()
-  }, [debounce, allUsersList])
+  }, [handleSearch])
 
-  const loadData = async () => {
-    const token = localStorage.getItem("authToken");
-    const config = {
-      headers: {
-        Authorization: `Token ${token}`,
-      }
-    }
-    const data = await getUserByUsername(searchValue, config)
+  const loadData = useCallback(async () => {
+    const data = await getUserByUsername(searchValue)
     setAllUsersList(data)
-  }
+  }, [searchValue])
 
   useEffect(() => {
     if (searchValue) loadData()
-  }, [searchValue])
+  }, [searchValue, loadData])
 
   return (
     <Modal
@@ -52,8 +49,8 @@ export default function ModalAssingUser(props) {
       onOpenChange={props.onOpenChange}
       isKeyboardDismissDisabled={false}
       classNames={{
-        body: "overflow-x-hidden",
-        closeButton: "hidden",
+        body: 'overflow-x-hidden',
+        closeButton: 'hidden',
       }}
     >
       <ModalContent>
@@ -65,7 +62,7 @@ export default function ModalAssingUser(props) {
                 type="text"
                 placeholder="Digite para buscar..."
                 className="flex-1 bg-[#d6d6d6] focus:outline-none h-14 text-xl text-gray-600"
-                onChange={(e) => setSearchValue(e.target.value)}
+                onChange={e => setSearchValue(e.target.value)}
               />
               <div>
                 <Kbd className="items-center text-center shadow-small rounded-small hidden md:block border-none px-2 py-1 font-semibold text-xs">
@@ -73,18 +70,19 @@ export default function ModalAssingUser(props) {
                 </Kbd>
               </div>
             </div>
-            {
-              resultList.length > 0 &&
+            {resultList.length > 0 && (
               <>
-                <Divider/>
+                <Divider />
                 <ModalBody className="overflow-y-auto max-h-[60vh] py-5">
-                  {resultList.map((u) => <UserSearchCard user={u} />)}
+                  {resultList.map(u => (
+                    <UserSearchCard user={u} key={u.id} />
+                  ))}
                 </ModalBody>
               </>
-            }
+            )}
           </div>
         }
       </ModalContent>
     </Modal>
-  );
+  )
 }

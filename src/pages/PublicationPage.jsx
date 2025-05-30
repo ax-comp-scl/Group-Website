@@ -1,51 +1,58 @@
-import Dropzone from "../components/Dropzone"
-import InputComponent from "../components/Input"
-import ButtonComponent from "../components/Button"
-import { useState, useContext, useEffect } from "react"
-import { FormsContext } from "../FormsContext"
-import { postData } from "../services/RequestsService"
+import { useContext, useEffect, useState } from 'react'
+import { toast } from 'react-hot-toast'
+import { FormsContext } from '../FormsContext'
+import ButtonComponent from '../components/Button'
+import Dropzone from '../components/Dropzone'
+import InputComponent from '../components/Input'
+import { postFile } from '../services/RequestsService'
 
 export default function PublicationPage() {
-  const [publicationFiles, setPublicationFiles] = useState([]);
+  const { handleFormChange, formData } = useContext(FormsContext)
+  const [publicationFiles, setPublicationFiles] = useState([])
+  const [cpu, setCpu] = useState(formData.publication.cpu || 1)
 
-  const validatePublicationFile = (file) => {
+  const validatePublicationFile = file => {
     const regex = /\.(bib)$/i
-    return regex.test(file.name) ? null : {
-      code: "file-invalid-type",
-      message: "Tipo de arquivo inválido. Somente arquivos .bib são permitidos."
+    return regex.test(file.name)
+      ? null
+      : {
+        code: 'file-invalid-type',
+        message:
+          'Tipo de arquivo inválido. Somente arquivos .bib são permitidos.',
+      }
+  }
+
+  const handleSubmit = async () => {
+    if (!publicationFiles.length) {
+      toast.error('Nenhum arquivo encontrado, tente novamente.')
+      return
+    }
+
+    const file = publicationFiles[0]
+    const validationError = validatePublicationFile(file)
+
+    if (validationError) {
+      toast.error(validationError.message)
+      return
+    }
+
+    try {
+      const response = await postFile('api/load/publication', file)
+      toast.success('Publicação enviada com sucesso!')
+      setPublicationFiles([])
+    } catch (error) {
+      console.error('Erro ao enviar publicação:', error)
+      toast.error(
+        error.response?.data?.message || 'Ocorreu um erro inesperado ao enviar a publicação.'
+      )
     }
   }
 
-  const { handleFormChange, formData } = useContext(FormsContext)
-
-  const [cpu, setCpu] = useState(formData.publication.cpu | 1)
-
-  const handleSubmit = async () => {
-    const token = localStorage.getItem("authToken");
-
-    const config = {
-      headers: {
-        "Authorization": `Token ${token}`,
-        "Content-Type": "multipart/form-data"
-      }
-    }
-
-    const formData = new FormData()
-
-    // formData.append('file', relationOntologyFiles[0])
-
-    // const response = await postData("api/ontology/insert",
-    //   formData,
-    //   config)
-
-  };
-
   useEffect(() => {
     const publicationData = { cpu }
-    formData["publication"] = publicationData
+    formData.publication = publicationData
     handleFormChange(formData)
-  }, [cpu])
-
+  }, [cpu, formData, handleFormChange])
 
   return (
     <>
@@ -55,7 +62,10 @@ export default function PublicationPage() {
           files={publicationFiles}
           setFiles={setPublicationFiles}
           label="BibTeX File"
-          textOnHover={<p className="text-small font-bold px-1 py-2">BibTeX File</p>} />
+          textOnHover={
+            <p className="text-small font-bold px-1 py-2">BibTeX File</p>
+          }
+        />
         <div className="w-7/12">
           <InputComponent
             className="font-xl"
@@ -70,5 +80,5 @@ export default function PublicationPage() {
         <ButtonComponent text="Confirmar" onPress={handleSubmit} />
       </div>
     </>
-  );
+  )
 }

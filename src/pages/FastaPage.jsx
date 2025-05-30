@@ -1,53 +1,73 @@
-import Dropzone from "../components/Dropzone"
-import InputComponent from "../components/Input"
-import CheckboxComponent from "../components/Checkbox"
-import SelectComponent from "../components/Select"
-import ButtonComponent from "../components/Button"
-import AccordionComponent from "../components/Accordion"
-import { useState, useContext, useEffect } from "react"
-import { FormsContext } from "../FormsContext"
-import { postData, getData } from "../services/RequestsService"
-import SelectOrganisms from "../components/SelectOrganisms"
+import { useContext, useEffect, useState } from 'react'
+import { FormsContext } from '../FormsContext'
+import AccordionComponent from '../components/Accordion'
+import ButtonComponent from '../components/Button'
+import CheckboxComponent from '../components/Checkbox'
+import Dropzone from '../components/Dropzone'
+import InputComponent from '../components/Input'
+import SelectComponent from '../components/Select'
+import SelectOrganisms from '../components/SelectOrganisms'
+import { postFile } from '../services/RequestsService'
+import { toast } from 'react-hot-toast'
 
 export default function FastaPage() {
   const { handleFormChange, formData } = useContext(FormsContext)
 
-  const [organism, setOrganism] = useState(formData.fasta.organism)
-  const [soterm, setSoterm] = useState(formData.fasta.soterm)
-  const [description, setDescription] = useState(formData.fasta.description)
-  const [url, setUrl] = useState(formData.fasta.url)
-  const [doi, setDoi] = useState(formData.fasta.doi)
-  const [nosequence, setNosequence] = useState(formData.fasta.nosequence)
-  const [cpu, setCpu] = useState(formData.fasta.cpu | 1)
-  const [fastaFiles, setFastaFiles] = useState([]);
+  const [organism, setOrganism] = useState(formData.fasta.organism || '')
+  const [soterm, setSoterm] = useState(formData.fasta.soterm || '')
+  const [description, setDescription] = useState(formData.fasta.description || '')
+  const [url, setUrl] = useState(formData.fasta.url || '')
+  const [doi, setDoi] = useState(formData.fasta.doi || '')
+  const [nosequence, setNosequence] = useState(formData.fasta.nosequence || false)
+  const [cpu, setCpu] = useState(formData.fasta.cpu || 1)
+  const [fastaFiles, setFastaFiles] = useState([])
 
-  const validateFastaFile = (file) => {
+  const validateFastaFile = file => {
     const regex = /\.(fasta|fa|fna|faa)$/i
-    return regex.test(file.name) ? null : {
-      code: "file-invalid-type",
-      message: "Tipo de arquivo inválido. Somente arquivos .fasta, .fa, .fna ou .faa são permitidos."
-    }
+    return regex.test(file.name)
+      ? null
+      : {
+          code: 'file-invalid-type',
+          message:
+            'Tipo de arquivo inválido. Somente arquivos .fasta, .fa, .fna ou .faa são permitidos.',
+        }
   }
 
   const handleSubmit = async () => {
-    const token = localStorage.getItem("authToken");
-
-    const config = {
-      headers: {
-        "Authorization": `Token ${token}`,
-        "Content-Type": "multipart/form-data"
-      }
+    if (!fastaFiles.length) {
+      toast.error('Nenhum arquivo FASTA encontrado, tente novamente.')
+      return
     }
 
-    const formData = new FormData()
+    const file = fastaFiles[0]
+    const validationError = validateFastaFile(file)
 
-    // formData.append('file', relationOntologyFiles[0])
+    if (validationError) {
+      toast.error(validationError.message)
+      return
+    }
 
-    // const response = await postData("api/ontology/insert",
-    //   formData,
-    //   config)
+    const additionalData = {
+      organism: organism,
+      soterm: soterm,
+      description: description,
+      url: url,
+      doi: doi,
+      nosequence: nosequence,
+      cpu: cpu,
+    }
 
-  };
+    try {
+      const response = await postFile('api/fasta/load', file, additionalData)
+      toast.success('Arquivo FASTA enviado com sucesso!')
+      setFastaFiles([])
+    } catch (error) {
+      console.error('Erro ao enviar arquivo FASTA:', error)
+      toast.error(
+        error.response?.data?.message || 'Ocorreu um erro inesperado ao enviar o arquivo FASTA.'
+      )
+    }
+  }
 
   useEffect(() => {
     const fastaData = {
@@ -57,46 +77,45 @@ export default function FastaPage() {
       url,
       doi,
       nosequence,
-      cpu
+      cpu,
     }
-    formData["fasta"] = fastaData
+    formData.fasta = fastaData
     handleFormChange(formData)
-  }, [organism, soterm, description, url, doi, nosequence, cpu])
+  }, [
+    organism,
+    soterm,
+    description,
+    url,
+    doi,
+    nosequence,
+    cpu,
+    formData,
+    handleFormChange,
+  ])
 
-  const sotermOptions = [
-    "SOTERM 1",
-    "SOTERM 2",
-    "SOTERM 3",
-    "SOTERM 4",
-  ]
+  const sotermOptions = ['SOTERM 1', 'SOTERM 2', 'SOTERM 3', 'SOTERM 4']
 
-  const doiOptions = [
-    "DOI 1",
-    "DOI 2",
-    "DOI 3",
-    "DOI 4",
-  ]
-  
+  const doiOptions = ['DOI 1', 'DOI 2', 'DOI 3', 'DOI 4']
+
   return (
     <>
       <div className="flex flex-col gap-10 items-center">
         <Dropzone
-          accept={{ "*/*": [".fasta", ".fa", ".fna", ".faa"] }}
+          accept={{ '*/*': ['.fasta', '.fa', '.fna', '.faa'] }}
           validator={validateFastaFile}
           files={fastaFiles}
           setFiles={setFastaFiles}
           label="FASTA File"
-          textOnHover={<p className="text-small font-bold px-1 py-2">FASTA File</p>}
+          textOnHover={
+            <p className="text-small font-bold px-1 py-2">FASTA File</p>
+          }
         />
         <AccordionComponent
           itens={[
             {
               isRequired: true,
               fields: [
-                <SelectOrganisms
-                  setValue={setOrganism}
-                  key="organism"
-                />,
+                <SelectOrganisms setValue={setOrganism} key="organism" />,
                 <SelectComponent
                   isRequired={true}
                   options={sotermOptions}
@@ -156,5 +175,5 @@ export default function FastaPage() {
         <ButtonComponent text="Confirmar" onPress={handleSubmit} />
       </div>
     </>
-  );
+  )
 }

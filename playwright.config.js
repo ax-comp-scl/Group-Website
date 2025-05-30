@@ -1,4 +1,4 @@
-import { defineConfig } from '@playwright/test';
+import { defineConfig } from '@playwright/test'
 
 export default defineConfig({
   testDir: './src/tests',
@@ -8,4 +8,4 @@ export default defineConfig({
     headless: true,
   },
   fullyParallel: true,
-});
+})

@@ -1,24 +1,24 @@
-import loginImg from "../assets/login-page-img.jpg";
-import logoEmbrapa from "../assets/logo-embrapa.png";
-import { useState } from "react";
-import { useNavigate } from "react-router-dom";
-import { Button, Input } from "@nextui-org/react";
-import { useForm, Controller } from "react-hook-form";
-import { zodResolver } from "@hookform/resolvers/zod";
-import { z } from "zod";
-import ViewIconOpened from "../components/icons/ViewIconOpened";
-import ViewIconClosed from "../components/icons/ViewIconClosed";
-import { loginUser } from "../services/authService";
+import { zodResolver } from '@hookform/resolvers/zod'
+import { Button, Input } from '@nextui-org/react'
+import { useState } from 'react'
+import { Controller, useForm } from 'react-hook-form'
+import { useNavigate } from 'react-router-dom'
+import { z } from 'zod'
+import loginImg from '../assets/login-page-img.jpg'
+import logoEmbrapa from '../assets/logo-embrapa.png'
+import ViewIconClosed from '../components/icons/ViewIconClosed'
+import ViewIconOpened from '../components/icons/ViewIconOpened'
+import { loginUser } from '../services/authService'
 
 const loginSchema = z.object({
-  email: z.string().email("Insira um E-mail válido"),
-  password: z.string().min(5, "A senha deve ter pelo menos 5 caracteres"),
-});
+  email: z.string().email('Insira um E-mail válido'),
+  password: z.string().min(4, 'A senha deve ter pelo menos 4 caracteres'),
+})
 
 export default function LoginPage() {
-  const [isVisible, setIsVisible] = useState(false);
-  const toggleVisibility = () => setIsVisible(!isVisible);
-  const navigate = useNavigate();
+  const [isVisible, setIsVisible] = useState(false)
+  const toggleVisibility = () => setIsVisible(!isVisible)
+  const navigate = useNavigate()
   const [loginErrorMessage, setLoginErrorMessage] = useState('')
 
   const {
@@ -28,26 +28,26 @@ export default function LoginPage() {
   } = useForm({
     resolver: zodResolver(loginSchema),
     defaultValues: {
-      email: "",
-      password: "",
+      email: '',
+      password: '',
     },
-  });
+  })
 
-  const onSubmit = async (data) => {
+  const onSubmit = async data => {
     try {
-      const user = await loginUser(data.email, data.password);
+      const user = await loginUser(data.email, data.password)
       if (user) {
-        navigate("/admin/history");
+        navigate('/history')
       }
     } catch (error) {
-      console.error("Erro ao fazer login:", error);
+      console.error('Erro ao fazer login:', error)
       setLoginErrorMessage('Credenciais inválidas')
 
       setTimeout(() => {
         setLoginErrorMessage('')
       }, 1500)
     }
-  };
+  }
 
   return (
     <div className="flex items-center justify-center min-h-screen bg-gray-100">
@@ -61,7 +61,7 @@ export default function LoginPage() {
             />
           </div>
           <span className="mb-3 text-4xl font-bold">Bem-Vindo</span>
-          <span className="mb-8 font-light text-gray-500">
+          <span className="mb-2 font-light text-gray-500">
             Acesse sua conta
           </span>
           <form onSubmit={handleSubmit(onSubmit)}>
@@ -76,8 +76,7 @@ export default function LoginPage() {
                     placeholder="Seu e-mail"
                     variant="bordered"
                     radius="sm"
-                    isClearable
-                    color={errors.email ? "danger" : "success"}
+                    color={errors.email ? 'danger' : 'success'}
                     isInvalid={!!errors.email}
                     errorMessage={errors.email?.message}
                   />
@@ -92,11 +91,11 @@ export default function LoginPage() {
                 render={({ field }) => (
                   <Input
                     {...field}
-                    type={isVisible ? "text" : "password"}
+                    type={isVisible ? 'text' : 'password'}
                     placeholder="Sua senha"
                     variant="bordered"
                     radius="sm"
-                    color={errors.password ? "danger" : "success"}
+                    color={errors.password ? 'danger' : 'success'}
                     isInvalid={!!errors.password}
                     errorMessage={errors.password?.message}
                     endContent={
@@ -120,14 +119,16 @@ export default function LoginPage() {
 
             {loginErrorMessage && (
               <div className="flex justify-center py-4">
-                <span className="text-danger font-bold text-lg">{loginErrorMessage}</span>
+                <span className="text-danger font-bold text-lg">
+                  {loginErrorMessage}
+                </span>
               </div>
             )}
-            <div className="flex justify-end w-full py-4">
+            {/* <div className="flex justify-end w-full py-4">
               <span className="font-bold text-md border-b-2 border-black hover:border-green-900 hover:text-green-900 cursor-pointer">
                 Recuperar senha
               </span>
-            </div>
+            </div> */}
             <Button
               type="submit"
               color="default"
@@ -140,10 +141,13 @@ export default function LoginPage() {
           </form>
           <div className="text-center text-gray-500">
             Não possui cadastro?
-            <span className="font-bold text-black border-b-2 border-black hover:border-green-900 hover:text-green-900 cursor-pointer">
-              {" "}
+            <a
+              href="/contact"
+              className="font-bold text-black border-b-2 border-black hover:border-green-900 hover:text-green-900 cursor-pointer"
+            >
+              {' '}
               Contate um administrador
-            </span>
+            </a>
           </div>
         </div>
         <div className="relative w-[350px]">
@@ -155,5 +159,5 @@ export default function LoginPage() {
         </div>
       </div>
     </div>
-  );
+  )
 }
