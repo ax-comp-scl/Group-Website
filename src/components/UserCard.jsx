@@ -55,7 +55,7 @@ export default function UserCard(props) {
         />
         <InputComponent
           label="Senha"
-          type="password"
+          type={isVisible ? 'text' : 'password'}
           value={password}
           onValueChange={setPassword}
           endContent={
