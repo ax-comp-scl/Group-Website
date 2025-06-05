@@ -1,10 +1,10 @@
 import { useContext, useEffect, useState } from 'react'
+import { toast } from 'react-hot-toast'
 import { FormsContext } from '../FormsContext'
 import ButtonComponent from '../components/Button'
 import Dropzone from '../components/Dropzone'
 import InputComponent from '../components/Input'
 import { postFile } from '../services/RequestsService'
-import { toast } from 'react-hot-toast'
 
 export default function PublicationPage() {
   const { handleFormChange, formData } = useContext(FormsContext)
@@ -16,10 +16,10 @@ export default function PublicationPage() {
     return regex.test(file.name)
       ? null
       : {
-          code: 'file-invalid-type',
-          message:
-            'Tipo de arquivo inválido. Somente arquivos .bib são permitidos.',
-        }
+        code: 'file-invalid-type',
+        message:
+          'Tipo de arquivo inválido. Somente arquivos .bib são permitidos.',
+      }
   }
 
   const handleSubmit = async () => {
@@ -37,7 +37,7 @@ export default function PublicationPage() {
     }
 
     try {
-      const response = await postFile('api/publications/load', file)
+      const response = await postFile('api/load/publication', file)
       toast.success('Publicação enviada com sucesso!')
       setPublicationFiles([])
     } catch (error) {

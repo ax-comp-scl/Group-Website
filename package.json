@@ -7,7 +7,9 @@
     "dev": "vite",
     "build": "vite build",
     "lint": "biome check --write .",
-    "preview": "vite preview"
+    "preview": "vite preview",
+    "test": "npx playwright test",
+    "test:ui": "npx playwright test --ui"
   },
   "engines": {
     "node": ">=12.0.0",
@@ -22,7 +24,7 @@
     "dotenv": "^16.4.5",
     "framer-motion": "^11.11.9",
     "localtunnel": "^2.0.2",
-    "lucide-react": "^0.484.0",
+    "lucide-react": "^0.511.0",
     "react": "^18.3.1",
     "react-dom": "^18.3.1",
     "react-dropzone": "^14.2.10",

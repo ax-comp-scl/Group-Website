@@ -136,8 +136,8 @@ export default function HistoryPage() {
           <Divider />
 
           <div className="w-full">
-            {isFetched && data.results.length > 0 && <Timeline data={data.results} />}
-            {isFetched && data.results.length === 0 && 
+            {isFetched && data?.results.length > 0 && <Timeline data={data.results} />}
+            {isFetched && data?.results.length === 0 && 
               <h3 className="mt-5 text-center text-2xl text-zinc-900/30">
                 Sem dados cadastrados.
               </h3>
