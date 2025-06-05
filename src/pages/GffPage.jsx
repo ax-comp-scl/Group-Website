@@ -14,25 +14,11 @@ import { toast } from 'react-hot-toast'
 export default function GFFPage() {
   const { handleFormChange, formData } = useContext(FormsContext)
   const [organism, setOrganism] = useState(formData.gff.organism || '')
-  const [organismsList, setOrganismsList] = useState([])
   const [doi, setDoi] = useState(formData.gff.doi || '')
   const [ignore, setIgnore] = useState(formData.gff.abbreviation || '')
   const [qtl, setQtl] = useState(formData.gff.qtl || false) 
   const [cpu, setCpu] = useState(formData.gff.cpu || 1)
   const [gffFiles, setGffFiles] = useState([])
-
-  useEffect(() => {
-    const fetchOrganisms = async () => {
-      try {
-        const data = await getData('api/organism/list')
-        setOrganismsList(data)
-      } catch (error) {
-        console.error('Failed to fetch organisms:', error)
-        toast.error('Failed to load the list of organisms.')
-      }
-    }
-    fetchOrganisms()
-  }, [])
 
 
   const validateGFFFile = file => {
