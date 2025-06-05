@@ -7,18 +7,19 @@ import Dropzone from '../components/Dropzone'
 import InputComponent from '../components/Input'
 import SelectComponent from '../components/Select'
 import SelectOrganisms from '../components/SelectOrganisms'
-import { getData, postData } from '../services/RequestsService'
+import { postFile } from '../services/RequestsService'
+import { toast } from 'react-hot-toast'
 
 export default function FastaPage() {
   const { handleFormChange, formData } = useContext(FormsContext)
 
-  const [organism, setOrganism] = useState(formData.fasta.organism)
-  const [soterm, setSoterm] = useState(formData.fasta.soterm)
-  const [description, setDescription] = useState(formData.fasta.description)
-  const [url, setUrl] = useState(formData.fasta.url)
-  const [doi, setDoi] = useState(formData.fasta.doi)
-  const [nosequence, setNosequence] = useState(formData.fasta.nosequence)
-  const [cpu, setCpu] = useState(formData.fasta.cpu | 1)
+  const [organism, setOrganism] = useState(formData.fasta.organism || '')
+  const [soterm, setSoterm] = useState(formData.fasta.soterm || '')
+  const [description, setDescription] = useState(formData.fasta.description || '')
+  const [url, setUrl] = useState(formData.fasta.url || '')
+  const [doi, setDoi] = useState(formData.fasta.doi || '')
+  const [nosequence, setNosequence] = useState(formData.fasta.nosequence || false)
+  const [cpu, setCpu] = useState(formData.fasta.cpu || 1)
   const [fastaFiles, setFastaFiles] = useState([])
 
   const validateFastaFile = file => {
@@ -33,22 +34,39 @@ export default function FastaPage() {
   }
 
   const handleSubmit = async () => {
-    const token = localStorage.getItem('authToken')
-
-    const config = {
-      headers: {
-        Authorization: `Token ${token}`,
-        'Content-Type': 'multipart/form-data',
-      },
+    if (!fastaFiles.length) {
+      toast.error('Nenhum arquivo FASTA encontrado, tente novamente.')
+      return
     }
 
-    const formData = new FormData()
+    const file = fastaFiles[0]
+    const validationError = validateFastaFile(file)
 
-    // formData.append('file', relationOntologyFiles[0])
+    if (validationError) {
+      toast.error(validationError.message)
+      return
+    }
 
-    // const response = await postData("api/ontology/insert",
-    //   formData,
-    //   config)
+    const additionalData = {
+      organism: organism,
+      soterm: soterm,
+      description: description,
+      url: url,
+      doi: doi,
+      nosequence: nosequence,
+      cpu: cpu,
+    }
+
+    try {
+      const response = await postFile('api/fasta/load', file, additionalData)
+      toast.success('Arquivo FASTA enviado com sucesso!')
+      setFastaFiles([])
+    } catch (error) {
+      console.error('Erro ao enviar arquivo FASTA:', error)
+      toast.error(
+        error.response?.data?.message || 'Ocorreu um erro inesperado ao enviar o arquivo FASTA.'
+      )
+    }
   }
 
   useEffect(() => {

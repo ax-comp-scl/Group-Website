@@ -8,16 +8,16 @@ import Dropzone from '../components/Dropzone'
 import InputComponent from '../components/Input'
 import SelectComponent from '../components/Select'
 import SelectOrganisms from '../components/SelectOrganisms'
-import { postData } from '../services/RequestsService'
+import { postFile } from '../services/RequestsService'
+import { toast } from 'react-hot-toast'
 
 export default function GFFPage() {
   const { handleFormChange, formData } = useContext(FormsContext)
-
-  const [organism, setOrganism] = useState(formData.gff.organism)
-  const [doi, setDoi] = useState(formData.gff.doi)
-  const [ignore, setIgnore] = useState(formData.gff.abbreviation)
-  const [qtl, setQtl] = useState(formData.gff.qtl)
-  const [cpu, setCpu] = useState(formData.gff.cpu | 1)
+  const [organism, setOrganism] = useState(formData.gff.organism || '')
+  const [doi, setDoi] = useState(formData.gff.doi || '')
+  const [ignore, setIgnore] = useState(formData.gff.abbreviation || '')
+  const [qtl, setQtl] = useState(formData.gff.qtl || false) 
+  const [cpu, setCpu] = useState(formData.gff.cpu || 1)
   const [gffFiles, setGffFiles] = useState([])
 
   const validateGFFFile = file => {
@@ -32,22 +32,37 @@ export default function GFFPage() {
   }
 
   const handleSubmit = async () => {
-    const token = localStorage.getItem('authToken')
-
-    const config = {
-      headers: {
-        Authorization: `Token ${token}`,
-        'Content-Type': 'multipart/form-data',
-      },
+    if (!gffFiles.length) {
+      toast.error('Nenhum arquivo GFF encontrado, tente novamente.')
+      return
     }
 
-    const formData = new FormData()
+    const file = gffFiles[0]
+    const validationError = validateGFFFile(file)
 
-    // formData.append('file', relationOntologyFiles[0])
+    if (validationError) {
+      toast.error(validationError.message)
+      return
+    }
 
-    // const response = await postData("api/ontology/insert",
-    //   formData,
-    //   config)
+    const additionalData = {
+      organism: organism,
+      doi: doi,
+      ignore: ignore,
+      qtl: qtl,
+      cpu: cpu,
+    }
+
+    try {
+      const response = await postFile('api/gff/load', file, additionalData)
+      toast.success('Arquivo GFF enviado com sucesso!')
+      setGffFiles([])
+    } catch (error) {
+      console.error('Erro ao enviar arquivo GFF:', error)
+      toast.error(
+        error.response?.data?.message || 'Ocorreu um erro inesperado ao enviar o arquivo GFF.'
+      )
+    }
   }
 
   useEffect(() => {

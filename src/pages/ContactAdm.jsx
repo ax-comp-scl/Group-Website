@@ -80,7 +80,6 @@ export default function ContactAdminPage() {
                     placeholder="Seu e-mail"
                     variant="bordered"
                     radius="sm"
-                    isClearable
                     color={errors.email ? 'danger' : 'success'}
                     isInvalid={!!errors.email}
                     errorMessage={errors.email?.message}

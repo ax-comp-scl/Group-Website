@@ -9,7 +9,7 @@ test.describe('Página de Login', () => {
 
     await page.click('button:has-text("Entrar")')
 
-    await expect(page).toHaveURL('/admin/history')
+    await expect(page).toHaveURL('/history')
   })
 
   test('deve ser possível acessar da página de login na rota index também (/)', async ({

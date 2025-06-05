@@ -37,7 +37,7 @@ export default function LoginPage() {
     try {
       const user = await loginUser(data.email, data.password)
       if (user) {
-        navigate('/admin/history')
+        navigate('/history')
       }
     } catch (error) {
       console.error('Erro ao fazer login:', error)
@@ -76,7 +76,6 @@ export default function LoginPage() {
                     placeholder="Seu e-mail"
                     variant="bordered"
                     radius="sm"
-                    isClearable
                     color={errors.email ? 'danger' : 'success'}
                     isInvalid={!!errors.email}
                     errorMessage={errors.email?.message}

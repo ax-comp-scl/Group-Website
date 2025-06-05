@@ -5,7 +5,7 @@ async function login(page) {
   await page.fill('input[placeholder="Seu e-mail"]', 'admin@admin.com')
   await page.fill('input[placeholder="Sua senha"]', 'admin')
   await page.click('button:has-text("Entrar")')
-  await expect(page).toHaveURL('/admin/history')
+  await expect(page).toHaveURL('/history')
 }
 
 test.describe('Página de Listar Usuários', () => {
