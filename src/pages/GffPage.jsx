@@ -8,17 +8,32 @@ import Dropzone from '../components/Dropzone'
 import InputComponent from '../components/Input'
 import SelectComponent from '../components/Select'
 import SelectOrganisms from '../components/SelectOrganisms'
-import { postFile } from '../services/RequestsService'
+import { postFile, getData } from '../services/RequestsService'
 import { toast } from 'react-hot-toast'
 
 export default function GFFPage() {
   const { handleFormChange, formData } = useContext(FormsContext)
   const [organism, setOrganism] = useState(formData.gff.organism || '')
+  const [organismsList, setOrganismsList] = useState([])
   const [doi, setDoi] = useState(formData.gff.doi || '')
   const [ignore, setIgnore] = useState(formData.gff.abbreviation || '')
   const [qtl, setQtl] = useState(formData.gff.qtl || false) 
   const [cpu, setCpu] = useState(formData.gff.cpu || 1)
   const [gffFiles, setGffFiles] = useState([])
+
+  useEffect(() => {
+    const fetchOrganisms = async () => {
+      try {
+        const data = await getData('api/organism/list')
+        setOrganismsList(data)
+      } catch (error) {
+        console.error('Failed to fetch organisms:', error)
+        toast.error('Failed to load the list of organisms.')
+      }
+    }
+    fetchOrganisms()
+  }, [])
+
 
   const validateGFFFile = file => {
     const regex = /\.(gff|gtf|gff3)$/i
@@ -76,13 +91,6 @@ export default function GFFPage() {
     formData.gff = gffData
     handleFormChange(formData)
   }, [organism, doi, ignore, qtl, cpu, formData, handleFormChange])
-
-  const organismsOptions = [
-    'Organismo 1',
-    'Organismo 2',
-    'Organismo 3',
-    'Organismo 4',
-  ]
 
   const doiOptions = ['DOI 1', 'DOI 2', 'DOI 3', 'DOI 4']
 
