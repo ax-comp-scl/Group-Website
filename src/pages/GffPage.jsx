@@ -55,7 +55,7 @@ export default function GFFPage() {
     }
 
     try {
-      const response = await postFile('api/gff/load', file, additionalData)
+      const response = await postFile('api/load/gff', file, additionalData)
       toast.success('Arquivo GFF enviado com sucesso!')
       setGffFiles([])
     } catch (error) {
