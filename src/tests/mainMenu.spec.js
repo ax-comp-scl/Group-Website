@@ -5,7 +5,7 @@ async function login(page) {
     await page.fill('input[placeholder="Seu e-mail"]', 'admin@admin.com')
     await page.fill('input[placeholder="Sua senha"]', 'admin')
     await page.click('button:has-text("Entrar")')
-    await expect(page).toHaveURL('/admin/history')
+    await expect(page).toHaveURL('/history')
   }
 
 
@@ -23,7 +23,7 @@ test.describe('Teste de navegação do menu', () => {
         await expect(page).toHaveURL('admin/upload/ontologies')
 
         await page.getByText('Histórico').click()
-        await expect(page).toHaveURL('/admin/history')
+        await expect(page).toHaveURL('/history')
     }); 
 
     test('Teste do avatar - conectado como', async ({ page }) => {
