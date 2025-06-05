@@ -71,13 +71,14 @@ export default function AdditionalPublicationPage() {
               isRequired: true,
               fields: [
                 <SelectOrganisms setValue={setOrganism} key="organism" />,
-                <SelectComponent
+                <InputComponent
+                  type= "text"
                   isRequired={true}
-                  options={sotermOptions}
-                  defaultSelectedKeys={organism}
-                  label="so_term"
-                  setValue={setSoterm}
-                  textOnHover="SO Sequence Ontology Term (eg. mRNA, polypeptide)"
+                  defaultSelectedKeys={soterm}
+                  label="soterm"
+                  value={soterm}
+                  onValueChange={setSoterm}
+                  textOnHover="cvterm.name from cv feature_property. (eg. display, note, product, alias, ontology_term, annotation)"
                   key="soterm"
                 />,
               ],

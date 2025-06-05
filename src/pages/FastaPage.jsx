@@ -116,13 +116,14 @@ export default function FastaPage() {
               isRequired: true,
               fields: [
                 <SelectOrganisms setValue={setOrganism} key="organism" />,
-                <SelectComponent
+                <InputComponent
+                  type= "text"
                   isRequired={true}
-                  options={sotermOptions}
                   defaultSelectedKeys={soterm}
                   label="soterm"
-                  setValue={setSoterm}
-                  textOnHover="SO Sequence Ontology Term (eg. chromosome, assembly)"
+                  value={soterm}
+                  onValueChange={setSoterm}
+                  textOnHover="cvterm.name from cv feature_property. (eg. display, note, product, alias, ontology_term, annotation)"
                   key="soterm"
                 />,
               ],
