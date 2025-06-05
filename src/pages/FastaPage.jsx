@@ -47,8 +47,10 @@ export default function FastaPage() {
       return
     }
 
+    const organismValue = Array.from(organism)[0]
+
     const additionalData = {
-      organism: organism,
+      organism: organismValue,
       soterm: soterm,
       description: description,
       url: url,

@@ -34,7 +34,7 @@ export default function SelectOrganisms(props) {
     >
       {item => (
         <SelectItem
-          key={item.organism_id}
+          key={item.species}
         >{`${item.genus} ${item.species}`}</SelectItem>
       )}
     </Select>
