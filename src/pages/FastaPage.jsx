@@ -58,7 +58,7 @@ export default function FastaPage() {
     }
 
     try {
-      const response = await postFile('api/fasta/load', file, additionalData)
+      const response = await postFile('api/load/fasta', file, additionalData)
       toast.success('Arquivo FASTA enviado com sucesso!')
       setFastaFiles([])
     } catch (error) {
