@@ -15,6 +15,7 @@ import ViewIconOpened from './icons/ViewIconOpened'
 
 export default function UserCard(props) {
   const [username, setUsername] = useState(props.data.username)
+  const [editUsername, setEditUsername] = useState(props.data.username)
   const [password, setPassword] = useState('')
   const [email, setEmail] = useState(props.data.email)
   const [isStaffCheck, setIsStaffCheck] = useState(props.data.is_staff)
@@ -44,8 +45,8 @@ export default function UserCard(props) {
         <InputComponent
           label="Nome"
           type="text"
-          value={username}
-          onValueChange={setUsername}
+          value={editUsername}
+          onValueChange={setEditUsername}
         />
         <InputComponent
           label="Email"
@@ -107,12 +108,15 @@ export default function UserCard(props) {
   const handleEdit = async () => {
     try {
       const data = await putData(`account/${props.data.id}`, {
-        username,
+        editUsername,
         email,
         password,
         is_staff: isStaffCheck,
       })
       setIsStaff(isStaffCheck)
+      props.loadData()
+      setUsername(editUsername)
+      setEditOpen(false)
     } catch (error) {
       setIsInvalid(true)
     }
