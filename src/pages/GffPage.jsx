@@ -8,7 +8,7 @@ import Dropzone from '../components/Dropzone'
 import InputComponent from '../components/Input'
 import SelectComponent from '../components/Select'
 import SelectOrganisms from '../components/SelectOrganisms'
-import { postFile } from '../services/RequestsService'
+import { postFile, getData } from '../services/RequestsService'
 import { toast } from 'react-hot-toast'
 
 export default function GFFPage() {
@@ -19,6 +19,7 @@ export default function GFFPage() {
   const [qtl, setQtl] = useState(formData.gff.qtl || false) 
   const [cpu, setCpu] = useState(formData.gff.cpu || 1)
   const [gffFiles, setGffFiles] = useState([])
+
 
   const validateGFFFile = file => {
     const regex = /\.(gff|gtf|gff3)$/i
@@ -54,7 +55,7 @@ export default function GFFPage() {
     }
 
     try {
-      const response = await postFile('api/gff/load', file, additionalData)
+      const response = await postFile('api/load/gff', file, additionalData)
       toast.success('Arquivo GFF enviado com sucesso!')
       setGffFiles([])
     } catch (error) {
@@ -76,13 +77,6 @@ export default function GFFPage() {
     formData.gff = gffData
     handleFormChange(formData)
   }, [organism, doi, ignore, qtl, cpu, formData, handleFormChange])
-
-  const organismsOptions = [
-    'Organismo 1',
-    'Organismo 2',
-    'Organismo 3',
-    'Organismo 4',
-  ]
 
   const doiOptions = ['DOI 1', 'DOI 2', 'DOI 3', 'DOI 4']
 

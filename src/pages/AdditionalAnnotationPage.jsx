@@ -94,21 +94,23 @@ export default function AdditionalAnnotationPage() {
               isRequired: true,
               fields: [
                 <SelectOrganisms setValue={setOrganism} key="organism" />,
-                <SelectComponent
+                <InputComponent
+                  type="text"
                   isRequired={true}
-                  options={cvtermOptions}
                   defaultSelectedKeys={cvterm}
                   label="cvterm"
-                  setValue={setCvterm}
+                  value={cvterm}
+                  onValueChange={setCvterm}
                   textOnHover="SO Sequence Ontology Term (eg. mRNA, polypeptide)"
                   key="cvterm"
                 />,
-                <SelectComponent
+                <InputComponent
+                  type= "text"
                   isRequired={true}
-                  options={sotermOptions}
                   defaultSelectedKeys={soterm}
                   label="soterm"
-                  setValue={setSoterm}
+                  value={soterm}
+                  onValueChange={setSoterm}
                   textOnHover="cvterm.name from cv feature_property. (eg. display, note, product, alias, ontology_term, annotation)"
                   key="soterm"
                 />,
