@@ -8,7 +8,7 @@ import Dropzone from '../components/Dropzone'
 import InputComponent from '../components/Input'
 import SelectComponent from '../components/Select'
 import SelectOrganisms from '../components/SelectOrganisms'
-import { postFile, getData } from '../services/RequestsService'
+import { postFile } from '../services/RequestsService'
 import { toast } from 'react-hot-toast'
 
 export default function GFFPage() {
