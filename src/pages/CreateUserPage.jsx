@@ -6,6 +6,7 @@ import InputComponent from '../components/Input'
 import ViewIconClosed from '../components/icons/ViewIconClosed'
 import ViewIconOpened from '../components/icons/ViewIconOpened'
 import { postData } from '../services/RequestsService'
+import { toast } from 'react-hot-toast'
 
 export default function CreateUserPage() {
   const [open, setOpen] = useState(true)
@@ -19,6 +20,7 @@ export default function CreateUserPage() {
   const handleSubmit = async () => {
     if (!password || password.length < 4) {
     setIsInvalid(true)
+    toast.error('A senha deve ter pelo menos 4 caracteres.')
     return
   }
 
@@ -33,8 +35,13 @@ export default function CreateUserPage() {
       setEmail('')
       setPassword('')
       setIsStaff(0)
+
+      toast.success('Usuário criado com sucesso!')
     } catch (error) {
       setIsInvalid(true)
+      toast.error(
+        error.response?.data?.message || 'Erro ao criar usuário, tente novamente.'
+      )
     }
   }
 
