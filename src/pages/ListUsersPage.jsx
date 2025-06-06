@@ -29,7 +29,7 @@ export default function ListUsersPage() {
     enabled: !!debouncedSearchValue || debouncedSearchValue === '',
   })
 
-  const handleUserDeleted = () => {
+  const handleDataUpdate = () => {
     queryClient.invalidateQueries({ queryKey: ['users'] })
   }
 
@@ -62,7 +62,7 @@ export default function ListUsersPage() {
               {allUsersList?.map(user => (
                 <UserCard 
                   data={user} 
-                  loadData={handleUserDeleted} 
+                  loadData={handleDataUpdate}
                   key={user.id} 
                 />
               ))}

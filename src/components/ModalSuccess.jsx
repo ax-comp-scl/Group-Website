@@ -16,11 +16,11 @@ const ModalSuccess = ({ close }) => {
       className="flex overflow-y-auto overflow-x-hidden fixed top-0 right-0 left-0 z-50 justify-center w-full mt-8 h-auto max-h-full"
     >
       <div className="relative p-4 w-full max-w-md max-h-full ">
-        <div className="relative bg-white rounded-lg shadow-sm dark:bg-gray-700 border-2 border-gray ">
+        <div className="relative bg-white rounded-lg shadow-sm border-2 border-gray">
           <button
             onClick={setShowModal}
             type="button"
-            className="absolute top-3 end-2.5 text-gray-400 bg-transparent hover:bg-gray-200 hover:text-gray-900 rounded-lg text-sm w-8 h-8 ms-auto inline-flex justify-center items-center dark:hover:bg-gray-600 dark:hover:text-white"
+            className="absolute top-3 end-2.5 text-gray-400 bg-transparent hover:bg-gray-200 hover:text-gray-900 rounded-lg text-sm w-8 h-8 ms-auto inline-flex justify-center items-center"
             data-modal-hide="popup-modal"
           >
             <svg
@@ -58,14 +58,14 @@ const ModalSuccess = ({ close }) => {
               <path d="M8 12a2 2 0 0 0 2-2V8H8" />
               <path d="M14 12a2 2 0 0 0 2-2V8h-2" />
             </svg>
-            <h3 className="mb-5 text-lg font-normal text-gray-500 dark:text-gray-400">
+            <h3 className="mb-5 text-lg font-normal text-gray-500">
               Seu email foi enviado
             </h3>
             <button
               onClick={setShowModal}
               data-modal-hide="popup-modal"
               type="button"
-              className="py-2.5 px-5 ms-3 text-sm font-medium text-white focus:outline-none bg-emerald-800 rounded-lg border border-gray-200 hover:bg-emerald-900 hover:text-dark-700 focus:z-10 focus:ring-4 focus:ring-gray-100 dark:focus:ring-gray-700 dark:bg-gray-800 dark:text-gray-400 dark:border-gray-600 dark:hover:text-white dark:hover:bg-gray-700"
+              className="py-2.5 px-5 ms-3 text-sm font-medium text-white focus:outline-none bg-emerald-800 rounded-lg border border-gray-200 hover:bg-emerald-900 hover:text-dark-700 focus:z-10 focus:ring-4 focus:ring-gray-100"
             >
               OK
             </button>
