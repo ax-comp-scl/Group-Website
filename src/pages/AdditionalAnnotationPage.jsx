@@ -1,5 +1,6 @@
 import { useContext, useEffect, useState } from 'react'
 import { useOutletContext } from 'react-router-dom'
+import { toast } from 'react-hot-toast'
 import { FormsContext } from '../FormsContext'
 import AccordionComponent from '../components/Accordion'
 import ButtonComponent from '../components/Button'
@@ -7,47 +8,75 @@ import CheckboxComponent from '../components/Checkbox'
 import InputComponent from '../components/Input'
 import SelectComponent from '../components/Select'
 import SelectOrganisms from '../components/SelectOrganisms'
-import { postData } from '../services/RequestsService'
+import { postFile } from '../services/RequestsService'
 
 export default function AdditionalAnnotationPage() {
-  const { setLabel, setHover } = useOutletContext()
+  const { setLabel, setHover, additionalFiles, setAdditionalFiles } = useOutletContext()
   const { handleFormChange, formData } = useContext(FormsContext)
 
   useEffect(() => {
     setHover(
-      'Two-column tab separated file. (feature.dbxref\\tannotation text)'
+      'Arquivo de duas colunas separado por tabulação. (feature.dbxref\\ttexto da anotação)'
     )
     setLabel('anotação')
   }, [setHover, setLabel])
 
   const [organism, setOrganism] = useState(
-    formData.additional.annotation.organism
+    formData.additional.annotation.organism || ''
   )
-  const [cvterm, setCvterm] = useState(formData.additional.annotation.cvterm)
-  const [soterm, setSoterm] = useState(formData.additional.annotation.soterm)
-  const [doi, setDoi] = useState(formData.additional.annotation.doi)
-  const [cpu, setCpu] = useState(formData.additional.annotation.cpu | 1)
+  const [cvterm, setCvterm] = useState(formData.additional.annotation.cvterm || '')
+  const [soterm, setSoterm] = useState(formData.additional.annotation.soterm || '')
+  const [doi, setDoi] = useState(formData.additional.annotation.doi || '')
+  const [cpu, setCpu] = useState(formData.additional.annotation.cpu || 1)
   const [ignorenotfound, setIgnorenotfound] = useState(
-    formData.additional.annotation.ignorenotfound
+    formData.additional.annotation.ignorenotfound || false
   )
+
+  const validateAnnotationFile = file => {
+    const regex = /\.(txt|tsv|tab)$/i
+    return regex.test(file.name)
+      ? null
+      : {
+          code: 'file-invalid-type',
+          message:
+            'Tipo de arquivo inválido. Somente arquivos .txt, .tsv, ou .tab são permitidos.',
+        }
+  }
 
   const handleSubmit = async () => {
-    const token = localStorage.getItem('authToken')
-
-    const config = {
-      headers: {
-        Authorization: `Token ${token}`,
-        'Content-Type': 'multipart/form-data',
-      },
+    if (!additionalFiles.length) {
+      toast.error('Nenhum arquivo de anotação encontrado, tente novamente.')
+      return
     }
 
-    const formData = new FormData()
+    const file = additionalFiles[0]
+    const validationError = validateAnnotationFile(file)
 
-    // formData.append('file', relationOntologyFiles[0])
+    if (validationError) {
+      toast.error(validationError.message)
+      return
+    }
 
-    // const response = await postData("api/ontology/insert",
-    //   formData,
-    //   config)
+    const additionalData = {
+      organism,
+      cvterm,
+      soterm,
+      doi,
+      cpu,
+      ignorenotfound,
+    }
+
+    try {
+      await postFile('api/load/feature_annotation', file, additionalData)
+      toast.success('Arquivo de anotação enviado com sucesso!')
+      setAdditionalFiles([])
+    } catch (error) {
+      console.error('Erro ao enviar arquivo de anotação:', error)
+      toast.error(
+        error.response?.data?.message ||
+          'Ocorreu um erro inesperado ao enviar o arquivo.'
+      )
+    }
   }
 
   useEffect(() => {
@@ -72,17 +101,6 @@ export default function AdditionalAnnotationPage() {
     handleFormChange,
   ])
 
-  const organismsOptions = [
-    'Organismo 1',
-    'Organismo 2',
-    'Organismo 3',
-    'Organismo 4',
-  ]
-
-  const cvtermOptions = ['CVTERM 1', 'CVTERM 2', 'CVTERM 3', 'CVTERM 4']
-
-  const sotermOptions = ['SOTERM 1', 'SOTERM 2', 'SOTERM 3', 'SOTERM 4']
-
   const doiOptions = ['DOI 1', 'DOI 2', 'DOI 3', 'DOI 4']
 
   return (
@@ -93,25 +111,25 @@ export default function AdditionalAnnotationPage() {
             {
               isRequired: true,
               fields: [
-                <SelectOrganisms setValue={setOrganism} key="organism" />,
+                <SelectOrganisms
+                  value={organism}
+                  setValue={setOrganism}
+                  key="organism"
+                />,
                 <InputComponent
-                  type="text"
                   isRequired={true}
-                  defaultSelectedKeys={cvterm}
                   label="cvterm"
                   value={cvterm}
                   onValueChange={setCvterm}
-                  textOnHover="SO Sequence Ontology Term (eg. mRNA, polypeptide)"
+                  textOnHover="Termo da ontologia (eg. display, note, product, alias, ontology_term, annotation)"
                   key="cvterm"
                 />,
                 <InputComponent
-                  type= "text"
                   isRequired={true}
-                  defaultSelectedKeys={soterm}
                   label="soterm"
                   value={soterm}
                   onValueChange={setSoterm}
-                  textOnHover="cvterm.name from cv feature_property. (eg. display, note, product, alias, ontology_term, annotation)"
+                  textOnHover="Termo da SO (Sequence Ontology) (eg. mRNA, polypeptide)"
                   key="soterm"
                 />,
               ],
@@ -122,8 +140,8 @@ export default function AdditionalAnnotationPage() {
                   options={doiOptions}
                   label="doi"
                   setValue={setDoi}
-                  defaultSelectedKeys={doi}
-                  textOnHover="DOI of the article reference to this sequence. E.g.: 10.1111/s12122-012-1313-4"
+                  defaultSelectedKeys={doi ? [doi] : []}
+                  textOnHover="DOI do artigo de referência. Ex: 10.1111/s12122-012-1313-4"
                   key="doi"
                 />,
                 <InputComponent
@@ -132,21 +150,20 @@ export default function AdditionalAnnotationPage() {
                   placeholder="1"
                   value={cpu}
                   onValueChange={setCpu}
-                  textOnHover="Number of threads"
+                  textOnHover="Número de threads"
                   key="cpu"
                 />,
                 <CheckboxComponent
                   name="ignorenotfound"
                   isSelected={ignorenotfound}
                   onValueChange={setIgnorenotfound}
-                  textOnHover="Don't raise error and exit if feature not found"
+                  textOnHover="Não gerar erro e sair se a característica não for encontrada"
                   key="ignorenotfound"
                 />,
               ],
             },
           ]}
         />
-
         <ButtonComponent text="Confirmar" onPress={handleSubmit} />
       </div>
     </>
