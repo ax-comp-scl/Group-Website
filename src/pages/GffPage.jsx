@@ -1,5 +1,6 @@
 import { Link } from '@nextui-org/react'
 import { useContext, useEffect, useState } from 'react'
+import { toast } from 'react-hot-toast'
 import { FormsContext } from '../FormsContext'
 import AccordionComponent from '../components/Accordion'
 import ButtonComponent from '../components/Button'
@@ -9,14 +10,13 @@ import InputComponent from '../components/Input'
 import SelectComponent from '../components/Select'
 import SelectOrganisms from '../components/SelectOrganisms'
 import { postFile } from '../services/RequestsService'
-import { toast } from 'react-hot-toast'
 
 export default function GFFPage() {
   const { handleFormChange, formData } = useContext(FormsContext)
   const [organism, setOrganism] = useState(formData.gff.organism || '')
   const [doi, setDoi] = useState(formData.gff.doi || '')
   const [ignore, setIgnore] = useState(formData.gff.abbreviation || '')
-  const [qtl, setQtl] = useState(formData.gff.qtl || false) 
+  const [qtl, setQtl] = useState(formData.gff.qtl || false)
   const [cpu, setCpu] = useState(formData.gff.cpu || 1)
   const [gffFiles, setGffFiles] = useState([])
 
@@ -26,10 +26,10 @@ export default function GFFPage() {
     return regex.test(file.name)
       ? null
       : {
-          code: 'file-invalid-type',
-          message:
-            'Tipo de arquivo inválido. Somente arquivos .gff, .gtf, ou .gff3 são permitidos.',
-        }
+        code: 'file-invalid-type',
+        message:
+          'Tipo de arquivo inválido. Somente arquivos .gff, .gtf, ou .gff3 são permitidos.',
+      }
   }
 
   const handleSubmit = async () => {
@@ -46,8 +46,10 @@ export default function GFFPage() {
       return
     }
 
+    const organismValue = Array.from(organism)[0]
+
     const additionalData = {
-      organism: organism,
+      organism: organismValue,
       doi: doi,
       ignore: ignore,
       qtl: qtl,
