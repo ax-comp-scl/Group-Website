@@ -45,7 +45,7 @@ Siga os passos abaixo para rodar o projeto localmente:
 
 4. Inicie o servidor de desenvolvimento:
    ```bash
-   npm start
+   npm run dev
    ```
 
-5. Abra o navegador e acesse: `http://localhost:3000`
+5. Abra o navegador e acesse: `http://localhost:5173`
