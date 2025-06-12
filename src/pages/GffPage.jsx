@@ -1,5 +1,6 @@
 import { Link } from '@nextui-org/react'
 import { useContext, useEffect, useState } from 'react'
+import { toast } from 'react-hot-toast'
 import { FormsContext } from '../FormsContext'
 import AccordionComponent from '../components/Accordion'
 import ButtonComponent from '../components/Button'
@@ -9,26 +10,25 @@ import InputComponent from '../components/Input'
 import SelectComponent from '../components/Select'
 import SelectOrganisms from '../components/SelectOrganisms'
 import { postFile } from '../services/RequestsService'
-import { toast } from 'react-hot-toast'
 
 export default function GFFPage() {
   const { handleFormChange, formData } = useContext(FormsContext)
   const [organism, setOrganism] = useState(formData.gff.organism || '')
   const [doi, setDoi] = useState(formData.gff.doi || '')
   const [ignore, setIgnore] = useState(formData.gff.abbreviation || '')
-  const [qtl, setQtl] = useState(formData.gff.qtl || false) 
+  const [qtl, setQtl] = useState(formData.gff.qtl || false)
   const [cpu, setCpu] = useState(formData.gff.cpu || 1)
   const [gffFiles, setGffFiles] = useState([])
 
   const validateGFFFile = file => {
-    const regex = /\.(gff|gtf|gff3)$/i
+    const regex = /\.(gz)$/i
     return regex.test(file.name)
       ? null
       : {
-          code: 'file-invalid-type',
-          message:
-            'Tipo de arquivo inválido. Somente arquivos .gff, .gtf, ou .gff3 são permitidos.',
-        }
+        code: 'file-invalid-type',
+        message:
+          'Tipo de arquivo inválido. Somente arquivos .gz são permitidos.',
+      }
   }
 
   const handleSubmit = async () => {
@@ -45,8 +45,10 @@ export default function GFFPage() {
       return
     }
 
+    const organismValue = Array.from(organism)[0]
+
     const additionalData = {
-      organism: organism,
+      organism: organismValue,
       doi: doi,
       ignore: ignore,
       qtl: qtl,
@@ -54,7 +56,7 @@ export default function GFFPage() {
     }
 
     try {
-      const response = await postFile('api/gff/load', file, additionalData)
+      const response = await postFile('api/load/gff', file, additionalData)
       toast.success('Arquivo GFF enviado com sucesso!')
       setGffFiles([])
     } catch (error) {
@@ -76,13 +78,6 @@ export default function GFFPage() {
     formData.gff = gffData
     handleFormChange(formData)
   }, [organism, doi, ignore, qtl, cpu, formData, handleFormChange])
-
-  const organismsOptions = [
-    'Organismo 1',
-    'Organismo 2',
-    'Organismo 3',
-    'Organismo 4',
-  ]
 
   const doiOptions = ['DOI 1', 'DOI 2', 'DOI 3', 'DOI 4']
 

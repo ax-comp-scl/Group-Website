@@ -32,7 +32,14 @@ export default function AdditionalPage() {
         <div className="w-7/12">
           <Navbar options={tabs} base="w-7/12 mt-10" setLabel={setLabel} />
         </div>
-        <Outlet context={{ setLabel, setHover, additionalFiles }} />
+        <Outlet
+          context={{
+            setLabel,
+            setHover,
+            additionalFiles,
+            setAdditionalFiles
+          }}
+        />
       </div>
     </>
   )

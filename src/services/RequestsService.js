@@ -20,9 +20,15 @@ export async function deleteData(endpoint) {
   return response.data
 }
 
-export async function postFile(endpoint, file) {
+export async function postFile(endpoint, file, additionalData = {}) {
   const formData = new FormData();
   formData.append('file', file);
+
+  for (const key in additionalData) {
+    if (Object.prototype.hasOwnProperty.call(additionalData, key)) {
+      formData.append(key, additionalData[key]);
+    }
+  }
 
   const response = await api.post(`/${endpoint}`, formData, {
     headers: {

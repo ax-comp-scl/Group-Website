@@ -6,10 +6,16 @@ export default function SelectOrganisms(props) {
   const [organismsOptions, setOrganismsOptions] = useState([])
 
   useEffect(() => {
-    async function getOrganisms() {
-      setOrganismsOptions(await getData('api/organism'))
+    const fetchOrganisms = async () => {
+      try {
+        const data = await getData('api/organism/list')
+        setOrganismsOptions(data)
+      } catch (error) {
+        console.error('Failed to fetch organisms:', error)
+        toast.error('Failed to load the list of organisms.')
+      }
     }
-    getOrganisms()
+    fetchOrganisms()
   }, [])
 
   const isRequired = true
@@ -28,7 +34,7 @@ export default function SelectOrganisms(props) {
     >
       {item => (
         <SelectItem
-          key={item.organism_id}
+          key={`${item.genus} ${item.species}`}
         >{`${item.genus} ${item.species}`}</SelectItem>
       )}
     </Select>

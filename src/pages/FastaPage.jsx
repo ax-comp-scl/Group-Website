@@ -47,8 +47,10 @@ export default function FastaPage() {
       return
     }
 
+    const organismValue = Array.from(organism)[0]
+
     const additionalData = {
-      organism: organism,
+      organism: organismValue,
       soterm: soterm,
       description: description,
       url: url,
@@ -58,7 +60,7 @@ export default function FastaPage() {
     }
 
     try {
-      const response = await postFile('api/fasta/load', file, additionalData)
+      const response = await postFile('api/load/fasta', file, additionalData)
       toast.success('Arquivo FASTA enviado com sucesso!')
       setFastaFiles([])
     } catch (error) {
@@ -116,13 +118,14 @@ export default function FastaPage() {
               isRequired: true,
               fields: [
                 <SelectOrganisms setValue={setOrganism} key="organism" />,
-                <SelectComponent
+                <InputComponent
+                  type= "text"
                   isRequired={true}
-                  options={sotermOptions}
                   defaultSelectedKeys={soterm}
                   label="soterm"
-                  setValue={setSoterm}
-                  textOnHover="SO Sequence Ontology Term (eg. chromosome, assembly)"
+                  value={soterm}
+                  onValueChange={setSoterm}
+                  textOnHover="cvterm.name from cv feature_property. (eg. display, note, product, alias, ontology_term, annotation)"
                   key="soterm"
                 />,
               ],

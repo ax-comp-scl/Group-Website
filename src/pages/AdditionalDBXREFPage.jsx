@@ -1,46 +1,73 @@
 import { useContext, useEffect, useState } from 'react'
 import { useOutletContext } from 'react-router-dom'
+import { toast } from 'react-hot-toast'
 import { FormsContext } from '../FormsContext'
 import AccordionComponent from '../components/Accordion'
 import ButtonComponent from '../components/Button'
 import CheckboxComponent from '../components/Checkbox'
 import InputComponent from '../components/Input'
-import SelectComponent from '../components/Select'
 import SelectOrganisms from '../components/SelectOrganisms'
-import { postData } from '../services/RequestsService'
+import { postFile } from '../services/RequestsService'
 
 export default function AdditionalDBXREFPage() {
-  const { setLabel, setHover } = useOutletContext()
+  const { setLabel, setHover, additionalFiles, setAdditionalFiles } = useOutletContext()
   const { handleFormChange, formData } = useContext(FormsContext)
+
   useEffect(() => {
-    setHover('Two-column tab separated file. (feature.dbxref\\tdb:dbxref)')
+    setHover('Arquivo de duas colunas separado por tabulação. (feature.dbxref\\tdb:dbxref)')
     setLabel('DBxRef')
   }, [setHover, setLabel])
 
-  const [organism, setOrganism] = useState(formData.additional.dbxref.organism)
-  const [soterm, setSoterm] = useState(formData.additional.dbxref.soterm)
-  const [cpu, setCpu] = useState(formData.additional.dbxref.cpu | 1)
+  const [organism, setOrganism] = useState(formData.additional.dbxref.organism || '')
+  const [soterm, setSoterm] = useState(formData.additional.dbxref.soterm || '')
+  const [cpu, setCpu] = useState(formData.additional.dbxref.cpu || 1)
   const [ignorenotfound, setIgnorenotfound] = useState(
-    formData.additional.dbxref.ignorenotfound
+    formData.additional.dbxref.ignorenotfound || false
   )
 
-  const handleSubmit = async () => {
-    const token = localStorage.getItem('authToken')
+  const validateDbxRefFile = file => {
+    const regex = /\.(txt|tsv|tab)$/i
+    return regex.test(file.name)
+      ? null
+      : {
+          code: 'file-invalid-type',
+          message:
+            'Tipo de arquivo inválido. Somente arquivos .txt, .tsv, ou .tab são permitidos.',
+        }
+  }
 
-    const config = {
-      headers: {
-        Authorization: `Token ${token}`,
-        'Content-Type': 'multipart/form-data',
-      },
+  const handleSubmit = async () => {
+    if (!additionalFiles.length) {
+      toast.error('Nenhum arquivo DBxRef encontrado, tente novamente.')
+      return
     }
 
-    const formData = new FormData()
+    const file = additionalFiles[0]
+    const validationError = validateDbxRefFile(file)
 
-    // formData.append('file', relationOntologyFiles[0])
+    if (validationError) {
+      toast.error(validationError.message)
+      return
+    }
 
-    // const response = await postData("api/ontology/insert",
-    //   formData,
-    //   config)
+    const additionalData = {
+      organism,
+      soterm,
+      cpu,
+      ignorenotfound,
+    }
+
+    try {
+      await postFile('api/load/feature_dbxrefs', file, additionalData)
+      toast.success('Arquivo DBxRef enviado com sucesso!')
+      setAdditionalFiles([])
+    } catch (error) {
+      console.error('Erro ao enviar arquivo DBxRef:', error)
+      toast.error(
+        error.response?.data?.message ||
+          'Ocorreu um erro inesperado ao enviar o arquivo.'
+      )
+    }
   }
 
   useEffect(() => {
@@ -54,15 +81,6 @@ export default function AdditionalDBXREFPage() {
     handleFormChange(formData)
   }, [organism, soterm, ignorenotfound, cpu, formData, handleFormChange])
 
-  const organismsOptions = [
-    'Organismo 1',
-    'Organismo 2',
-    'Organismo 3',
-    'Organismo 4',
-  ]
-
-  const sotermOptions = ['SOTERM 1', 'SOTERM 2', 'SOTERM 3', 'SOTERM 4']
-
   return (
     <>
       <div className="w-full flex flex-col items-center gap-10">
@@ -71,14 +89,18 @@ export default function AdditionalDBXREFPage() {
             {
               isRequired: true,
               fields: [
-                <SelectOrganisms setValue={setOrganism} key="organism" />,
-                <SelectComponent
+                <SelectOrganisms
+                  value={organism}
+                  setValue={setOrganism}
+                  key="organism"
+                />,
+                <InputComponent
+                  type="text"
                   isRequired={true}
-                  options={sotermOptions}
-                  defaultSelectedKeys={soterm}
                   label="soterm"
-                  setValue={setSoterm}
-                  textOnHover="SO Sequence Ontology Term (eg. mRNA, polypeptide)"
+                  value={soterm}
+                  onValueChange={setSoterm}
+                  textOnHover="Termo da SO (Sequence Ontology) para filtrar as características (features) alvo. Ex: mRNA"
                   key="soterm"
                 />,
               ],
@@ -91,14 +113,14 @@ export default function AdditionalDBXREFPage() {
                   placeholder="1"
                   value={cpu}
                   onValueChange={setCpu}
-                  textOnHover="Number of threads"
+                  textOnHover="Número de threads"
                   key="cpu"
                 />,
                 <CheckboxComponent
                   name="ignorenotfound"
                   isSelected={ignorenotfound}
                   onValueChange={setIgnorenotfound}
-                  textOnHover="Don't raise error and exit if feature not found"
+                  textOnHover="Não gerar erro e sair se a característica não for encontrada"
                   key="ignorenotfound"
                 />,
               ],

@@ -1,4 +1,4 @@
-import { useQuery } from '@tanstack/react-query'
+import { useQuery, useQueryClient } from '@tanstack/react-query'
 import React, { useState } from 'react'
 import { useDebounce } from 'use-debounce'
 import Header from '../components/Header'
@@ -7,6 +7,7 @@ import UserCard from '../components/UserCard'
 import { getAllUsers, getUserByUsername } from '../services/userService'
 
 export default function ListUsersPage() {
+  const queryClient = useQueryClient()
   const [searchValue, setSearchValue] = useState('')
   const [debouncedSearchValue] = useDebounce(searchValue, 300)
 
@@ -27,6 +28,10 @@ export default function ListUsersPage() {
     queryFn: fetchUsers,
     enabled: !!debouncedSearchValue || debouncedSearchValue === '',
   })
+
+  const handleDataUpdate = () => {
+    queryClient.invalidateQueries({ queryKey: ['users'] })
+  }
 
   return (
     <div className="flex flex-col h-screen">
@@ -55,7 +60,11 @@ export default function ListUsersPage() {
           ) : (
             <div className="px-10 grid grid-cols-4 justify-items-center gap-5 mb-12">
               {allUsersList?.map(user => (
-                <UserCard data={user} key={user.id} />
+                <UserCard 
+                  data={user} 
+                  loadData={handleDataUpdate}
+                  key={user.id} 
+                />
               ))}
             </div>
           ))}

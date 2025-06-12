@@ -1,44 +1,70 @@
 import { useContext, useEffect, useState } from 'react'
 import { useOutletContext } from 'react-router-dom'
+import { toast } from 'react-hot-toast'
 import { FormsContext } from '../FormsContext'
 import AccordionComponent from '../components/Accordion'
 import ButtonComponent from '../components/Button'
 import InputComponent from '../components/Input'
-import SelectComponent from '../components/Select'
 import SelectOrganisms from '../components/SelectOrganisms'
-import { postData } from '../services/RequestsService'
+import { postFile } from '../services/RequestsService'
 
 export default function AdditionalSequencePage() {
-  const { setLabel, setHover } = useOutletContext()
+  const { setLabel, setHover, additionalFiles, setAdditionalFiles } = useOutletContext()
   const { handleFormChange, formData } = useContext(FormsContext)
+
   useEffect(() => {
-    setHover('FASTA File')
+    setHover('Arquivo FASTA')
     setLabel('sequência')
   }, [setHover, setLabel])
 
   const [organism, setOrganism] = useState(
-    formData.additional.sequence.organism
+    formData.additional.sequence.organism || ''
   )
-  const [soterm, setSoterm] = useState(formData.additional.sequence.soterm)
-  const [cpu, setCpu] = useState(formData.additional.sequence.cpu | 1)
+  const [soterm, setSoterm] = useState(formData.additional.sequence.soterm || '')
+  const [cpu, setCpu] = useState(formData.additional.sequence.cpu || 1)
+
+  const validateFastaFile = file => {
+    const regex = /\.(fasta|fa|fna|faa)$/i
+    return regex.test(file.name)
+      ? null
+      : {
+          code: 'file-invalid-type',
+          message:
+            'Tipo de arquivo inválido. Somente arquivos FASTA (.fasta, .fa, .fna, .faa) são permitidos.',
+        }
+  }
 
   const handleSubmit = async () => {
-    const token = localStorage.getItem('authToken')
-
-    const config = {
-      headers: {
-        Authorization: `Token ${token}`,
-        'Content-Type': 'multipart/form-data',
-      },
+    if (!additionalFiles.length) {
+      toast.error('Nenhum arquivo FASTA encontrado, tente novamente.')
+      return
     }
 
-    const formData = new FormData()
+    const file = additionalFiles[0]
+    const validationError = validateFastaFile(file)
 
-    // formData.append('file', relationOntologyFiles[0])
+    if (validationError) {
+      toast.error(validationError.message)
+      return
+    }
 
-    // const response = await postData("api/ontology/insert",
-    //   formData,
-    //   config)
+    const additionalData = {
+      organism,
+      soterm,
+      cpu,
+    }
+
+    try {
+      await postFile('api/load/feature_sequence', file, additionalData)
+      toast.success('Arquivo de sequência enviado com sucesso!')
+      setAdditionalFiles([])
+    } catch (error) {
+      console.error('Erro ao enviar arquivo de sequência:', error)
+      toast.error(
+        error.response?.data?.message ||
+          'Ocorreu um erro inesperado ao enviar o arquivo.'
+      )
+    }
   }
 
   useEffect(() => {
@@ -51,15 +77,6 @@ export default function AdditionalSequencePage() {
     handleFormChange(formData)
   }, [organism, soterm, cpu, formData, handleFormChange])
 
-  const organismsOptions = [
-    'Organismo 1',
-    'Organismo 2',
-    'Organismo 3',
-    'Organismo 4',
-  ]
-
-  const sotermOptions = ['SOTERM 1', 'SOTERM 2', 'SOTERM 3', 'SOTERM 4']
-
   return (
     <>
       <div className="w-full flex flex-col items-center gap-10">
@@ -68,14 +85,18 @@ export default function AdditionalSequencePage() {
             {
               isRequired: true,
               fields: [
-                <SelectOrganisms setValue={setOrganism} key="organism" />,
-                <SelectComponent
+                <SelectOrganisms
+                  value={organism}
+                  setValue={setOrganism}
+                  key="organism"
+                />,
+                <InputComponent
+                  type="text"
                   isRequired={true}
-                  options={sotermOptions}
-                  defaultSelectedKeys={soterm}
                   label="soterm"
-                  setValue={setSoterm}
-                  textOnHover="SO Sequence Ontology Term (eg. mRNA, polypeptide)"
+                  value={soterm}
+                  onValueChange={setSoterm}
+                  textOnHover="Termo da SO (Sequence Ontology) para filtrar as características (features) alvo. Ex: mRNA"
                   key="soterm"
                 />,
               ],
@@ -88,7 +109,7 @@ export default function AdditionalSequencePage() {
                   placeholder="1"
                   value={cpu}
                   onValueChange={setCpu}
-                  textOnHover="Number of threads"
+                  textOnHover="Número de threads"
                   key="cpu"
                 />,
               ],
