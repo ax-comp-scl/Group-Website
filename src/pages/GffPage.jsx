@@ -18,7 +18,9 @@ export default function GFFPage() {
   const [ignore, setIgnore] = useState(formData.gff.abbreviation || '')
   const [qtl, setQtl] = useState(formData.gff.qtl || false)
   const [cpu, setCpu] = useState(formData.gff.cpu || 1)
+
   const [gffFiles, setGffFiles] = useState([])
+  const [tbiFiles, setTbiFiles] = useState([])
 
   const validateGFFFile = file => {
     const regex = /\.(gz)$/i
@@ -27,42 +29,66 @@ export default function GFFPage() {
       : {
         code: 'file-invalid-type',
         message:
-          'Tipo de arquivo inválido. Somente arquivos .gz são permitidos.',
+          'Tipo de arquivo inválido. Somente arquivos .gz são permitidos para o GFF.',
+      }
+  }
+
+  const validateTBIFile = file => {
+    const regex = /\.(tbi)$/i
+    return regex.test(file.name)
+      ? null
+      : {
+        code: 'file-invalid-type',
+        message:
+          'Tipo de arquivo inválido. Somente arquivos .tbi são permitidos.',
       }
   }
 
   const handleSubmit = async () => {
     if (!gffFiles.length) {
-      toast.error('Nenhum arquivo GFF encontrado, tente novamente.')
+      toast.error('O arquivo GFF (.gz) é obrigatório.')
+      return
+    }
+    if (!tbiFiles.length) {
+      toast.error('O arquivo de índice TBI (.tbi) é obrigatório.')
       return
     }
 
-    const file = gffFiles[0]
-    const validationError = validateGFFFile(file)
+    const gffFile = gffFiles[0]
+    const tbiFile = tbiFiles[0]
 
-    if (validationError) {
-      toast.error(validationError.message)
+    if (validateGFFFile(gffFile)) {
+      toast.error(validateGFFFile(gffFile).message)
       return
     }
+    if (validateTBIFile(tbiFile)) {
+      toast.error(validateTBIFile(tbiFile).message)
+      return
+    }
+
+    const submissionData = new FormData()
+
+    submissionData.append('gffFile', gffFile)
+    submissionData.append('tbiFile', tbiFile)
 
     const organismValue = Array.from(organism)[0]
-
-    const additionalData = {
-      organism: organismValue,
-      doi: doi,
-      ignore: ignore,
-      qtl: qtl,
-      cpu: cpu,
-    }
+    submissionData.append('organism', organismValue)
+    submissionData.append('doi', doi)
+    submissionData.append('ignore', ignore)
+    submissionData.append('qtl', qtl)
+    submissionData.append('cpu', cpu)
 
     try {
-      const response = await postFile('api/load/gff', file, additionalData)
-      toast.success('Arquivo GFF enviado com sucesso!')
+      const response = await postFile('api/load/gff', submissionData)
+      toast.success('Arquivos GFF e TBI enviados com sucesso!')
+      
       setGffFiles([])
+      setTbiFiles([])
     } catch (error) {
-      console.error('Erro ao enviar arquivo GFF:', error)
+      console.error('Erro ao enviar arquivos:', error)
       toast.error(
-        error.response?.data?.message || 'Ocorreu um erro inesperado ao enviar o arquivo GFF.'
+        error.response?.data?.message ||
+          'Ocorreu um erro inesperado ao enviar os arquivos.'
       )
     }
   }
@@ -84,32 +110,52 @@ export default function GFFPage() {
   return (
     <>
       <div className="flex flex-col gap-10 items-center">
-        <Dropzone
-          validator={validateGFFFile}
-          files={gffFiles}
-          setFiles={setGffFiles}
-          label="GFF File"
-          textOnHover={
-            <div className="px-1 py-2">
-              <div className="text-small font-bold">GFF</div>
-              <div className="text-tiny">
-                <p>
-                  GFF3 genome file indexed with tabix see (
-                  <Link
-                    isExternal
-                    size="sm"
-                    underline="hover"
-                    color="#66aaf9"
-                    href="http://www.htslib.org/doc/tabix.html"
-                  >
-                    http://www.htslib.org/doc/tabix.html
-                  </Link>
-                  )
-                </p>
+        <div className="flex flex-col items-center gap-10 w-full">
+          <Dropzone
+            validator={validateGFFFile}
+            files={gffFiles}
+            setFiles={setGffFiles}
+            label="GFF File (.gz)"
+            textOnHover={
+              <div className="px-1 py-2">
+                <div className="text-small font-bold">GFF (.gz)</div>
+                <div className="text-tiny">
+                  <p>
+                    Arquivo GFF3 compactado (.gz) e indexado com tabix. (
+                    <Link
+                      isExternal
+                      size="sm"
+                      underline="hover"
+                      color="#66aaf9"
+                      href="http://www.htslib.org/doc/tabix.html"
+                    >
+                      htslib.org/doc/tabix
+                    </Link>
+                    )
+                  </p>
+                </div>
               </div>
-            </div>
-          }
-        />
+            }
+          />
+          <Dropzone
+            validator={validateTBIFile}
+            files={tbiFiles}
+            setFiles={setTbiFiles}
+            label="TBI File (.tbi)"
+            textOnHover={
+              <div className="px-1 py-2">
+                <div className="text-small font-bold">TBI (.tbi)</div>
+                <div className="text-tiny">
+                  <p>
+                    Arquivo de índice Tabix (.tbi) correspondente ao arquivo
+                    GFF. Este campo é <strong>obrigatório</strong>.
+                  </p>
+                </div>
+              </div>
+            }
+          />
+        </div>
+
         <AccordionComponent
           itens={[
             {
