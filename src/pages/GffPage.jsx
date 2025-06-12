@@ -115,7 +115,7 @@ export default function GFFPage() {
             validator={validateGFFFile}
             files={gffFiles}
             setFiles={setGffFiles}
-            label="GFF File (.gz)"
+            label="GFF File"
             textOnHover={
               <div className="px-1 py-2">
                 <div className="text-small font-bold">GFF (.gz)</div>
@@ -141,7 +141,7 @@ export default function GFFPage() {
             validator={validateTBIFile}
             files={tbiFiles}
             setFiles={setTbiFiles}
-            label="TBI File (.tbi)"
+            label="TBI File"
             textOnHover={
               <div className="px-1 py-2">
                 <div className="text-small font-bold">TBI (.tbi)</div>
