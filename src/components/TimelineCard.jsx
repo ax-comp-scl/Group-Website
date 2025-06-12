@@ -91,6 +91,7 @@ export default function TimelineCard(props) {
         <p className="text-sm text-gray-600">{props.description}</p>
         {user.is_staff && (
           props.finishedAt &&
+          props.exitCode === 0 &&
           props.command === 'load_relations_ontology' || 
           props.command === 'load_sequence_ontology' || 
           props.command === 'load_gene_ontology' || 
