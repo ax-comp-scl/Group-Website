@@ -30,7 +30,7 @@ Siga os passos abaixo para rodar o projeto localmente:
 
 1. Clone este repositório:
    ```bash
-   git clone https://github.com/Alan-VSouza/AXB1-FrontEnd.git
+   git clone https://github.com/ax-comp-scl/Group-Website.git
    ```
 
 2. Navegue até o diretório do projeto:
@@ -42,6 +42,14 @@ Siga os passos abaixo para rodar o projeto localmente:
    ```bash
    npm install
    ```
+
+4. Configure as variáveis de ambiente:
+Crie um arquivo `.env` na raiz do projeto, copiando o conteúdo de .env.example:
+
+```bash
+cp .env.example .env
+```
+Você pode editar as variáveis neste arquivo se precisar, mas para a maioria dos casos, o valor padrão é suficiente.
 
 4. Inicie o servidor de desenvolvimento:
    ```bash
