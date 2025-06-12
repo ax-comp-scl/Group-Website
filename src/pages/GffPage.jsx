@@ -20,15 +20,14 @@ export default function GFFPage() {
   const [cpu, setCpu] = useState(formData.gff.cpu || 1)
   const [gffFiles, setGffFiles] = useState([])
 
-
   const validateGFFFile = file => {
-    const regex = /\.(gff|gtf|gff3)$/i
+    const regex = /\.(gz)$/i
     return regex.test(file.name)
       ? null
       : {
         code: 'file-invalid-type',
         message:
-          'Tipo de arquivo inválido. Somente arquivos .gff, .gtf, ou .gff3 são permitidos.',
+          'Tipo de arquivo inválido. Somente arquivos .gz são permitidos.',
       }
   }
 
