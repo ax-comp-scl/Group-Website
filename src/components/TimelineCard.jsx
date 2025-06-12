@@ -30,15 +30,22 @@ export default function TimelineCard(props) {
   const handleExclude = async () => {
     try {
       let params = '';
+      let endpoint = 'organism';
+
       switch (props.command) {
         case 'insert_organism':
         case 'load_gff':
           params = `${props.params.genus} ${props.params.species}`;
+          endpoint= 'gff'
           break;
         case 'load_relations_ontology':
+          params = 'relatioship';
+          break;
         case 'load_sequence_ontology':
+          params = 'sequence'
+          break
         case 'load_gene_ontology':
-          params = props.params.common_name;
+          params = 'gene_ontology';
           break;
         case 'load_fasta':
           params = `${props.params.genus} ${props.params.species}`;
@@ -47,7 +54,7 @@ export default function TimelineCard(props) {
           return;
       }
 
-      await deleteData(`api/load/organism/${params}`);
+      await deleteData(`api/load/${endpoint}/${params}`);
       props.loadData();
     } catch (error) {
       console.error('Erro ao excluir:', error);
