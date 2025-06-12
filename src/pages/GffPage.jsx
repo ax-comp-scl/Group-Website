@@ -121,7 +121,7 @@ export default function GFFPage() {
                 <div className="text-small font-bold">GFF (.gz)</div>
                 <div className="text-tiny">
                   <p>
-                    Arquivo GFF3 compactado (.gz) e indexado com tabix. (
+                    GFF3 file compressed (.gz) and index using tabix. (
                     <Link
                       isExternal
                       size="sm"
@@ -147,8 +147,7 @@ export default function GFFPage() {
                 <div className="text-small font-bold">TBI (.tbi)</div>
                 <div className="text-tiny">
                   <p>
-                    Arquivo de índice Tabix (.tbi) correspondente ao arquivo
-                    GFF. Este campo é <strong>obrigatório</strong>.
+                    Tabix Index file (.tbi) corresponding to the GFF file.
                   </p>
                 </div>
               </div>
