@@ -14,7 +14,7 @@ export default function HistoryPage() {
   const [currentPage, setCurrentPage] = useState(1)
   const [totalPage, setTotalPage] = useState(1)
   const [inputPage, setInputPage] = useState('1')
-  const [orderBy, setOrderBy] = useState(null)
+  const [orderBy, setOrderBy] = useState('descending')
   const [searchTerm, setSearchTerm] = useState('')
   const [debouncedSearchTerm] = useDebounce(searchTerm, 500);
 
