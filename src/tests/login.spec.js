@@ -32,8 +32,8 @@ test.describe('Página de Login', () => {
   }) => {
     await page.goto('/login')
 
-    await page.fill('input[placeholder="Seu e-mail"]', 'teste@gmail.com')
-    await page.fill('input[placeholder="Sua senha"]', 'teste123')
+    await page.fill('input[placeholder="Seu e-mail"]', 'adminadmin.com')
+    await page.fill('input[placeholder="Sua senha"]', 'admin')
 
     await page.click('button:has-text("Entrar")')
 
@@ -55,7 +55,7 @@ test.describe('Página de Login', () => {
     await expect(emailError).toHaveText('Insira um E-mail válido')
 
     const passwordError = page.locator(
-      'div[data-slot="error-message"]:has-text("A senha deve ter pelo menos 5 caracteres")'
+      'div[data-slot="error-message"]:has-text("A senha deve ter pelo menos 4 caracteres")'
     )
     await expect(passwordError).toBeVisible()
     await expect(passwordError).toHaveText(
@@ -80,22 +80,22 @@ test.describe('Página de Login', () => {
     await expect(emailError).toHaveText('Insira um E-mail válido')
   })
 
-  test('deve exibir uma mensagem de erro caso a senha não seja preenchida corretamente (< 5 caracteres)', async ({
+  test('deve exibir uma mensagem de erro caso a senha não seja preenchida corretamente (< 4 caracteres)', async ({
     page,
   }) => {
     await page.goto('/login')
 
-    await page.fill('input[placeholder="Seu e-mail"]', 'teste@exemplo.com')
-    await page.fill('input[placeholder="Sua senha"]', '1234')
+    await page.fill('input[placeholder="Seu e-mail"]', 'admin@admin.com')
+    await page.fill('input[placeholder="Sua senha"]', 'admin')
 
     await page.click('button:has-text("Entrar")')
 
     const passwordError = page.locator(
-      'div[data-slot="error-message"]:has-text("A senha deve ter pelo menos 5 caracteres")'
+      'div[data-slot="error-message"]:has-text("A senha deve ter pelo menos 4 caracteres")'
     )
     await expect(passwordError).toBeVisible()
     await expect(passwordError).toHaveText(
-      'A senha deve ter pelo menos 5 caracteres'
+      'A senha deve ter pelo menos 4 caracteres'
     )
   })
 

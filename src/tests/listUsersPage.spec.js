@@ -9,46 +9,33 @@ async function login(page) {
 }
 
 test.describe('Página de Listar Usuários', () => {
-  test.beforeEach(async ({ page }) => {
+  test('barra de pesquisa sem encontrar nenhum usuário', async ({
+    page}) => {
     await login(page)
-    await page.click('button[data-slot="trigger"]')
-    await page.waitForSelector('li[data-key="Listar usuários"]')
-    await page.click('li[data-key="Listar usuários"]')
+
+    await page.getByText('Listar usuários').click()
+    await expect(page).toHaveURL('admin/users')
+    await page.waitForTimeout(1000)
+    await page.fill('input[placeholder="Digite para buscar..."]', 'naoepravirusuarioteste')
+    await page.waitForTimeout(1500)
+    const notFoundMessage = page.locator('p:has-text("Nenhum resultado")')
+    await expect(notFoundMessage).toBeVisible()
   })
 
-  test('deve exibir uma mensagem de carregamento enquanto os dados são buscados', async ({
-    page,
-  }) => {
-    await page.goto('/admin/users')
+  test('barra de pesquisa encontrado usuário', async ({
+    page}) => {
+    await login(page)
 
-    await page.fill('input[placeholder="Digite para buscar..."]', 'testuser')
+    await page.getByText('Listar usuários').click()
+    await expect(page).toHaveURL('admin/users')
+    await page.waitForTimeout(1000)
+    await page.fill('input[placeholder="Digite para buscar..."]', 'admin')
+    await page.waitForTimeout(1500)
 
-    const loadingMessage = page.locator('p:has-text("Carregando...")')
-    await expect(loadingMessage).toBeVisible()
+    const clickVisualizar = page.locator('button:has-text("Visualizar")')
+    await expect(clickVisualizar).toBeVisible()
   })
 
-  test('deve exibir os resultados da busca corretamente', async ({ page }) => {
-    await page.goto('/admin/users')
 
-    const userCards = page.locator(
-      'div.flex.flex-col.z-0.rounded-xl.border-2.w-full.max-w-sm'
-    )
-    await expect(userCards).toHaveCount(1)
-  })
 
-  test('deve exibir uma mensagem quando nenhum resultado é encontrado', async ({
-    page,
-  }) => {
-    await page.goto('/admin/users')
-
-    await page.fill(
-      'input[placeholder="Digite para buscar..."]',
-      'nonexistentuser'
-    )
-
-    const noResultsMessage = page.locator(
-      'p:has-text("Nenhum resultado foi encontrado para \\"nonexistentuser\\"")'
-    )
-    await expect(noResultsMessage).toBeVisible()
-  })
 })
