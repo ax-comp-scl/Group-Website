@@ -33,7 +33,7 @@ export default function TimelineCard(props) {
       switch (props.command) {
         case 'insert_organism':
         case 'load_gff':
-          params = props.params.species;
+          params = `${props.params.genus} ${props.params.species}`;
           break;
         case 'load_relations_ontology':
         case 'load_sequence_ontology':
