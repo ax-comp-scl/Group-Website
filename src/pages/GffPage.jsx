@@ -57,40 +57,29 @@ export default function GFFPage() {
     const gffFile = gffFiles[0]
     const tbiFile = tbiFiles[0]
 
-    if (validateGFFFile(gffFile)) {
-      toast.error(validateGFFFile(gffFile).message)
-      return
+    const submissionData = {
+      tbiFile: tbiFile,
+      organism: Array.from(organism)[0],
+      doi: doi,
+      ignore: ignore,
+      qtl: qtl,
+      cpu: cpu,
     }
-    if (validateTBIFile(tbiFile)) {
-      toast.error(validateTBIFile(tbiFile).message)
-      return
-    }
-
-    const submissionData = new FormData()
-
-    submissionData.append('gffFile', gffFile)
-    submissionData.append('tbiFile', tbiFile)
-
-    const organismValue = Array.from(organism)[0]
-    submissionData.append('organism', organismValue)
-    submissionData.append('doi', doi)
-    submissionData.append('ignore', ignore)
-    submissionData.append('qtl', qtl)
-    submissionData.append('cpu', cpu)
 
     try {
-      const response = await postFile('api/load/gff', submissionData)
+      const response = await postFile('api/load/gff', gffFile, submissionData)
       toast.success('Arquivos GFF e TBI enviados com sucesso!')
-      
+
       setGffFiles([])
       setTbiFiles([])
     } catch (error) {
       console.error('Erro ao enviar arquivos:', error)
       toast.error(
         error.response?.data?.message ||
-          'Ocorreu um erro inesperado ao enviar os arquivos.'
+        'Ocorreu um erro inesperado ao enviar os arquivos.'
       )
     }
+
   }
 
   useEffect(() => {
