@@ -6,10 +6,16 @@ import {
   ModalHeader,
 } from '@nextui-org/react'
 import ButtonComponent from './Button'
+import { Loader2 } from 'lucide-react'
 
 export default function ModalOption(props) {
   return (
-    <Modal isOpen={props.isOpen} onOpenChange={props.onOpenChange}>
+    <Modal 
+        isOpen={props.isOpen} 
+        onOpenChange={props.onOpenChange}
+        isDismissable={!props.isConfirming}
+        hideCloseButton={props.isConfirming}
+    >
       <ModalContent>
         {onClose => (
           <>
@@ -24,8 +30,10 @@ export default function ModalOption(props) {
                 size="md"
                 color="danger"
                 variant="light"
-                text="Sim"
+                text={props.isConfirming ? 'Excluindo...' : 'Sim'}
                 onPress={props.handleConfirm}
+                disabled={props.isConfirming}
+                icon={props.isConfirming ? <Loader2 className="w-5 h-5 animate-spin" /> : undefined}
               />
               <ButtonComponent
                 size="md"
@@ -33,6 +41,7 @@ export default function ModalOption(props) {
                 variant="solid"
                 text="Não"
                 onPress={onClose}
+                disabled={props.isConfirming}
               />
             </ModalFooter>
           </>
