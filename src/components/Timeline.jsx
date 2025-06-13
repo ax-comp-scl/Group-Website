@@ -6,11 +6,14 @@ export default function Timeline(props) {
       {props.data.map((d, i) => (
         <TimelineCard
           key={i}
+          id={d.id}
           description={d.description}
           command={d.command}
           finishedAt={d.finished_at}
           createdAt={d.created_at}
           exitCode={d.exit_code}
+          params={d.params}
+          loadData={props.loadData}
         />
       ))}
     </div>

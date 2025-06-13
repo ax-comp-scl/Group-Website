@@ -30,10 +30,14 @@ export default function HistoryPage() {
     }
     
     const response = await getData(url);
+
+    console.log(response)
     return response;
 }
 
   const fiveSecondsInMiliseconds = 1 * 1000 * 5
+
+ 
 
   const { data, isFetched } = useQuery({
     queryKey: ['history', currentPage, orderBy, debouncedSearchTerm],
