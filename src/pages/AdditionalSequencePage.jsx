@@ -1,6 +1,6 @@
 import { useContext, useEffect, useState } from 'react'
-import { useOutletContext } from 'react-router-dom'
 import { toast } from 'react-hot-toast'
+import { useOutletContext } from 'react-router-dom'
 import { FormsContext } from '../FormsContext'
 import AccordionComponent from '../components/Accordion'
 import ButtonComponent from '../components/Button'
@@ -28,10 +28,10 @@ export default function AdditionalSequencePage() {
     return regex.test(file.name)
       ? null
       : {
-          code: 'file-invalid-type',
-          message:
-            'Tipo de arquivo inválido. Somente arquivos FASTA (.fasta, .fa, .fna, .faa) são permitidos.',
-        }
+        code: 'file-invalid-type',
+        message:
+          'Tipo de arquivo inválido. Somente arquivos FASTA (.fasta, .fa, .fna, .faa) são permitidos.',
+      }
   }
 
   const handleSubmit = async () => {
@@ -49,9 +49,9 @@ export default function AdditionalSequencePage() {
     }
 
     const additionalData = {
-      organism,
-      soterm,
-      cpu,
+      organism: Array.from(organism)[0],
+      soterm: soterm,
+      cpu: cpu,
     }
 
     try {
@@ -62,7 +62,7 @@ export default function AdditionalSequencePage() {
       console.error('Erro ao enviar arquivo de sequência:', error)
       toast.error(
         error.response?.data?.message ||
-          'Ocorreu um erro inesperado ao enviar o arquivo.'
+        'Ocorreu um erro inesperado ao enviar o arquivo.'
       )
     }
   }

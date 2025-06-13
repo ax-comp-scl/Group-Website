@@ -1,6 +1,6 @@
 import { useContext, useEffect, useState } from 'react'
-import { useOutletContext } from 'react-router-dom'
 import { toast } from 'react-hot-toast'
+import { useOutletContext } from 'react-router-dom'
 import { FormsContext } from '../FormsContext'
 import AccordionComponent from '../components/Accordion'
 import ButtonComponent from '../components/Button'
@@ -37,10 +37,10 @@ export default function AdditionalAnnotationPage() {
     return regex.test(file.name)
       ? null
       : {
-          code: 'file-invalid-type',
-          message:
-            'Tipo de arquivo inválido. Somente arquivos .txt, .tsv, ou .tab são permitidos.',
-        }
+        code: 'file-invalid-type',
+        message:
+          'Tipo de arquivo inválido. Somente arquivos .txt, .tsv, ou .tab são permitidos.',
+      }
   }
 
   const handleSubmit = async () => {
@@ -58,12 +58,12 @@ export default function AdditionalAnnotationPage() {
     }
 
     const additionalData = {
-      organism,
-      cvterm,
-      soterm,
-      doi,
-      cpu,
-      ignorenotfound,
+      organism: Array.from(organism)[0],
+      cvterm: cvterm,
+      soterm: soterm,
+      doi: doi,
+      cpu: cpu,
+      ignorenotfound: ignorenotfound,
     }
 
     try {
@@ -74,7 +74,7 @@ export default function AdditionalAnnotationPage() {
       console.error('Erro ao enviar arquivo de anotação:', error)
       toast.error(
         error.response?.data?.message ||
-          'Ocorreu um erro inesperado ao enviar o arquivo.'
+        'Ocorreu um erro inesperado ao enviar o arquivo.'
       )
     }
   }

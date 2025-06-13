@@ -1,6 +1,6 @@
 import { useContext, useEffect, useState } from 'react'
-import { useOutletContext } from 'react-router-dom'
 import { toast } from 'react-hot-toast'
+import { useOutletContext } from 'react-router-dom'
 import { FormsContext } from '../FormsContext'
 import AccordionComponent from '../components/Accordion'
 import ButtonComponent from '../components/Button'
@@ -30,10 +30,10 @@ export default function AdditionalPublicationPage() {
     return regex.test(file.name)
       ? null
       : {
-          code: 'file-invalid-type',
-          message:
-            'Tipo de arquivo inválido. Somente arquivos .txt, .tsv, ou .tab são permitidos.',
-        }
+        code: 'file-invalid-type',
+        message:
+          'Tipo de arquivo inválido. Somente arquivos .txt, .tsv, ou .tab são permitidos.',
+      }
   }
 
   const handleSubmit = async () => {
@@ -64,16 +64,16 @@ export default function AdditionalPublicationPage() {
       console.error('Erro ao enviar arquivo de publicação:', error)
       toast.error(
         error.response?.data?.message ||
-          'Ocorreu um erro inesperado ao enviar o arquivo.'
+        'Ocorreu um erro inesperado ao enviar o arquivo.'
       )
     }
   }
 
   useEffect(() => {
     const publicationData = {
-      organism,
-      soterm,
-      cpu,
+      organism: Array.from(organism)[0],
+      soterm: soterm,
+      cpu: cpu,
     }
     formData.additional.publication = publicationData
     handleFormChange(formData)

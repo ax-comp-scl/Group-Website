@@ -1,6 +1,6 @@
 import { useContext, useEffect, useState } from 'react'
-import { useOutletContext } from 'react-router-dom'
 import { toast } from 'react-hot-toast'
+import { useOutletContext } from 'react-router-dom'
 import { FormsContext } from '../FormsContext'
 import AccordionComponent from '../components/Accordion'
 import ButtonComponent from '../components/Button'
@@ -30,10 +30,10 @@ export default function AdditionalDBXREFPage() {
     return regex.test(file.name)
       ? null
       : {
-          code: 'file-invalid-type',
-          message:
-            'Tipo de arquivo inválido. Somente arquivos .txt, .tsv, ou .tab são permitidos.',
-        }
+        code: 'file-invalid-type',
+        message:
+          'Tipo de arquivo inválido. Somente arquivos .txt, .tsv, ou .tab são permitidos.',
+      }
   }
 
   const handleSubmit = async () => {
@@ -51,10 +51,10 @@ export default function AdditionalDBXREFPage() {
     }
 
     const additionalData = {
-      organism,
-      soterm,
-      cpu,
-      ignorenotfound,
+      organism: Array.from(organism)[0],
+      soterm: soterm,
+      cpu: cpu,
+      ignorenotfound: ignorenotfound,
     }
 
     try {
@@ -65,7 +65,7 @@ export default function AdditionalDBXREFPage() {
       console.error('Erro ao enviar arquivo DBxRef:', error)
       toast.error(
         error.response?.data?.message ||
-          'Ocorreu um erro inesperado ao enviar o arquivo.'
+        'Ocorreu um erro inesperado ao enviar o arquivo.'
       )
     }
   }
