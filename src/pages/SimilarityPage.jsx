@@ -1,53 +1,86 @@
 import { useContext, useEffect, useState } from 'react'
+import { toast } from 'react-hot-toast'
 import { FormsContext } from '../FormsContext'
 import AccordionComponent from '../components/Accordion'
 import ButtonComponent from '../components/Button'
 import Dropzone from '../components/Dropzone'
 import InputComponent from '../components/Input'
 import SelectComponent from '../components/Select'
-import { postData } from '../services/RequestsService'
+import { postFile } from '../services/RequestsService'
 
 export default function SimilarityPage() {
   const { handleFormChange, formData } = useContext(FormsContext)
 
-  const [format, setFormat] = useState(formData.similarity.format)
-  const [soquery, setSoquery] = useState(formData.similarity.soquery)
-  const [sosubject, setSosubject] = useState(formData.similarity.sosubject)
+  const [format, setFormat] = useState(formData.similarity.format || '')
+  const [soquery, setSoquery] = useState(formData.similarity.soquery || '')
+  const [sosubject, setSosubject] = useState(formData.similarity.sosubject || '')
   const [organismquery, setOrganismquery] = useState(
-    formData.similarity.organismquery
+    formData.similarity.organismquery || ''
   )
   const [organismsubject, setOrganismsubject] = useState(
-    formData.similarity.organismsubject
+    formData.similarity.organismsubject || ''
   )
-  const [program, setProgram] = useState(formData.similarity.program)
+  const [program, setProgram] = useState(formData.similarity.program || '')
   const [programversion, setProgramversion] = useState(
-    formData.similarity.programversion
+    formData.similarity.programversion || ''
   )
-  const [name, setName] = useState(formData.similarity.name)
-  const [algorithm, setAlgorithm] = useState(formData.similarity.algorithm)
+  const [name, setName] = useState(formData.similarity.name || '')
+  const [algorithm, setAlgorithm] = useState(formData.similarity.algorithm || '')
   const [description, setDescription] = useState(
-    formData.similarity.description
+    formData.similarity.description || ''
   )
-  const [cpu, setCpu] = useState(formData.similarity.cpu | 1)
+  const [cpu, setCpu] = useState(formData.similarity.cpu || 1)
   const [similarityFiles, setSimilarityFiles] = useState([])
 
-  const handleSubmit = async () => {
-    const token = localStorage.getItem('authToken')
+  const validateXmlFile = file => {
+    const regex = /\.(xml)$/i
+    return regex.test(file.name)
+      ? null
+      : {
+          code: 'file-invalid-type',
+          message: 'Tipo de arquivo inválido. Somente arquivos .xml são permitidos.',
+        }
+  }
 
-    const config = {
-      headers: {
-        Authorization: `Token ${token}`,
-        'Content-Type': 'multipart/form-data',
-      },
+  const handleSubmit = async () => {
+    if (!similarityFiles.length) {
+      toast.error('Nenhum arquivo de similaridade encontrado, tente novamente.')
+      return
     }
 
-    const formData = new FormData()
+    const file = similarityFiles[0]
+    const validationError = validateXmlFile(file)
 
-    // formData.append('file', relationOntologyFiles[0])
+    if (validationError) {
+      toast.error(validationError.message)
+      return
+    }
 
-    // const response = await postData("api/ontology/insert",
-    //   formData,
-    //   config)
+    const additionalData = {
+      format,
+      soquery,
+      sosubject,
+      organismquery,
+      organismsubject,
+      program,
+      programversion,
+      name,
+      algorithm,
+      description,
+      cpu,
+    }
+
+    try {
+      await postFile('api/load/similarity', file, additionalData)
+      toast.success('Arquivo de similaridade enviado com sucesso!')
+      setSimilarityFiles([])
+    } catch (error) {
+      console.error('Erro ao enviar arquivo de similaridade:', error)
+      toast.error(
+        error.response?.data?.message ||
+          'Ocorreu um erro inesperado ao enviar o arquivo.'
+      )
+    }
   }
 
   useEffect(() => {
@@ -83,34 +116,10 @@ export default function SimilarityPage() {
   ])
 
   const fileOptions = ['blast-xml', 'interproscan-xml']
-
-  const soQueryOptions = [
-    'SO query 1',
-    'SO query 2',
-    'SO query 3',
-    'SO query 4',
-  ]
-
-  const soSubjectOptions = [
-    'SO subject 1',
-    'SO subject 2',
-    'SO subject 3',
-    'SO subject 4',
-  ]
-
-  const organismQueryOptions = [
-    'Organism query 1',
-    'Organism query 2',
-    'Organism query 3',
-    'Organism query 4',
-  ]
-
-  const organismSubjectOptions = [
-    'Organism subject 1',
-    'Organism subject 2',
-    'Organism subject 3',
-    'Organism subject 4',
-  ]
+  const soQueryOptions = ['SO query 1', 'SO query 2', 'SO query 3', 'SO query 4']
+  const soSubjectOptions = ['SO subject 1', 'SO subject 2', 'SO subject 3', 'SO subject 4']
+  const organismQueryOptions = ['Organism query 1', 'Organism query 2']
+  const organismSubjectOptions = ['Organism subject 1', 'Organism subject 2']
 
   return (
     <>
@@ -119,6 +128,7 @@ export default function SimilarityPage() {
           files={similarityFiles}
           setFiles={setSimilarityFiles}
           label="Arquivo de similaridade"
+          validator={validateXmlFile}
           textOnHover={
             <p className="text-small font-bold px-1 py-2">
               Blast or InterproScan XML file
@@ -131,6 +141,7 @@ export default function SimilarityPage() {
             label="format"
             className="w-3/12"
             setValue={setFormat}
+            defaultSelectedKeys={format ? [format] : []}
             textOnHover="blast-xml or interproscan-xml"
             isRequired={true}
           />
@@ -142,7 +153,7 @@ export default function SimilarityPage() {
               fields: [
                 <SelectComponent
                   options={soQueryOptions}
-                  defaultSelectedKeys={soquery}
+                  defaultSelectedKeys={soquery ? [soquery] : []}
                   label="so_query"
                   setValue={setSoquery}
                   textOnHover="Query Sequence Ontology term. eg. assembly, mRNA, CDS, polypeptide"
@@ -151,7 +162,7 @@ export default function SimilarityPage() {
                 />,
                 <SelectComponent
                   options={soSubjectOptions}
-                  defaultSelectedKeys={sosubject}
+                  defaultSelectedKeys={sosubject ? [sosubject] : []}
                   label="so_subject"
                   setValue={setSosubject}
                   textOnHover="Subject Sequence Ontology term. eg. assembly, mRNA, CDS, polypeptide (protein_match if loading InterproScan or BLAST xml file)"
@@ -160,7 +171,7 @@ export default function SimilarityPage() {
                 />,
                 <SelectComponent
                   options={organismQueryOptions}
-                  defaultSelectedKeys={organismquery}
+                  defaultSelectedKeys={organismquery ? [organismquery] : []}
                   label="organism_query"
                   setValue={setOrganismquery}
                   textOnHover="Query's organism name. eg. 'Oryza sativa'. Cannot be multispecies'"
@@ -169,7 +180,7 @@ export default function SimilarityPage() {
                 />,
                 <SelectComponent
                   options={organismSubjectOptions}
-                  defaultSelectedKeys={organismsubject}
+                  defaultSelectedKeys={organismsubject ? [organismsubject] : []}
                   label="organism_subject"
                   setValue={setOrganismsubject}
                   textOnHover="Subject's organism name eg. 'Oryza sativa'. If using a multispecies database put  'multispecies multispecies'"
@@ -201,7 +212,6 @@ export default function SimilarityPage() {
                   type="text"
                   value={name}
                   onValueChange={setName}
-                  textOnHover=""
                   key="name"
                 />,
                 <InputComponent
@@ -209,7 +219,6 @@ export default function SimilarityPage() {
                   type="text"
                   value={algorithm}
                   onValueChange={setAlgorithm}
-                  textOnHover=""
                   key="algorithm"
                 />,
                 <InputComponent
@@ -217,7 +226,6 @@ export default function SimilarityPage() {
                   type="text"
                   value={description}
                   onValueChange={setDescription}
-                  textOnHover=""
                   key="description"
                 />,
                 <InputComponent
@@ -226,7 +234,6 @@ export default function SimilarityPage() {
                   placeholder="1"
                   value={cpu}
                   onValueChange={setCpu}
-                  textOnHover=""
                   key="cpu"
                 />,
               ],

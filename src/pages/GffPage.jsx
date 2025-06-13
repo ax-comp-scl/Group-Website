@@ -115,13 +115,13 @@ export default function GFFPage() {
             validator={validateGFFFile}
             files={gffFiles}
             setFiles={setGffFiles}
-            label="GFF File (.gz)"
+            label="GFF File"
             textOnHover={
               <div className="px-1 py-2">
                 <div className="text-small font-bold">GFF (.gz)</div>
                 <div className="text-tiny">
                   <p>
-                    Arquivo GFF3 compactado (.gz) e indexado com tabix. (
+                    GFF3 file compressed (.gz) and index using tabix. (
                     <Link
                       isExternal
                       size="sm"
@@ -141,14 +141,13 @@ export default function GFFPage() {
             validator={validateTBIFile}
             files={tbiFiles}
             setFiles={setTbiFiles}
-            label="TBI File (.tbi)"
+            label="TBI File"
             textOnHover={
               <div className="px-1 py-2">
                 <div className="text-small font-bold">TBI (.tbi)</div>
                 <div className="text-tiny">
                   <p>
-                    Arquivo de índice Tabix (.tbi) correspondente ao arquivo
-                    GFF. Este campo é <strong>obrigatório</strong>.
+                    Tabix Index file (.tbi) corresponding to the GFF file.
                   </p>
                 </div>
               </div>
